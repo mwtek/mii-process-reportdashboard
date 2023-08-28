@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1bd6yss" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.0.0">
+  <bpmn:process id="medizininformatik-initiativede_reportAutostart" isExecutable="true" camunda:versionTag="#{version}">
+    <bpmn:exclusiveGateway id="Gateway_1xqxerc">
+      <bpmn:incoming>Flow_1ltiore</bpmn:incoming>
+      <bpmn:incoming>Flow_15nc32a</bpmn:incoming>
+      <bpmn:outgoing>Flow_12fz0w9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:startEvent id="reportAutostartStartMessageStartEvent" name="start report autostart">
+      <bpmn:outgoing>Flow_09o8bb5</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1ot9xdv" messageRef="Message_13deqwn" />
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="reportTimerInterval" name="wait">
+      <bpmn:incoming>Flow_1p59yh5</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ltiore</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0f3gxu4">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">${reportTimerInterval}</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_09o8bb5" sourceRef="reportAutostartStartMessageStartEvent" targetRef="signalSendStopReportAutostart1" />
+    <bpmn:sequenceFlow id="Flow_1ltiore" sourceRef="reportTimerInterval" targetRef="Gateway_1xqxerc" />
+    <bpmn:serviceTask id="startTimer" name="set timer and first execution" camunda:class="de.medizininformatik_initiative.process.report.service.SetTimer">
+      <bpmn:incoming>Flow_1deqzy2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0taij7y</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:intermediateThrowEvent id="startSendReport" name="start send&#10;report">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_12fz0w9</bpmn:incoming>
+      <bpmn:outgoing>Flow_14xdnlg</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1gjl6d4" camunda:class="de.medizininformatik_initiative.process.report.message.StartSendReport">
+        <bpmn:extensionElements>
+          <camunda:field name="profile">
+            <camunda:string>http://medizininformatik-initiative.de/fhir/StructureDefinition/task-report-send-start|#{version}</camunda:string>
+          </camunda:field>
+          <camunda:field name="messageName">
+            <camunda:string>reportSendStart</camunda:string>
+          </camunda:field>
+          <camunda:field name="instantiatesCanonical">
+            <camunda:string>http://medizininformatik-initiative.de/bpe/Process/reportSend|#{version}</camunda:string>
+          </camunda:field>
+        </bpmn:extensionElements>
+      </bpmn:messageEventDefinition>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="Flow_1deqzy2" sourceRef="signalSendStopReportAutostart1" targetRef="startTimer" />
+    <bpmn:intermediateThrowEvent id="signalSendStopReportAutostart1" name="signal send stop report autostart">
+      <bpmn:incoming>Flow_09o8bb5</bpmn:incoming>
+      <bpmn:outgoing>Flow_1deqzy2</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_0ap3e7t" signalRef="Signal_0kck7nd" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:eventBasedGateway id="Gateway_129hw90">
+      <bpmn:incoming>Flow_14xdnlg</bpmn:incoming>
+      <bpmn:outgoing>Flow_1p59yh5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0je7b3t</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+    <bpmn:sequenceFlow id="Flow_14xdnlg" sourceRef="startSendReport" targetRef="Gateway_129hw90" />
+    <bpmn:sequenceFlow id="Flow_1p59yh5" sourceRef="Gateway_129hw90" targetRef="reportTimerInterval" />
+    <bpmn:intermediateCatchEvent id="signalCatchStopReportAutostart1" name="signal receive stop report autostart">
+      <bpmn:incoming>Flow_0je7b3t</bpmn:incoming>
+      <bpmn:outgoing>Flow_1lwuxwz</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_1uyxrsl" signalRef="Signal_0kck7nd" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="reportAutostartStopEvent" name="stop report autostart">
+      <bpmn:incoming>Flow_1lwuxwz</bpmn:incoming>
+      <bpmn:incoming>Flow_1dzrbk9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1lwuxwz" sourceRef="signalCatchStopReportAutostart1" targetRef="reportAutostartStopEvent" />
+    <bpmn:startEvent id="reportAutostartStopMessageStartEvent" name="stop report autostart">
+      <bpmn:outgoing>Flow_05xmyck</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_01uicno" messageRef="Message_1ws42uv" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_05xmyck" sourceRef="reportAutostartStopMessageStartEvent" targetRef="signalSendStopReportAutostart2" />
+    <bpmn:endEvent id="signalSendStopReportAutostart2" name="signal send stop report autostart">
+      <bpmn:incoming>Flow_05xmyck</bpmn:incoming>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_00a8zon" signalRef="Signal_0kck7nd" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0taij7y" sourceRef="startTimer" targetRef="Gateway_0poficl" />
+    <bpmn:sequenceFlow id="Flow_12fz0w9" sourceRef="Gateway_1xqxerc" targetRef="startSendReport" />
+    <bpmn:exclusiveGateway id="Gateway_0poficl">
+      <bpmn:incoming>Flow_0taij7y</bpmn:incoming>
+      <bpmn:outgoing>Flow_1natn89</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1g7lqdi</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1natn89" name="wait" sourceRef="Gateway_0poficl" targetRef="Gateway_1i1d4e6">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${reportFirstExecutionDelayed}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_07jewe6">
+      <bpmn:incoming>Flow_1c96glr</bpmn:incoming>
+      <bpmn:incoming>Flow_1g7lqdi</bpmn:incoming>
+      <bpmn:outgoing>Flow_15nc32a</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_15nc32a" sourceRef="Gateway_07jewe6" targetRef="Gateway_1xqxerc" />
+    <bpmn:sequenceFlow id="Flow_1c96glr" sourceRef="Event_0i36vxm" targetRef="Gateway_07jewe6" />
+    <bpmn:intermediateCatchEvent id="Event_0i36vxm" name="first execution">
+      <bpmn:incoming>Flow_1olchrl</bpmn:incoming>
+      <bpmn:outgoing>Flow_1c96glr</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0iz5ubi">
+        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${reportFirstExecution}</bpmn:timeDate>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_1olchrl" sourceRef="Gateway_1i1d4e6" targetRef="Event_0i36vxm" />
+    <bpmn:eventBasedGateway id="Gateway_1i1d4e6">
+      <bpmn:incoming>Flow_1natn89</bpmn:incoming>
+      <bpmn:outgoing>Flow_1olchrl</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0mu099s</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+    <bpmn:sequenceFlow id="Flow_0je7b3t" sourceRef="Gateway_129hw90" targetRef="signalCatchStopReportAutostart1" />
+    <bpmn:intermediateCatchEvent id="signalCatchStopReportAutostart2" name="signal receive stop report autostart">
+      <bpmn:incoming>Flow_0mu099s</bpmn:incoming>
+      <bpmn:outgoing>Flow_1dzrbk9</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_0ycllnk" signalRef="Signal_0kck7nd" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_0mu099s" sourceRef="Gateway_1i1d4e6" targetRef="signalCatchStopReportAutostart2" />
+    <bpmn:sequenceFlow id="Flow_1dzrbk9" sourceRef="signalCatchStopReportAutostart2" targetRef="reportAutostartStopEvent" />
+    <bpmn:sequenceFlow id="Flow_1g7lqdi" sourceRef="Gateway_0poficl" targetRef="Gateway_07jewe6">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!reportFirstExecutionDelayed}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:message id="Message_13deqwn" name="reportAutostartStart" />
+  <bpmn:message id="Message_1ws42uv" name="reportAutostartStop" />
+  <bpmn:signal id="Signal_0kck7nd" name="stop_medizininformatik-initiativede_reportAutostart_#{version}" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="medizininformatik-initiativede_reportAutostart">
+      <bpmndi:BPMNEdge id="Flow_1g7lqdi_di" bpmnElement="Flow_1g7lqdi">
+        <di:waypoint x="605" y="117" />
+        <di:waypoint x="665" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dzrbk9_di" bpmnElement="Flow_1dzrbk9">
+        <di:waypoint x="598" y="330" />
+        <di:waypoint x="752" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mu099s_di" bpmnElement="Flow_0mu099s">
+        <di:waypoint x="580" y="265" />
+        <di:waypoint x="580" y="312" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0je7b3t_di" bpmnElement="Flow_0je7b3t">
+        <di:waypoint x="940" y="265" />
+        <di:waypoint x="940" y="312" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1olchrl_di" bpmnElement="Flow_1olchrl">
+        <di:waypoint x="605" y="240" />
+        <di:waypoint x="672" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1c96glr_di" bpmnElement="Flow_1c96glr">
+        <di:waypoint x="690" y="222" />
+        <di:waypoint x="690" y="142" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15nc32a_di" bpmnElement="Flow_15nc32a">
+        <di:waypoint x="715" y="117" />
+        <di:waypoint x="815" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1natn89_di" bpmnElement="Flow_1natn89">
+        <di:waypoint x="580" y="142" />
+        <di:waypoint x="580" y="215" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="585" y="149" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12fz0w9_di" bpmnElement="Flow_12fz0w9">
+        <di:waypoint x="865" y="117" />
+        <di:waypoint x="922" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0taij7y_di" bpmnElement="Flow_0taij7y">
+        <di:waypoint x="490" y="117" />
+        <di:waypoint x="555" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05xmyck_di" bpmnElement="Flow_05xmyck">
+        <di:waypoint x="198" y="330" />
+        <di:waypoint x="282" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lwuxwz_di" bpmnElement="Flow_1lwuxwz">
+        <di:waypoint x="922" y="330" />
+        <di:waypoint x="788" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1p59yh5_di" bpmnElement="Flow_1p59yh5">
+        <di:waypoint x="915" y="240" />
+        <di:waypoint x="858" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14xdnlg_di" bpmnElement="Flow_14xdnlg">
+        <di:waypoint x="940" y="135" />
+        <di:waypoint x="940" y="215" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1deqzy2_di" bpmnElement="Flow_1deqzy2">
+        <di:waypoint x="318" y="117" />
+        <di:waypoint x="390" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ltiore_di" bpmnElement="Flow_1ltiore">
+        <di:waypoint x="840" y="222" />
+        <di:waypoint x="840" y="142" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09o8bb5_di" bpmnElement="Flow_09o8bb5">
+        <di:waypoint x="208" y="117" />
+        <di:waypoint x="282" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_1xqxerc_di" bpmnElement="Gateway_1xqxerc" isMarkerVisible="true">
+        <dc:Bounds x="815" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0g2pqnk_di" bpmnElement="reportAutostartStartMessageStartEvent">
+        <dc:Bounds x="172" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="163" y="142" width="54" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0eqigaq_di" bpmnElement="reportTimerInterval">
+        <dc:Bounds x="822" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="830" y="261" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0laouxt_di" bpmnElement="startTimer">
+        <dc:Bounds x="390" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0dsz1xu_di" bpmnElement="startSendReport">
+        <dc:Bounds x="922" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="915" y="68" width="49" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_14ymmsc_di" bpmnElement="signalSendStopReportAutostart1">
+        <dc:Bounds x="282" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="261" y="142" width="80" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_04w9h5a_di" bpmnElement="Gateway_129hw90">
+        <dc:Bounds x="915" y="215" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1kq85bs_di" bpmnElement="signalCatchStopReportAutostart1">
+        <dc:Bounds x="922" y="312" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="908" y="355" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_008atjq_di" bpmnElement="reportAutostartStopEvent">
+        <dc:Bounds x="752" y="312" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="744" y="355" width="53" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1x1i42n_di" bpmnElement="reportAutostartStopMessageStartEvent">
+        <dc:Bounds x="162" y="312" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="153" y="355" width="53" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_06n50ak_di" bpmnElement="signalSendStopReportAutostart2">
+        <dc:Bounds x="282" y="312" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="260" y="355" width="80" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0poficl_di" bpmnElement="Gateway_0poficl" isMarkerVisible="true">
+        <dc:Bounds x="555" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_07jewe6_di" bpmnElement="Gateway_07jewe6" isMarkerVisible="true">
+        <dc:Bounds x="665" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_15sdy5r_di" bpmnElement="Event_0i36vxm">
+        <dc:Bounds x="672" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="658" y="264" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1pxmusf_di" bpmnElement="Gateway_1i1d4e6">
+        <dc:Bounds x="555" y="215" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1fhqfm0_di" bpmnElement="signalCatchStopReportAutostart2">
+        <dc:Bounds x="562" y="312" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="546" y="355" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
