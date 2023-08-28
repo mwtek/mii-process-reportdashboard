@@ -1,0 +1,976 @@
+<Bundle xmlns="http://hl7.org/fhir">
+	<meta>
+		<versionId value="1"/>
+		<lastUpdated value="2023-08-11T10:00:00.000+01:00"/>
+		<profile value="http://medizininformatik-initiative.de/fhir/Bundle/search-bundle-report|1.0"/>
+		<tag>
+			<system value="http://dsf.dev/fhir/CodeSystem/read-access-tag" />
+			<code value="ALL" />
+		</tag>
+	</meta>
+	<type value="batch"/>
+	<identifier>
+		<system value="http://medizininformatik-initiative.de/fhir/CodeSystem/report"/>
+		<value value="search-bundle"/>
+	</identifier>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Consent?_profile=http://fhir.de/ConsentManagement/StructureDefinition/Consent&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Consent?_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-consent/StructureDefinition/Consent&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Medication?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Patient?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Patient&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Patient?_profile:below=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Patient|1&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Patient?_profile:below=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Patient|2&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Patient?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ResearchSubject?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/ResearchSubject&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ResearchSubject?_profile:below=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/ResearchSubject|1&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ResearchSubject?_profile:below=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/ResearchSubject|2&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?_profile:below=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus|1&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?_profile:below=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus|2&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?type=http://fhir.de/CodeSystem/Kontaktebene|einrichtungskontakt&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-fall/StructureDefinition/KontaktGesundheitseinrichtung&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?type=http://fhir.de/CodeSystem/Kontaktebene|abteilungskontakt&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-fall/StructureDefinition/KontaktGesundheitseinrichtung&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?type=http://fhir.de/CodeSystem/Kontaktebene|versorgungsstellenkontakt&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-fall/StructureDefinition/KontaktGesundheitseinrichtung&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Consent?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Medication?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Patient?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ResearchSubject?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?effective=eq2013&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?effective=eq2014&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?effective=eq2015&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?effective=eq2016&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?effective=eq2017&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?effective=eq2018&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?effective=eq2019&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?effective=eq2020&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?effective=eq2021&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?effective=eq2022&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationStatement?effective=eq2023&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?effective-time=eq2013&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?effective-time=eq2014&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?effective-time=eq2015&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?effective-time=eq2016&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?effective-time=eq2017&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?effective-time=eq2018&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?effective-time=eq2019&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?effective-time=eq2020&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?effective-time=eq2021&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?effective-time=eq2022&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="MedicationAdministration?effective-time=eq2023&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2013&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2014&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2015&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2016&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2017&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2018&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2019&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2020&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2021&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2022&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2023&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2013&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2014&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2015&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2016&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2017&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2018&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2019&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2020&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2021&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2022&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2023&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Todesursache&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?date=eq2013&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?date=eq2014&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?date=eq2015&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?date=eq2016&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?date=eq2017&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?date=eq2018&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?date=eq2019&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?date=eq2020&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?date=eq2021&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?date=eq2022&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Encounter?date=eq2023&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?recorded-date=eq2013&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?recorded-date=eq2014&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?recorded-date=eq2015&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?recorded-date=eq2016&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?recorded-date=eq2017&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?recorded-date=eq2018&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?recorded-date=eq2019&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?recorded-date=eq2020&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?recorded-date=eq2021&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?recorded-date=eq2022&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?recorded-date=eq2023&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?date=eq2013&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?date=eq2014&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?date=eq2015&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?date=eq2016&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?date=eq2017&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?date=eq2018&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?date=eq2019&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?date=eq2020&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?date=eq2021&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?date=eq2022&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Procedure?date=eq2023&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?date=eq2013&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?date=eq2014&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?date=eq2015&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?date=eq2016&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?date=eq2017&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?date=eq2018&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?date=eq2019&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?date=eq2020&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?date=eq2021&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?date=eq2022&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="DiagnosticReport?date=eq2023&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2013&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2014&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2015&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2016&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2017&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2018&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2019&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2020&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2021&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2022&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Observation?date=eq2023&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ObservationLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?authored=eq2013&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?authored=eq2014&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?authored=eq2015&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?authored=eq2016&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?authored=eq2017&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?authored=eq2018&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?authored=eq2019&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?authored=eq2020&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?authored=eq2021&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?authored=eq2022&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="ServiceRequest?authored=eq2023&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/ServiceRequestLab&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?collected=eq2013&amp;_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?collected=eq2014&amp;_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?collected=eq2015&amp;_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?collected=eq2016&amp;_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?collected=eq2017&amp;_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?collected=eq2018&amp;_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?collected=eq2019&amp;_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?collected=eq2020&amp;_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?collected=eq2021&amp;_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?collected=eq2022&amp;_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Specimen?collected=eq2023&amp;_profile=https://www.medizininformatik-initiative.de/fhir/ext/modul-biobank/StructureDefinition/Specimen&amp;_summary=count"/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="metadata"/>
+		</request>
+	</entry>
+</Bundle> 
