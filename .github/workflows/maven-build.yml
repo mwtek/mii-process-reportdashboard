@@ -16,6 +16,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 17
+    - uses: s4u/maven-settings-action@v2.8.0
+      with:
+        servers: |
+          [ {"id": "github-mii", "username": "${{ github.actor }}", "password": "${{ secrets.GITHUB_TOKEN }}"}]
     - name: Build with Maven
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
