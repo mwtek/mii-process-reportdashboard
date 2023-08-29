@@ -18,7 +18,6 @@ import org.springframework.beans.factory.InitializingBean;
 import de.medizininformatik_initiative.process.report.ConstantsReport;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
 import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
-
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.constants.NamingSystems;

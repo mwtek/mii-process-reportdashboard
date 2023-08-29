@@ -21,7 +21,6 @@ import de.medizininformatik_initiative.process.report.service.SelectTargetHrp;
 import de.medizininformatik_initiative.process.report.service.SetTimer;
 import de.medizininformatik_initiative.process.report.service.StoreReceipt;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
-
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.ProcessPluginDeploymentStateListener;
 
