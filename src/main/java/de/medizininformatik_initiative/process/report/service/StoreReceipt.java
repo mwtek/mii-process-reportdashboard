@@ -11,9 +11,9 @@ import org.springframework.beans.factory.InitializingBean;
 
 import de.medizininformatik_initiative.process.report.ConstantsReport;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
+
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
-import dev.dsf.bpe.v1.service.MailService;
 import dev.dsf.bpe.v1.variables.Variables;
 
 public class StoreReceipt extends AbstractServiceDelegate implements InitializingBean
@@ -21,23 +21,18 @@ public class StoreReceipt extends AbstractServiceDelegate implements Initializin
 	private static final Logger logger = LoggerFactory.getLogger(StoreReceipt.class);
 
 	private final ReportStatusGenerator statusGenerator;
-	private final MailService mailService;
 
-	public StoreReceipt(ProcessPluginApi api, ReportStatusGenerator statusGenerator, MailService mailService)
+	public StoreReceipt(ProcessPluginApi api, ReportStatusGenerator statusGenerator)
 	{
 		super(api);
-
 		this.statusGenerator = statusGenerator;
-		this.mailService = mailService;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception
 	{
 		super.afterPropertiesSet();
-
 		Objects.requireNonNull(statusGenerator, "statusGenerator");
-		Objects.requireNonNull(mailService, "mailService");
 	}
 
 	@Override
@@ -115,7 +110,7 @@ public class StoreReceipt extends AbstractServiceDelegate implements Initializin
 				+ "'" + extension + " in process '" + ConstantsReport.PROCESS_NAME_FULL_REPORT_SEND
 				+ "' and can be accessed using the following link:\n" + "- " + reportLocation;
 
-		mailService.send(subject, message);
+		api.getMailService().send(subject, message);
 	}
 
 	private void sendErrorMail(String leadingTaskId, String reportLocation, String code, String extension)
@@ -126,6 +121,6 @@ public class StoreReceipt extends AbstractServiceDelegate implements Initializin
 				+ "' belonging to Task with id '" + leadingTaskId
 				+ "' and can possibly be accessed using the following link:\n" + "- " + reportLocation;
 
-		mailService.send(subject, message);
+		api.getMailService().send(subject, message);
 	}
 }

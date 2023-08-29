@@ -21,18 +21,15 @@ import de.medizininformatik_initiative.process.report.service.SelectTargetHrp;
 import de.medizininformatik_initiative.process.report.service.SetTimer;
 import de.medizininformatik_initiative.process.report.service.StoreReceipt;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
+
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.ProcessPluginDeploymentStateListener;
-import dev.dsf.bpe.v1.service.MailService;
 
 @Configuration
 public class ReportConfig
 {
 	@Autowired
 	private ProcessPluginApi api;
-
-	@Autowired
-	private MailService mailService;
 
 	@Autowired
 	private FhirClientConfig fhirClientConfig;
@@ -112,7 +109,7 @@ public class ReportConfig
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public StoreReceipt storeReceipt()
 	{
-		return new StoreReceipt(api, reportStatusGenerator(), mailService);
+		return new StoreReceipt(api, reportStatusGenerator());
 	}
 
 	// reportReceive Process
@@ -128,7 +125,7 @@ public class ReportConfig
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public InsertReport insertReport()
 	{
-		return new InsertReport(api, reportStatusGenerator(), mailService);
+		return new InsertReport(api, reportStatusGenerator());
 	}
 
 	@Bean

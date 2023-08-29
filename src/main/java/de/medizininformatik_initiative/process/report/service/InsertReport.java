@@ -18,10 +18,10 @@ import org.springframework.beans.factory.InitializingBean;
 import de.medizininformatik_initiative.process.report.ConstantsReport;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
 import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
+
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.constants.NamingSystems;
-import dev.dsf.bpe.v1.service.MailService;
 import dev.dsf.bpe.v1.variables.Variables;
 import dev.dsf.fhir.client.PreferReturnMinimal;
 
@@ -30,23 +30,18 @@ public class InsertReport extends AbstractServiceDelegate implements Initializin
 	private static final Logger logger = LoggerFactory.getLogger(InsertReport.class);
 
 	private final ReportStatusGenerator reportStatusGenerator;
-	private final MailService mailService;
 
-	public InsertReport(ProcessPluginApi api, ReportStatusGenerator reportStatusGenerator, MailService mailService)
+	public InsertReport(ProcessPluginApi api, ReportStatusGenerator reportStatusGenerator)
 	{
 		super(api);
-
 		this.reportStatusGenerator = reportStatusGenerator;
-		this.mailService = mailService;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception
 	{
 		super.afterPropertiesSet();
-
 		Objects.requireNonNull(reportStatusGenerator, "reportStatusGenerator");
-		Objects.requireNonNull(mailService, "mailService");
 	}
 
 	@Override
@@ -107,6 +102,6 @@ public class InsertReport extends AbstractServiceDelegate implements Initializin
 				+ "' from organization '" + sendingOrganization + "' and can be accessed using the following link:\n"
 				+ "- " + reportLocation;
 
-		mailService.send(subject, message);
+		api.getMailService().send(subject, message);
 	}
 }
