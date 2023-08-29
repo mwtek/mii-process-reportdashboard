@@ -41,6 +41,13 @@ public class ReportConfig
 
 	@Bean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	public ReportStatusGenerator reportStatusGenerator()
+	{
+		return new ReportStatusGenerator();
+	}
+
+	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public ProcessPluginDeploymentStateListener reportProcessPluginDeploymentStateListener()
 	{
 		return new ReportProcessPluginDeploymentStateListener(fhirClientConfig.fhirClientFactory());
@@ -92,13 +99,6 @@ public class ReportConfig
 		String resourceVersion = new ReportProcessPluginDefinition().getResourceVersion();
 		return new CreateReport(api, resourceVersion, fhirClientConfig.fhirClientFactory(),
 				fhirClientConfig.dataLogger());
-	}
-
-	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public ReportStatusGenerator reportStatusGenerator()
-	{
-		return new ReportStatusGenerator();
 	}
 
 	@Bean
