@@ -81,11 +81,11 @@ public class InsertReport extends AbstractServiceDelegate implements Initializin
 			task.setStatus(Task.TaskStatus.FAILED);
 			task.addOutput(statusGenerator.createReportStatusOutput(
 					ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR,
-					"Insert report - " + exception.getMessage()));
+					"Insert report failed"));
 			variables.updateTask(task);
 
 			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR_MESSAGE,
-					"Insert report - " + exception.getMessage());
+					"Insert report failed");
 
 			logger.warn("Storing report from organization '{}' referenced in Task with id '{}' failed - {}",
 					sendingOrganization, task.getId(), exception.getMessage());

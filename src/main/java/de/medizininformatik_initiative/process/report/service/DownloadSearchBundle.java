@@ -81,7 +81,7 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 				}
 
 				task.addOutput(statusGenerator.createReportStatusOutput(statusCode,
-						"Download search bundle - " + exception.getMessage()));
+						"Download search bundle failed"));
 				variables.updateTask(task);
 			}
 
