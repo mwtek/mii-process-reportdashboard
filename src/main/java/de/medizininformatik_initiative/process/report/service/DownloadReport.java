@@ -25,19 +25,19 @@ public class DownloadReport extends AbstractServiceDelegate implements Initializ
 {
 	private static final Logger logger = LoggerFactory.getLogger(DownloadReport.class);
 
-	private final ReportStatusGenerator reportStatusGenerator;
+	private final ReportStatusGenerator statusGenerator;
 
-	public DownloadReport(ProcessPluginApi api, ReportStatusGenerator reportStatusGenerator)
+	public DownloadReport(ProcessPluginApi api, ReportStatusGenerator statusGenerator)
 	{
 		super(api);
-		this.reportStatusGenerator = reportStatusGenerator;
+		this.statusGenerator = statusGenerator;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception
 	{
 		super.afterPropertiesSet();
-		Objects.requireNonNull(reportStatusGenerator, "reportStatusGenerator");
+		Objects.requireNonNull(statusGenerator, "reportStatusGenerator");
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class DownloadReport extends AbstractServiceDelegate implements Initializ
 		catch (Exception exception)
 		{
 			task.setStatus(Task.TaskStatus.FAILED);
-			task.addOutput(reportStatusGenerator.createReportStatusOutput(
+			task.addOutput(statusGenerator.createReportStatusOutput(
 					ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR,
 					"Download report - " + exception.getMessage()));
 			variables.updateTask(task);

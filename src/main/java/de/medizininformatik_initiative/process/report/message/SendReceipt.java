@@ -17,19 +17,19 @@ import dev.dsf.bpe.v1.variables.Variables;
 
 public class SendReceipt extends AbstractTaskMessageSend implements InitializingBean
 {
-	private final ReportStatusGenerator reportStatusGenerator;
+	private final ReportStatusGenerator statusGenerator;
 
-	public SendReceipt(ProcessPluginApi api, ReportStatusGenerator reportStatusGenerator)
+	public SendReceipt(ProcessPluginApi api, ReportStatusGenerator statusGenerator)
 	{
 		super(api);
-		this.reportStatusGenerator = reportStatusGenerator;
+		this.statusGenerator = statusGenerator;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception
 	{
 		super.afterPropertiesSet();
-		Objects.requireNonNull(reportStatusGenerator, "reportStatusGenerator");
+		Objects.requireNonNull(statusGenerator, "reportStatusGenerator");
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class SendReceipt extends AbstractTaskMessageSend implements Initializing
 
 	private Stream<Task.ParameterComponent> createReceiptError(Variables variables)
 	{
-		return reportStatusGenerator.transformOutputToInputComponent(variables.getStartTask())
+		return statusGenerator.transformOutputToInputComponent(variables.getStartTask())
 				.map(this::receiveToReceiptStatus);
 	}
 
