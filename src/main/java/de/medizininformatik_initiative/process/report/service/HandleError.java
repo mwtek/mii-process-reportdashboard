@@ -29,12 +29,15 @@ public class HandleError extends AbstractServiceDelegate
 
 	private void sendMail(Task task, Variables variables)
 	{
-		String error = variables.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR);
+		String error = variables.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR_MESSAGE);
+		String reportLocation = variables
+				.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE);
 
 		String subject = "Error in process '" + ConstantsReport.PROCESS_NAME_FULL_REPORT_RECEIVE + "'";
-		String message = "Could not download or insert new report in process '"
+		String message = "Could not download or insert new report with reference '" + reportLocation + "' in process '"
 				+ ConstantsReport.PROCESS_NAME_FULL_REPORT_RECEIVE + "' from organization '"
-				+ task.getRequester().getIdentifier().getValue() + "' in Task with id '" + task.getId() + "':\n - "
+				+ task.getRequester().getIdentifier().getValue() + "' in Task with id '" + task.getId() + "':\n "
+				+ "- status code: " + ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR + "\n" + "- error: "
 				+ error;
 
 		api.getMailService().send(subject, message);

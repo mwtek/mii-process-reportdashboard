@@ -77,28 +77,28 @@ public class StoreReceipt extends AbstractServiceDelegate implements Initializin
 
 	private void writeStatusLogAndSendMail(Task startTask, String reportLocation)
 	{
-		startTask.getOutput().stream().filter(o -> o.getValue() instanceof Coding).map(o -> (Coding) o.getValue())
-				.filter(c -> ConstantsReport.CODESYSTEM_REPORT_STATUS.equals(c.getSystem()))
-				.forEach(c -> doWriteStatusLogAndSendMail(c, startTask.getId(), reportLocation));
+		startTask.getOutput().stream().filter(o -> o.getValue() instanceof Coding)
+				.filter(o -> ConstantsReport.CODESYSTEM_REPORT_STATUS.equals(((Coding) o.getValue()).getSystem()))
+				.forEach(o -> doWriteStatusLogAndSendMail(o, startTask.getId(), reportLocation));
 	}
 
-	private void doWriteStatusLogAndSendMail(Coding status, String startTaskId, String reportLocation)
+	private void doWriteStatusLogAndSendMail(Task.TaskOutputComponent output, String startTaskId, String reportLocation)
 	{
+		Coding status = (Coding) output.getValue();
 		String code = status.getCode();
-		String extension = status.hasExtension()
-				? " and extension '" + status.getExtensionFirstRep().getUrl() + "|"
-						+ status.getExtensionFirstRep().getValueAsPrimitive().getValueAsString() + "'"
+		String error = output.hasExtension() ? output.getExtensionFirstRep().getValueAsPrimitive().getValueAsString()
 				: "";
+		String errorLog = error.isBlank() ? "" : " - " + error;
 
 		if (ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIPT_OK.equals(code))
 		{
-			logger.info("Task with id '{}' has report-status code '{}'{}", startTaskId, code, extension);
-			sendSuccessfulMail(reportLocation, code, extension);
+			logger.info("Task with id '{}' has report-status code '{}'{}", startTaskId, code, errorLog);
+			sendSuccessfulMail(reportLocation, code, error);
 		}
 		else
 		{
-			logger.warn("Task with id '{}' has report-status code '{}'{}", startTaskId, code, extension);
-			sendErrorMail(startTaskId, reportLocation, code, extension);
+			logger.warn("Task with id '{}' has report-status code '{}'{}", startTaskId, code, errorLog);
+			sendErrorMail(startTaskId, reportLocation, code, error);
 		}
 	}
 
@@ -112,13 +112,13 @@ public class StoreReceipt extends AbstractServiceDelegate implements Initializin
 		api.getMailService().send(subject, message);
 	}
 
-	private void sendErrorMail(String leadingTaskId, String reportLocation, String code, String extension)
+	private void sendErrorMail(String startTaskId, String reportLocation, String code, String error)
 	{
-		String subject = "Error in report process '" + ConstantsReport.PROCESS_NAME_FULL_REPORT_SEND + "'";
-		String message = "A new report could not be created and retrieved by the HRP, status code is '" + code + "'"
-				+ extension + " in process '" + ConstantsReport.PROCESS_NAME_FULL_REPORT_SEND
-				+ "' belonging to Task with id '" + leadingTaskId
-				+ "' and can possibly be accessed using the following link:\n" + "- " + reportLocation;
+		String subject = "Error in process '" + ConstantsReport.PROCESS_NAME_FULL_REPORT_SEND + "'";
+
+		String message = "HRP could not download or insert new report with reference '" + reportLocation
+				+ "' in process '" + ConstantsReport.PROCESS_NAME_FULL_REPORT_SEND + "' in Task with id '" + startTaskId
+				+ "':\n " + "- status code: " + code + "\n" + "- error: " + error;
 
 		api.getMailService().send(subject, message);
 	}

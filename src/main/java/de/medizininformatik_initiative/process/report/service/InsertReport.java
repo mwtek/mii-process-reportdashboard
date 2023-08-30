@@ -84,6 +84,9 @@ public class InsertReport extends AbstractServiceDelegate implements Initializin
 					"Insert report - " + exception.getMessage()));
 			variables.updateTask(task);
 
+			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR_MESSAGE,
+					"Insert report - " + exception.getMessage());
+
 			logger.warn("Storing report from organization '{}' referenced in Task with id '{}' failed - {}",
 					sendingOrganization, task.getId(), exception.getMessage());
 			throw new BpmnError(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR,
