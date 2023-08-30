@@ -61,8 +61,7 @@ public class DownloadReport extends AbstractServiceDelegate implements Initializ
 		{
 			task.setStatus(Task.TaskStatus.FAILED);
 			task.addOutput(statusGenerator.createReportStatusOutput(
-					ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR,
-					"Download report failed"));
+					ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR, "Download report failed"));
 			variables.updateTask(task);
 
 			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR_MESSAGE,

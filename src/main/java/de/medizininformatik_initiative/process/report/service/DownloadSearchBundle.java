@@ -80,8 +80,7 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 					statusCode = ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_NOT_ALLOWED;
 				}
 
-				task.addOutput(statusGenerator.createReportStatusOutput(statusCode,
-						"Download search bundle failed"));
+				task.addOutput(statusGenerator.createReportStatusOutput(statusCode, "Download search bundle failed"));
 				variables.updateTask(task);
 			}
 

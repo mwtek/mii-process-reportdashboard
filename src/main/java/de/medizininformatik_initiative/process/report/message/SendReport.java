@@ -67,8 +67,7 @@ public class SendReport extends AbstractTaskMessageSend implements InitializingB
 				}
 			}
 
-			task.addOutput(
-					statusGenerator.createReportStatusOutput(statusCode, "Send report failed"));
+			task.addOutput(statusGenerator.createReportStatusOutput(statusCode, "Send report failed"));
 			variables.updateTask(task);
 		}
 
