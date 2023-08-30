@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.hl7.fhir.r4.model.Task;
 
 import de.medizininformatik_initiative.process.report.ConstantsReport;
+import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.variables.Variables;
@@ -23,7 +24,9 @@ public class HandleError extends AbstractServiceDelegate
 		if (Task.TaskStatus.FAILED.equals(task.getStatus()))
 		{
 			sendMail(task, variables);
-			api.getFhirWebserviceClientProvider().getLocalWebserviceClient().update(task);
+			api.getFhirWebserviceClientProvider().getLocalWebserviceClient()
+					.withRetry(ConstantsBase.DSF_CLIENT_RETRY_6_TIMES, ConstantsBase.DSF_CLIENT_RETRY_INTERVAL_5MIN)
+					.update(task);
 		}
 	}
 

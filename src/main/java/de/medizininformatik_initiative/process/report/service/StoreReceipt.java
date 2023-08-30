@@ -11,6 +11,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 import de.medizininformatik_initiative.process.report.ConstantsReport;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
+import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.variables.Variables;
@@ -54,7 +55,9 @@ public class StoreReceipt extends AbstractServiceDelegate implements Initializin
 
 		if (Task.TaskStatus.FAILED.equals(startTask.getStatus()))
 		{
-			api.getFhirWebserviceClientProvider().getLocalWebserviceClient().update(startTask);
+			api.getFhirWebserviceClientProvider().getLocalWebserviceClient()
+					.withRetry(ConstantsBase.DSF_CLIENT_RETRY_6_TIMES, ConstantsBase.DSF_CLIENT_RETRY_INTERVAL_5MIN)
+					.update(startTask);
 		}
 	}
 
