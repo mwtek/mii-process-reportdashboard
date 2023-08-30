@@ -118,7 +118,7 @@ public class StoreReceipt extends AbstractServiceDelegate implements Initializin
 
 		String message = "HRP could not download or insert new report with reference '" + reportLocation
 				+ "' in process '" + ConstantsReport.PROCESS_NAME_FULL_REPORT_SEND + "' in Task with id '" + startTaskId
-				+ "':\n " + "- status code: " + code + "\n" + "- error: " + error;
+				+ "':\n" + "- status code: " + code + "\n" + "- error: " + error;
 
 		api.getMailService().send(subject, message);
 	}

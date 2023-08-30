@@ -36,7 +36,7 @@ public class HandleError extends AbstractServiceDelegate
 		String subject = "Error in process '" + ConstantsReport.PROCESS_NAME_FULL_REPORT_RECEIVE + "'";
 		String message = "Could not download or insert new report with reference '" + reportLocation + "' in process '"
 				+ ConstantsReport.PROCESS_NAME_FULL_REPORT_RECEIVE + "' from organization '"
-				+ task.getRequester().getIdentifier().getValue() + "' in Task with id '" + task.getId() + "':\n "
+				+ task.getRequester().getIdentifier().getValue() + "' in Task with id '" + task.getId() + "':\n"
 				+ "- status code: " + ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR + "\n" + "- error: "
 				+ error;
 
