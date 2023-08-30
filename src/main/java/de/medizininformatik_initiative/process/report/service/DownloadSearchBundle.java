@@ -15,6 +15,7 @@ import de.medizininformatik_initiative.process.report.ConstantsReport;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
 import de.medizininformatik_initiative.processes.common.fhir.client.logging.DataLogger;
 import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
+
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.variables.Target;
@@ -52,8 +53,8 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 	{
 		Task task = variables.getStartTask();
 		Target target = variables.getTarget();
-		String searchBundleIdentifier = ConstantsReport.CODESYSTEM_REPORT + "|"
-				+ ConstantsReport.CODESYSTEM_REPORT_VALUE_SEARCH_BUNDLE;
+		String searchBundleIdentifier =
+				ConstantsReport.CODESYSTEM_REPORT + "|" + ConstantsReport.CODESYSTEM_REPORT_VALUE_SEARCH_BUNDLE;
 
 		logger.info("Downloading search Bundle '{}' from HRP '{}' referenced in Task with id '{}'",
 				searchBundleIdentifier, target.getOrganizationIdentifierValue(), task.getId());
@@ -80,7 +81,8 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 					statusCode = ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_NOT_ALLOWED;
 				}
 
-				task.addOutput(statusGenerator.createReportStatusOutput(statusCode, createErrorMessage(exception)));
+				task.addOutput(statusGenerator.createReportStatusOutput(statusCode,
+						"Download search bundle - " + exception.getMessage()));
 				variables.updateTask(task);
 			}
 
@@ -88,11 +90,9 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 					"Error while reading search Bundle with identifier '{}' from organization '{}' referenced in Task with id '{}' - {}",
 					searchBundleIdentifier, task.getRequester().getIdentifier().getValue(), task.getId(),
 					exception.getMessage());
-			throw new RuntimeException(
-					"Error while reading search Bundle with identifier '" + searchBundleIdentifier
-							+ "' from organization '" + task.getRequester().getIdentifier().getValue()
-							+ "' referenced in Task with id '" + task.getId() + "' - " + exception.getMessage(),
-					exception);
+			throw new RuntimeException("Error while reading search Bundle with identifier '" + searchBundleIdentifier
+					+ "' from organization '" + task.getRequester().getIdentifier().getValue()
+					+ "' referenced in Task with id '" + task.getId() + "' - " + exception.getMessage(), exception);
 		}
 	}
 
@@ -104,14 +104,6 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 
 		return client.searchWithStrictHandling(Bundle.class,
 				Map.of("identifier", Collections.singletonList(searchBundleIdentifier)));
-	}
-
-	private String createErrorMessage(Exception exception)
-	{
-		return exception.getClass().getSimpleName()
-				+ ((exception.getMessage() != null && !exception.getMessage().isBlank())
-						? (": " + exception.getMessage())
-						: "");
 	}
 
 	private Bundle extractSearchBundle(Bundle bundle, String searchBundleIdentifier, String taskId)

@@ -30,11 +30,6 @@ public class SelectTargetDic extends AbstractServiceDelegate
 		Target dicTarget = createTarget(variables, dicIdentifier, dicEndpoint);
 
 		variables.setTarget(dicTarget);
-
-		if (Task.TaskStatus.FAILED.equals(task.getStatus()))
-		{
-			api.getFhirWebserviceClientProvider().getLocalWebserviceClient().update(task);
-		}
 	}
 
 	private Identifier getDicOrganizationIdentifier(Task task)
