@@ -95,8 +95,8 @@ public class StoreReceipt extends AbstractServiceDelegate implements Initializin
 
 		if (ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIPT_OK.equals(code))
 		{
-			logger.info("Task with id '{}' has report-status code '{}'{}", startTaskId, code, errorLog);
-			sendSuccessfulMail(reportLocation, code, error);
+			logger.info("Task with id '{}' has report-status code '{}'", startTaskId, code);
+			sendSuccessfulMail(reportLocation, code);
 		}
 		else
 		{
@@ -105,11 +105,11 @@ public class StoreReceipt extends AbstractServiceDelegate implements Initializin
 		}
 	}
 
-	private void sendSuccessfulMail(String reportLocation, String code, String extension)
+	private void sendSuccessfulMail(String reportLocation, String code)
 	{
 		String subject = "New successful report in process '" + ConstantsReport.PROCESS_NAME_FULL_REPORT_SEND + "'";
 		String message = "A new report has been successfully created and retrieved by the HRP with status code '" + code
-				+ "'" + extension + " in process '" + ConstantsReport.PROCESS_NAME_FULL_REPORT_SEND
+				+ "' in process '" + ConstantsReport.PROCESS_NAME_FULL_REPORT_SEND
 				+ "' and can be accessed using the following link:\n" + "- " + reportLocation;
 
 		api.getMailService().send(subject, message);
