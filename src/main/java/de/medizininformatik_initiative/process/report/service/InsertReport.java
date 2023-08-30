@@ -28,19 +28,19 @@ public class InsertReport extends AbstractServiceDelegate implements Initializin
 {
 	private static final Logger logger = LoggerFactory.getLogger(InsertReport.class);
 
-	private final ReportStatusGenerator reportStatusGenerator;
+	private final ReportStatusGenerator statusGenerator;
 
-	public InsertReport(ProcessPluginApi api, ReportStatusGenerator reportStatusGenerator)
+	public InsertReport(ProcessPluginApi api, ReportStatusGenerator statusGenerator)
 	{
 		super(api);
-		this.reportStatusGenerator = reportStatusGenerator;
+		this.statusGenerator = statusGenerator;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception
 	{
 		super.afterPropertiesSet();
-		Objects.requireNonNull(reportStatusGenerator, "reportStatusGenerator");
+		Objects.requireNonNull(statusGenerator, "reportStatusGenerator");
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class InsertReport extends AbstractServiceDelegate implements Initializin
 			IdType reportId = client.updateConditionaly(report, Map.of("identifier",
 					Collections.singletonList(reportIdentifier.getSystem() + "|" + reportIdentifier.getValue())));
 
-			task.addOutput(reportStatusGenerator
+			task.addOutput(statusGenerator
 					.createReportStatusOutput(ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_OK));
 			variables.updateTask(task);
 
@@ -79,13 +79,18 @@ public class InsertReport extends AbstractServiceDelegate implements Initializin
 		catch (Exception exception)
 		{
 			task.setStatus(Task.TaskStatus.FAILED);
-			task.addOutput(reportStatusGenerator.createReportStatusOutput(
-					ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR, exception.getMessage()));
+			task.addOutput(statusGenerator.createReportStatusOutput(
+					ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR,
+					"Insert report - " + exception.getMessage()));
 			variables.updateTask(task);
+
+			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR_MESSAGE,
+					"Insert report - " + exception.getMessage());
 
 			logger.warn("Storing report from organization '{}' referenced in Task with id '{}' failed - {}",
 					sendingOrganization, task.getId(), exception.getMessage());
-			throw new BpmnError(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR, exception.getMessage());
+			throw new BpmnError(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR,
+					"Insert report - " + exception.getMessage());
 		}
 	}
 

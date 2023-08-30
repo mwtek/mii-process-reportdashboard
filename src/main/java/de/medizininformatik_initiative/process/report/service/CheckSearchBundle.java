@@ -50,7 +50,7 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 		Task task = variables.getStartTask();
 		Bundle bundle = variables.getResource(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE);
 
-		logger.info("Checking downloaded as part of Task with id '{}'", task.getId());
+		logger.info("Checking downloaded search Bundle as part of Task with id '{}'", task.getId());
 
 		try
 		{

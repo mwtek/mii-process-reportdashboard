@@ -67,7 +67,8 @@ public class SendReport extends AbstractTaskMessageSend implements InitializingB
 				}
 			}
 
-			task.addOutput(statusGenerator.createReportStatusOutput(statusCode, createErrorMessage(exception)));
+			task.addOutput(
+					statusGenerator.createReportStatusOutput(statusCode, "Send report - " + exception.getMessage()));
 			variables.updateTask(task);
 		}
 
@@ -78,13 +79,5 @@ public class SendReport extends AbstractTaskMessageSend implements InitializingB
 	protected void addErrorMessage(Task task, String errorMessage)
 	{
 		// Override in order not to add error message of AbstractTaskMessageSend
-	}
-
-	private String createErrorMessage(Exception exception)
-	{
-		return exception.getClass().getSimpleName()
-				+ ((exception.getMessage() != null && !exception.getMessage().isBlank())
-						? (": " + exception.getMessage())
-						: "");
 	}
 }

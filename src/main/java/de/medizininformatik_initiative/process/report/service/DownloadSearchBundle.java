@@ -80,7 +80,8 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 					statusCode = ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_NOT_ALLOWED;
 				}
 
-				task.addOutput(statusGenerator.createReportStatusOutput(statusCode, createErrorMessage(exception)));
+				task.addOutput(statusGenerator.createReportStatusOutput(statusCode,
+						"Download search bundle - " + exception.getMessage()));
 				variables.updateTask(task);
 			}
 
@@ -104,14 +105,6 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 
 		return client.searchWithStrictHandling(Bundle.class,
 				Map.of("identifier", Collections.singletonList(searchBundleIdentifier)));
-	}
-
-	private String createErrorMessage(Exception exception)
-	{
-		return exception.getClass().getSimpleName()
-				+ ((exception.getMessage() != null && !exception.getMessage().isBlank())
-						? (": " + exception.getMessage())
-						: "");
 	}
 
 	private Bundle extractSearchBundle(Bundle bundle, String searchBundleIdentifier, String taskId)

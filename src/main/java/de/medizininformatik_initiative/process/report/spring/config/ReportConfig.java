@@ -15,6 +15,7 @@ import de.medizininformatik_initiative.process.report.service.CheckSearchBundle;
 import de.medizininformatik_initiative.process.report.service.CreateReport;
 import de.medizininformatik_initiative.process.report.service.DownloadReport;
 import de.medizininformatik_initiative.process.report.service.DownloadSearchBundle;
+import de.medizininformatik_initiative.process.report.service.HandleError;
 import de.medizininformatik_initiative.process.report.service.InsertReport;
 import de.medizininformatik_initiative.process.report.service.SelectTargetDic;
 import de.medizininformatik_initiative.process.report.service.SelectTargetHrp;
@@ -125,6 +126,13 @@ public class ReportConfig
 	public InsertReport insertReport()
 	{
 		return new InsertReport(api, reportStatusGenerator());
+	}
+
+	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	public HandleError handleError()
+	{
+		return new HandleError(api);
 	}
 
 	@Bean

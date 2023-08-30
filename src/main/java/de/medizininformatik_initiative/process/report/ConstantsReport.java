@@ -40,6 +40,7 @@ public interface ConstantsReport
 	String BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE = "reportSearchBundle";
 	String BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE = "reportSearchBundleResponseReference";
 	String BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR = "reportReceiveError";
+	String BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR_MESSAGE = "reportReceiveErrorMessage";
 
 	String CODESYSTEM_REPORT = "http://medizininformatik-initiative.de/fhir/CodeSystem/report";
 	String CODESYSTEM_REPORT_VALUE_SEARCH_BUNDLE = "search-bundle";

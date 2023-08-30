@@ -25,19 +25,19 @@ public class DownloadReport extends AbstractServiceDelegate implements Initializ
 {
 	private static final Logger logger = LoggerFactory.getLogger(DownloadReport.class);
 
-	private final ReportStatusGenerator reportStatusGenerator;
+	private final ReportStatusGenerator statusGenerator;
 
-	public DownloadReport(ProcessPluginApi api, ReportStatusGenerator reportStatusGenerator)
+	public DownloadReport(ProcessPluginApi api, ReportStatusGenerator statusGenerator)
 	{
 		super(api);
-		this.reportStatusGenerator = reportStatusGenerator;
+		this.statusGenerator = statusGenerator;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception
 	{
 		super.afterPropertiesSet();
-		Objects.requireNonNull(reportStatusGenerator, "reportStatusGenerator");
+		Objects.requireNonNull(statusGenerator, "reportStatusGenerator");
 	}
 
 	@Override
@@ -45,6 +45,9 @@ public class DownloadReport extends AbstractServiceDelegate implements Initializ
 	{
 		Task task = variables.getStartTask();
 		IdType reportReference = getReportReference(task);
+
+		variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE,
+				reportReference.getValue());
 
 		logger.info("Downloading report with id '{}' referenced in Task with id '{}'", reportReference.getValue(),
 				task.getId());
@@ -57,13 +60,18 @@ public class DownloadReport extends AbstractServiceDelegate implements Initializ
 		catch (Exception exception)
 		{
 			task.setStatus(Task.TaskStatus.FAILED);
-			task.addOutput(reportStatusGenerator.createReportStatusOutput(
-					ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR, exception.getMessage()));
+			task.addOutput(statusGenerator.createReportStatusOutput(
+					ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR,
+					"Download report - " + exception.getMessage()));
 			variables.updateTask(task);
+
+			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR_MESSAGE,
+					"Download report - " + exception.getMessage());
 
 			logger.warn("Downloading report with id '{}' referenced in Task with id '{}' failed - {}",
 					reportReference.getValue(), task.getId(), exception.getMessage());
-			throw new BpmnError(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR, exception.getMessage());
+			throw new BpmnError(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR,
+					"Download report - " + exception.getMessage());
 		}
 	}
 
