@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.hl7.fhir.r4.model.IdType;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.Task;
@@ -11,9 +12,12 @@ import org.springframework.beans.factory.InitializingBean;
 
 import de.medizininformatik_initiative.process.report.ConstantsReport;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
+import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
+
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractTaskMessageSend;
 import dev.dsf.bpe.v1.variables.Variables;
+import dev.dsf.fhir.client.FhirWebserviceClient;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
@@ -47,6 +51,14 @@ public class SendReport extends AbstractTaskMessageSend implements InitializingB
 		parameterComponent.setValue(new Reference(bundleId).setType(ResourceType.Bundle.name()));
 
 		return Stream.of(parameterComponent);
+	}
+
+	@Override
+	protected IdType doSend(FhirWebserviceClient client, Task task)
+	{
+		return client.withMinimalReturn()
+				.withRetry(ConstantsBase.DSF_CLIENT_RETRY_6_TIMES, ConstantsBase.DSF_CLIENT_RETRY_INTERVAL_5MIN)
+				.create(task);
 	}
 
 	@Override
