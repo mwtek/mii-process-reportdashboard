@@ -86,11 +86,11 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 
 			logger.warn(
 					"Error while reading search Bundle with identifier '{}' from organization '{}' referenced in Task with id '{}' - {}",
-					searchBundleIdentifier, task.getRequester().getIdentifier().getValue(), task.getId(),
+					searchBundleIdentifier, target.getOrganizationIdentifierValue(), task.getId(),
 					exception.getMessage());
 			throw new RuntimeException(
 					"Error while reading search Bundle with identifier '" + searchBundleIdentifier
-							+ "' from organization '" + task.getRequester().getIdentifier().getValue()
+							+ "' from organization '" + target.getOrganizationIdentifierValue()
 							+ "' referenced in Task with id '" + task.getId() + "' - " + exception.getMessage(),
 					exception);
 		}
