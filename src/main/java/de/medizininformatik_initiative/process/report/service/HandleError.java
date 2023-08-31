@@ -41,7 +41,7 @@ public class HandleError extends AbstractServiceDelegate
 				+ ConstantsReport.PROCESS_NAME_FULL_REPORT_RECEIVE + "' from organization '"
 				+ task.getRequester().getIdentifier().getValue() + "' in Task with id '" + task.getId() + "':\n"
 				+ "- status code: " + ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR + "\n" + "- error: "
-				+ error;
+				+ (error == null ? "none" : error);
 
 		api.getMailService().send(subject, message);
 	}

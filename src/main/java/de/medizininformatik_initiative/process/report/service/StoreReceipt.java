@@ -90,7 +90,7 @@ public class StoreReceipt extends AbstractServiceDelegate implements Initializin
 		Coding status = (Coding) output.getValue();
 		String code = status.getCode();
 		String error = output.hasExtension() ? output.getExtensionFirstRep().getValueAsPrimitive().getValueAsString()
-				: "";
+				: "none";
 		String errorLog = error.isBlank() ? "" : " - " + error;
 
 		if (ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_RECEIPT_OK.equals(code))
