@@ -26,7 +26,7 @@
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_0gkokuw</bpmn:incoming>
       <bpmn:outgoing>Flow_0hq9yqb</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_14xatvb" camunda:class="de.medizininformatik_initiative.process.report.message.SendReport" >
+      <bpmn:messageEventDefinition id="MessageEventDefinition_14xatvb" camunda:class="de.medizininformatik_initiative.process.report.message.SendReport">
         <bpmn:extensionElements>
           <camunda:field name="profile">
             <camunda:string>http://medizininformatik-initiative.de/fhir/StructureDefinition/task-report-send|#{version}</camunda:string>
@@ -57,7 +57,7 @@
       <bpmn:incoming>Flow_1fi7ktr</bpmn:incoming>
       <bpmn:outgoing>Flow_085f33c</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0wa7xi7">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT30M</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT45M</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="Flow_1fi7ktr" sourceRef="Gateway_1uv2c5f" targetRef="wait" />
