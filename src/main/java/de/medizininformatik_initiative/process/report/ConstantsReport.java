@@ -48,6 +48,7 @@ public interface ConstantsReport
 	String CODESYSTEM_REPORT_VALUE_REPORT_STATUS = "report-status";
 	String CODESYSTEM_REPORT_VALUE_TIMER_INTERVAL = "timer-interval";
 	String CODESYSTEM_REPORT_VALUE_FIRST_EXECUTION = "first-execution";
+	String CODESYSTEM_REPORT_VALUE_HRP_IDENTIFIER = "hrp-identifier";
 
 	String CODESYSTEM_REPORT_STATUS = "http://medizininformatik-initiative.de/fhir/CodeSystem/report-status";
 	String CODESYSTEM_REPORT_STATUS_VALUE_NOT_ALLOWED = "not-allowed";

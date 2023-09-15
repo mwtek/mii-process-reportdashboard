@@ -46,4 +46,9 @@
 		<display value="First Execution" />
 		<definition value="First time execution of send process at given time" />
 	</concept>
+	<concept>
+		<code value="hrp-identifier" />
+		<display value="HRP Identifier" />
+		<definition value="Identifier of the HRP where the report should be sent" />
+	</concept>
 </CodeSystem> 

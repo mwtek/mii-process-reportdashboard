@@ -90,6 +90,23 @@ public class TaskProfileTest
 				|| ResultSeverityEnum.FATAL.equals(m.getSeverity())).count());
 	}
 
+	@Test
+	public void testTaskAutostartStartProcessProfileValidHrpIdentifier()
+	{
+		Task task = createValidTaskAutostartStartProcess();
+		task.addInput()
+				.setValue(new Reference().setIdentifier(NamingSystems.OrganizationIdentifier.withValue("Test_HRP"))
+						.setType(ResourceType.Organization.name()))
+				.getType().addCoding().setSystem(ConstantsReport.CODESYSTEM_REPORT)
+				.setCode(ConstantsReport.CODESYSTEM_REPORT_VALUE_HRP_IDENTIFIER);
+
+		ValidationResult result = resourceValidator.validate(task);
+		ValidationSupportRule.logValidationMessages(logger, result);
+
+		assertEquals(0, result.getMessages().stream().filter(m -> ResultSeverityEnum.ERROR.equals(m.getSeverity())
+				|| ResultSeverityEnum.FATAL.equals(m.getSeverity())).count());
+	}
+
 	private Task createValidTaskAutostartStartProcess()
 	{
 		Task task = new Task();
@@ -156,6 +173,23 @@ public class TaskProfileTest
 	}
 
 	@Test
+	public void testTaskSendStartProcessProfileValidWithHrpIdentifier()
+	{
+		Task task = createValidTaskSendStartProcess();
+		task.addInput()
+				.setValue(new Reference().setIdentifier(NamingSystems.OrganizationIdentifier.withValue("Test_HRP"))
+						.setType(ResourceType.Organization.name()))
+				.getType().addCoding().setSystem(ConstantsReport.CODESYSTEM_REPORT)
+				.setCode(ConstantsReport.CODESYSTEM_REPORT_VALUE_HRP_IDENTIFIER);
+
+		ValidationResult result = resourceValidator.validate(task);
+		ValidationSupportRule.logValidationMessages(logger, result);
+
+		assertEquals(0, result.getMessages().stream().filter(m -> ResultSeverityEnum.ERROR.equals(m.getSeverity())
+				|| ResultSeverityEnum.FATAL.equals(m.getSeverity())).count());
+	}
+
+	@Test
 	public void testTaskSendStartProcessProfileValidWithReportStatusOutput()
 	{
 		Task task = createValidTaskSendStartProcess();
@@ -196,7 +230,6 @@ public class TaskProfileTest
 				.setIdentifier(NamingSystems.OrganizationIdentifier.withValue("DIC"));
 		task.getRestriction().addRecipient().setType(ResourceType.Organization.name())
 				.setIdentifier(NamingSystems.OrganizationIdentifier.withValue("DIC"));
-		;
 
 		task.addInput().setValue(new StringType(ConstantsReport.PROFILE_TASK_REPORT_SEND_START_MESSAGE_NAME)).getType()
 				.addCoding(CodeSystems.BpmnMessage.messageName());
