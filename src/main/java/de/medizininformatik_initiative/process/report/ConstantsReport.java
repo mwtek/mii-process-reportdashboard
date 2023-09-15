@@ -58,6 +58,8 @@ public interface ConstantsReport
 	String CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_OK = "receive-ok";
 	String CODESYSTEM_REPORT_STATUS_VALUE_RECEIVE_ERROR = "receive-error";
 
+	String NAMINGSYSTEM_CDS_REPORT_IDENTIFIER = "http://medizininformatik-initiative.de/sid/cds-report-identifier";
+
 	String PROFILE_REPORT_SEARCH_BUNDLE_RESPONSE = "http://medizininformatik-initiative.de/fhir/Bundle/search-bundle-response-report";
 	String EXTENSION_REPORT_STATUS_ERROR_URL = "http://medizininformatik-initiative.de/fhir/StructureDefinition/extension-report-status-error";
 

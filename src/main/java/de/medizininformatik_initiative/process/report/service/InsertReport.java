@@ -20,7 +20,6 @@ import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator
 import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
-import dev.dsf.bpe.v1.constants.NamingSystems;
 import dev.dsf.bpe.v1.variables.Variables;
 import dev.dsf.fhir.client.PreferReturnMinimal;
 
@@ -95,7 +94,8 @@ public class InsertReport extends AbstractServiceDelegate implements Initializin
 
 	private Identifier getReportIdentifier(Task task)
 	{
-		return NamingSystems.OrganizationIdentifier.withValue(task.getRequester().getIdentifier().getValue());
+		return new Identifier().setSystem(ConstantsReport.NAMINGSYSTEM_CDS_REPORT_IDENTIFIER)
+				.setValue(task.getRequester().getIdentifier().getValue());
 	}
 
 	private void sendMail(String sendingOrganization, String reportLocation)

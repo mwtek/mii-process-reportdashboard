@@ -31,6 +31,7 @@ import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.constants.CodeSystems;
 import dev.dsf.bpe.v1.service.FhirWebserviceClientProvider;
 import dev.dsf.bpe.v1.service.TaskHelper;
+import dev.dsf.bpe.v1.variables.Target;
 import dev.dsf.bpe.v1.variables.Variables;
 import dev.dsf.fhir.client.FhirWebserviceClient;
 import dev.dsf.fhir.client.PreferReturnMinimalWithRetry;
@@ -46,6 +47,9 @@ public class CheckSearchBundleServiceTest
 
 	@Mock
 	private Variables variables;
+
+	@Mock
+	private Target target;
 
 	@Mock
 	private Task task;
@@ -123,6 +127,8 @@ public class CheckSearchBundleServiceTest
 			Bundle bundle = FhirContext.forR4().newXmlParser().parseResource(Bundle.class, in);
 			Mockito.when(api.getVariables(execution)).thenReturn(variables);
 			Mockito.when(variables.getStartTask()).thenReturn(task);
+			Mockito.when(variables.getTarget()).thenReturn(target);
+			Mockito.when(target.getOrganizationIdentifierValue()).thenReturn("Test_DIC1");
 			Mockito.when(variables.getResource(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE))
 					.thenReturn(bundle);
 
@@ -141,6 +147,8 @@ public class CheckSearchBundleServiceTest
 			Bundle bundle = FhirContext.forR4().newXmlParser().parseResource(Bundle.class, in);
 			Mockito.when(api.getVariables(execution)).thenReturn(variables);
 			Mockito.when(variables.getStartTask()).thenReturn(task);
+			Mockito.when(variables.getTarget()).thenReturn(target);
+			Mockito.when(target.getOrganizationIdentifierValue()).thenReturn("Test_DIC1");
 			Mockito.when(variables.getResource(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE))
 					.thenReturn(bundle);
 			Mockito.when(execution.getProcessDefinitionId()).thenReturn("processDefinitionId");
