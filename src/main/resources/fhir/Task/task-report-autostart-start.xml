@@ -53,4 +53,19 @@
 		</type>
 		<valueTime value="04:00:00"/>
 	</input>
+	<input>
+		<type>
+			<coding>
+				<system value="http://medizininformatik-initiative.de/fhir/CodeSystem/report" />
+				<code value="hrp-identifier" />
+			</coding>
+		</type>
+		<valueReference>
+			<type value="Organization" />
+			<identifier>
+				<system value="http://dsf.dev/sid/organization-identifier" />
+				<value value="#{organization}" />
+			</identifier>
+		</valueReference>
+	</input>
 </Task>

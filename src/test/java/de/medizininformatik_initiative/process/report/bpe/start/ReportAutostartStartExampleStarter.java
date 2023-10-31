@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.hl7.fhir.r4.model.IdType;
+import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.model.Task;
@@ -21,6 +22,9 @@ public class ReportAutostartStartExampleStarter
 {
 	private static final String DIC_URL = "https://dic1/fhir";
 	private static final String DIC_IDENTIFIER = "Test_DIC1";
+
+	private static final boolean USE_HRP_IDENTIFIER_INPUT = false;
+	private static final String HRP_IDENTIFIER = "Test_HRP";
 
 	private static final int MINUTES_TO_ADD = 5;
 	private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -58,6 +62,16 @@ public class ReportAutostartStartExampleStarter
 		String time = LocalTime.now().withSecond(0).plusMinutes(MINUTES_TO_ADD).format(TIME_FORMAT);
 		task.addInput().setValue(new TimeType(time)).getType().addCoding().setSystem(ConstantsReport.CODESYSTEM_REPORT)
 				.setCode(ConstantsReport.CODESYSTEM_REPORT_VALUE_FIRST_EXECUTION);
+
+		if (USE_HRP_IDENTIFIER_INPUT)
+		{
+			task.addInput()
+					.setValue(new Reference()
+							.setIdentifier(NamingSystems.OrganizationIdentifier.withValue(HRP_IDENTIFIER))
+							.setType(ResourceType.Organization.name()))
+					.getType().addCoding().setSystem(ConstantsReport.CODESYSTEM_REPORT)
+					.setCode(ConstantsReport.CODESYSTEM_REPORT_VALUE_HRP_IDENTIFIER);
+		}
 
 		return task;
 	}

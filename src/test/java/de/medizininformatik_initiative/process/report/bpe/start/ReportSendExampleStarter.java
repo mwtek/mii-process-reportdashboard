@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.hl7.fhir.r4.model.IdType;
+import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.model.Task;
@@ -18,6 +19,9 @@ public class ReportSendExampleStarter
 {
 	private static final String DIC_URL = "https://dic1/fhir";
 	private static final String DIC_IDENTIFIER = "Test_DIC1";
+
+	private static final boolean USE_HRP_IDENTIFIER_INPUT = false;
+	private static final String HRP_IDENTIFIER = "Test_HRP";
 
 	public static void main(String[] args) throws Exception
 	{
@@ -44,6 +48,16 @@ public class ReportSendExampleStarter
 
 		task.addInput().setValue(new StringType(ConstantsReport.PROFILE_TASK_REPORT_SEND_START_MESSAGE_NAME)).getType()
 				.addCoding(CodeSystems.BpmnMessage.messageName());
+
+		if (USE_HRP_IDENTIFIER_INPUT)
+		{
+			task.addInput()
+					.setValue(new Reference()
+							.setIdentifier(NamingSystems.OrganizationIdentifier.withValue(HRP_IDENTIFIER))
+							.setType(ResourceType.Organization.name()))
+					.getType().addCoding().setSystem(ConstantsReport.CODESYSTEM_REPORT)
+					.setCode(ConstantsReport.CODESYSTEM_REPORT_VALUE_HRP_IDENTIFIER);
+		}
 
 		return task;
 	}

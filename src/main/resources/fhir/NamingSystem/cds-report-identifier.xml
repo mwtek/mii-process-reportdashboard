@@ -1,0 +1,22 @@
+<NamingSystem xmlns="http://hl7.org/fhir">
+	<meta>
+		<tag>
+			<system value="http://dsf.dev/fhir/CodeSystem/read-access-tag"/>
+			<code value="ALL"/>
+		</tag>
+	</meta>
+	<name value="CdsReportIdentifier"/>
+	<!-- status managed by bpe -->
+	<status value="unknown" />
+	<kind value="identifier"/>
+	<!-- date managed by bpe -->
+	<date value="#{date}"/>
+	<publisher value="Medizininformatik-Initiative" />
+	<responsible value="Medizininformatik-Initiative"/>
+	<description value="MII CDS report identifier"/>
+	<usage value="Used within the MII for identification of generated CDS reports"/>
+	<uniqueId>
+		<type value="other"/>
+		<value value="http://medizininformatik-initiative.de/sid/cds-report-identifier"/>
+	</uniqueId>
+</NamingSystem>
