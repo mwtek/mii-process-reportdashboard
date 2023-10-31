@@ -115,8 +115,7 @@ public class SelectTargetHrp extends AbstractServiceDelegate
 
 	private String extractHrpIdentifierFromOrganization(Organization organization)
 	{
-		return organization.getIdentifier().stream()
-				.filter(i -> NamingSystems.OrganizationIdentifier.SID.equals(i.getSystem())).findFirst()
+		return NamingSystems.OrganizationIdentifier.findFirst(organization)
 				.orElseThrow(() -> new RuntimeException("organization with id '" + organization.getId()
 						+ "' is missing identifier with system '" + NamingSystems.OrganizationIdentifier.SID + "'"))
 				.getValue();
@@ -127,7 +126,7 @@ public class SelectTargetHrp extends AbstractServiceDelegate
 		Identifier organizationIdentifier = NamingSystems.OrganizationIdentifier.withValue(organizationIdentifierValue);
 		return api.getEndpointProvider().getEndpoint(parentIdentifier, organizationIdentifier, role)
 				.orElseThrow(() -> new RuntimeException("Could not find any endpoint of '" + role.getCode()
-						+ "' with identifier '" + organizationIdentifier + "'"));
+						+ "' with identifier '" + organizationIdentifier.getValue() + "'"));
 	}
 
 	private String extractEndpointIdentifier(Endpoint endpoint)

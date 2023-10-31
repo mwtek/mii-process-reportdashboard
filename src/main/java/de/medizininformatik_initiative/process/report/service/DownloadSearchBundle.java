@@ -55,8 +55,8 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 		String searchBundleIdentifier = ConstantsReport.CODESYSTEM_REPORT + "|"
 				+ ConstantsReport.CODESYSTEM_REPORT_VALUE_SEARCH_BUNDLE;
 
-		logger.info("Downloading search Bundle '{}' from HRP '{}' referenced in Task with id '{}'",
-				searchBundleIdentifier, target.getOrganizationIdentifierValue(), task.getId());
+		logger.info("Downloading search Bundle '{}' from HRP '{}' for Task with id '{}'", searchBundleIdentifier,
+				target.getOrganizationIdentifierValue(), task.getId());
 
 		try
 		{
@@ -86,12 +86,12 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 			}
 
 			logger.warn(
-					"Error while reading search Bundle with identifier '{}' from HRP '{}' referenced in Task with id '{}' - {}",
+					"Error while reading search Bundle with identifier '{}' from HRP '{}' in Task with id '{}' - {}",
 					searchBundleIdentifier, target.getOrganizationIdentifierValue(), task.getId(),
 					exception.getMessage());
 			throw new RuntimeException("Error while reading search Bundle with identifier '" + searchBundleIdentifier
-					+ "' from HRP '" + target.getOrganizationIdentifierValue() + "' referenced in Task with id '"
-					+ task.getId() + "' - " + exception.getMessage(), exception);
+					+ "' from HRP '" + target.getOrganizationIdentifierValue() + "' in Task with id '" + task.getId()
+					+ "' - " + exception.getMessage(), exception);
 		}
 	}
 
@@ -111,7 +111,7 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 		if (bundle.getTotal() != 1 && !(bundle.getEntryFirstRep().getResource() instanceof Bundle))
 			throw new IllegalStateException("Expected a bundle from the HRP '" + hrpIdentifier
 					+ "' with one entry being a search Bundle with identifier '" + searchBundleIdentifier
-					+ "' but found " + bundle.getTotal() + " for Task with id '" + taskId + "'");
+					+ "' but found " + bundle.getTotal() + " in Task with id '" + taskId + "'");
 
 		return (Bundle) bundle.getEntryFirstRep().getResource();
 	}

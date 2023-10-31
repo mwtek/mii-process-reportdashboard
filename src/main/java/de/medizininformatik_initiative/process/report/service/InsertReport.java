@@ -71,8 +71,8 @@ public class InsertReport extends AbstractServiceDelegate implements Initializin
 			String absoluteReportId = new IdType(api.getEndpointProvider().getLocalEndpointAddress(),
 					ResourceType.Bundle.name(), reportId.getIdPart(), reportId.getVersionIdPart()).getValue();
 
-			logger.info("Stored report with id '{}' from organization '{}' referenced in Task with id '{}'",
-					absoluteReportId, sendingOrganization, task.getId());
+			logger.info("Stored report with id '{}' from organization '{}' for Task with id '{}'", absoluteReportId,
+					sendingOrganization, task.getId());
 			sendMail(sendingOrganization, absoluteReportId);
 		}
 		catch (Exception exception)
@@ -85,8 +85,8 @@ public class InsertReport extends AbstractServiceDelegate implements Initializin
 			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR_MESSAGE,
 					"Insert report failed");
 
-			logger.warn("Storing report from organization '{}' referenced in Task with id '{}' failed - {}",
-					sendingOrganization, task.getId(), exception.getMessage());
+			logger.warn("Storing report from organization '{}' for Task with id '{}' failed - {}", sendingOrganization,
+					task.getId(), exception.getMessage());
 			throw new BpmnError(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR,
 					"Insert report - " + exception.getMessage());
 		}

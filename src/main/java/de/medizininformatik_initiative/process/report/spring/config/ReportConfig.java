@@ -36,7 +36,7 @@ public class ReportConfig
 	@Autowired
 	private FhirClientConfig fhirClientConfig;
 
-	@ProcessDocumentation(required = true, processNames = {
+	@ProcessDocumentation(processNames = {
 			"medizininformatik-initiativede_reportSend" }, description = "The identifier of the HRP which should receive the report", recommendation = "Only configure if more than one HRP exists in your network", example = "forschen-fuer-gesundheit.de")
 	@Value("${de.medizininformatik.initiative.report.dic.hrp.identifier:#{null}}")
 	private String hrpIdentifier;

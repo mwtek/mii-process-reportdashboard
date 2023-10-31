@@ -84,12 +84,10 @@ public class CreateReport extends AbstractServiceDelegate implements Initializin
 		}
 		catch (Exception exception)
 		{
-			logger.warn("Could not create report for HRP '{}' referenced in Task with id '{}' - {}",
+			logger.warn("Could not create report for HRP '{}' in Task with id '{}' - {}",
 					target.getOrganizationIdentifierValue(), task.getId(), exception.getMessage());
-			throw new RuntimeException(
-					"Could not create report for HRP '" + target.getOrganizationIdentifierValue()
-							+ "' referenced in Task with id '" + task.getId() + "' - " + exception.getMessage(),
-					exception);
+			throw new RuntimeException("Could not create report for HRP '" + target.getOrganizationIdentifierValue()
+					+ "' in Task with id '" + task.getId() + "' - " + exception.getMessage(), exception);
 		}
 	}
 

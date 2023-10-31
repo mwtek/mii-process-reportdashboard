@@ -69,11 +69,11 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 		}
 		catch (Exception exception)
 		{
-			logger.warn("Error while checking search Bundle from HRP '{}' referenced in Task with id '{}' - {}",
+			logger.warn("Error while checking search Bundle from HRP '{}' in Task with id '{}' - {}",
 					target.getOrganizationIdentifierValue(), task.getId(), exception.getMessage());
 			throw new RuntimeException(
 					"Error while checking search Bundle from HRP '" + target.getOrganizationIdentifierValue()
-							+ "' referenced in Task with id '" + task.getId() + "' - " + exception.getMessage(),
+							+ "' in Task with id '" + task.getId() + "' - " + exception.getMessage(),
 					exception);
 		}
 	}
