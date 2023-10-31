@@ -1,6 +1,7 @@
 package de.medizininformatik_initiative.process.report.spring.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ import de.medizininformatik_initiative.process.report.service.StoreReceipt;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.ProcessPluginDeploymentStateListener;
+import dev.dsf.bpe.v1.documentation.ProcessDocumentation;
 
 @Configuration
 public class ReportConfig
@@ -33,6 +35,11 @@ public class ReportConfig
 
 	@Autowired
 	private FhirClientConfig fhirClientConfig;
+
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "The identifier of the HRP which should receive the report", recommendation = "Only configure if more than one HRP exists in your network", example = "forschen-fuer-gesundheit.de")
+	@Value("${de.medizininformatik.initiative.report.dic.hrp.identifier:#{null}}")
+	private String hrpIdentifier;
 
 	// all Processes
 
@@ -72,7 +79,7 @@ public class ReportConfig
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public SelectTargetHrp selectTargetHrp()
 	{
-		return new SelectTargetHrp(api);
+		return new SelectTargetHrp(api, hrpIdentifier);
 	}
 
 	@Bean

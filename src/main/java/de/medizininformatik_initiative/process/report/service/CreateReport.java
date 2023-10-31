@@ -70,30 +70,32 @@ public class CreateReport extends AbstractServiceDelegate implements Initializin
 
 		try
 		{
-			Bundle responseBundle = executeSearchBundle(searchBundle);
+			Bundle responseBundle = executeSearchBundle(searchBundle, target.getOrganizationIdentifierValue());
 
 			Bundle reportBundle = transformToReportBundle(searchBundle, responseBundle, target);
 			dataLogger.logResource("Report Bundle", reportBundle);
 
-			checkReportBundle(searchBundle, reportBundle);
+			checkReportBundle(searchBundle, reportBundle, target.getOrganizationIdentifierValue());
 
-			String reportReference = storeReportBundle(reportBundle, task.getId());
+			String reportReference = storeReportBundle(reportBundle, target.getOrganizationIdentifierValue(),
+					task.getId());
 			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE,
 					reportReference);
 		}
 		catch (Exception exception)
 		{
-			logger.warn("Could not create report referenced in Task with id '{}}' - {}", task.getId(),
-					exception.getMessage());
-			throw new RuntimeException("Could not create report referenced in Task with id '" + task.getId() + "' - "
-					+ exception.getMessage(), exception);
+			logger.warn("Could not create report for HRP '{}' in Task with id '{}' - {}",
+					target.getOrganizationIdentifierValue(), task.getId(), exception.getMessage());
+			throw new RuntimeException("Could not create report for HRP '" + target.getOrganizationIdentifierValue()
+					+ "' in Task with id '" + task.getId() + "' - " + exception.getMessage(), exception);
 		}
 	}
 
-	private Bundle executeSearchBundle(Bundle searchBundle)
+	private Bundle executeSearchBundle(Bundle searchBundle, String hrpIdentifier)
 	{
-		logger.info("Executing search Bundle against FHIR store with base url '{}' - this could take a while...",
-				fhirClientFactory.getFhirClient().getFhirBaseUrl());
+		logger.info(
+				"Executing search Bundle from HRP '{}' against FHIR store with base url '{}' - this could take a while...",
+				hrpIdentifier, fhirClientFactory.getFhirClient().getFhirBaseUrl());
 
 		Bundle responseBundle = new Bundle();
 		responseBundle.setType(Bundle.BundleType.BATCHRESPONSE);
@@ -143,8 +145,9 @@ public class CreateReport extends AbstractServiceDelegate implements Initializin
 		report.getMeta().setLastUpdated(new Date());
 		report.setType(responseBundle.getType());
 
-		report.setIdentifier(api.getOrganizationProvider().getLocalOrganizationIdentifier()
-				.orElseThrow(() -> new RuntimeException("LocalOrganizationIdentifierValue empty")));
+		report.setIdentifier(new Identifier().setSystem(ConstantsReport.NAMINGSYSTEM_CDS_REPORT_IDENTIFIER)
+				.setValue(api.getOrganizationProvider().getLocalOrganizationIdentifierValue()
+						.orElseThrow(() -> new RuntimeException("LocalOrganizationIdentifierValue empty"))));
 
 		api.getReadAccessHelper().addLocal(report);
 		api.getReadAccessHelper().addOrganization(report, target.getOrganizationIdentifierValue());
@@ -235,7 +238,7 @@ public class CreateReport extends AbstractServiceDelegate implements Initializin
 		return searchParams.stream().map(s -> s.setDocumentation(null)).toList();
 	}
 
-	private void checkReportBundle(Bundle searchBundle, Bundle reportBundle)
+	private void checkReportBundle(Bundle searchBundle, Bundle reportBundle, String hrpIdentifier)
 	{
 		int requests = searchBundle.getEntry().size();
 
@@ -244,23 +247,26 @@ public class CreateReport extends AbstractServiceDelegate implements Initializin
 				.filter(s -> !s.contains(RESPONSE_OK)).toList();
 
 		if (errorCodes.size() >= requests)
-			throw new RuntimeException("Report Bundle only contains error status codes");
+			throw new RuntimeException(
+					"Report Bundle for HRP '" + hrpIdentifier + "' only contains error status codes");
 	}
 
-	private String storeReportBundle(Bundle responseBundle, String taskId)
+	private String storeReportBundle(Bundle responseBundle, String hrpIdentifier, String taskId)
 	{
 		PreferReturnMinimal client = api.getFhirWebserviceClientProvider().getLocalWebserviceClient()
 				.withMinimalReturn()
 				.withRetry(ConstantsBase.DSF_CLIENT_RETRY_6_TIMES, ConstantsBase.DSF_CLIENT_RETRY_INTERVAL_5MIN);
 
-		Identifier localIdentifier = api.getOrganizationProvider().getLocalOrganizationIdentifier().get();
-		IdType bundleIdType = client.updateConditionaly(responseBundle, Map.of("identifier",
-				Collections.singletonList(localIdentifier.getSystem() + "|" + localIdentifier.getValue())));
+		String localOrganizationIdentifier = api.getOrganizationProvider().getLocalOrganizationIdentifierValue()
+				.orElseThrow(() -> new RuntimeException("LocalOrganizationIdentifierValue empty"));
+		IdType bundleIdType = client.updateConditionaly(responseBundle, Map.of("identifier", Collections.singletonList(
+				ConstantsReport.NAMINGSYSTEM_CDS_REPORT_IDENTIFIER + "|" + localOrganizationIdentifier)));
 
 		String absoluteId = new IdType(api.getEndpointProvider().getLocalEndpointAddress(), ResourceType.Bundle.name(),
 				bundleIdType.getIdPart(), bundleIdType.getVersionIdPart()).getValue();
 
-		logger.info("Stored report Bundle with id '{}' for Task with id '{}'", absoluteId, taskId);
+		logger.info("Stored report Bundle with id '{}' for HRP '{}' and Task with id '{}'", absoluteId, hrpIdentifier,
+				taskId);
 
 		return absoluteId;
 	}

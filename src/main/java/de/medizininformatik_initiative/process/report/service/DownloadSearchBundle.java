@@ -55,15 +55,16 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 		String searchBundleIdentifier = ConstantsReport.CODESYSTEM_REPORT + "|"
 				+ ConstantsReport.CODESYSTEM_REPORT_VALUE_SEARCH_BUNDLE;
 
-		logger.info("Downloading search Bundle '{}' from HRP '{}' referenced in Task with id '{}'",
-				searchBundleIdentifier, target.getOrganizationIdentifierValue(), task.getId());
+		logger.info("Downloading search Bundle '{}' from HRP '{}' for Task with id '{}'", searchBundleIdentifier,
+				target.getOrganizationIdentifierValue(), task.getId());
 
 		try
 		{
 			Bundle bundle = searchSearchBundle(target, searchBundleIdentifier);
 			dataLogger.logResource("Search Response", bundle);
 
-			Bundle searchBundle = extractSearchBundle(bundle, searchBundleIdentifier, task.getId());
+			Bundle searchBundle = extractSearchBundle(bundle, searchBundleIdentifier,
+					target.getOrganizationIdentifierValue(), task.getId());
 			dataLogger.logResource("Search Bundle", searchBundle);
 
 			variables.setResource(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE, searchBundle);
@@ -85,14 +86,12 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 			}
 
 			logger.warn(
-					"Error while reading search Bundle with identifier '{}' from organization '{}' referenced in Task with id '{}' - {}",
+					"Error while reading search Bundle with identifier '{}' from HRP '{}' in Task with id '{}' - {}",
 					searchBundleIdentifier, target.getOrganizationIdentifierValue(), task.getId(),
 					exception.getMessage());
-			throw new RuntimeException(
-					"Error while reading search Bundle with identifier '" + searchBundleIdentifier
-							+ "' from organization '" + target.getOrganizationIdentifierValue()
-							+ "' referenced in Task with id '" + task.getId() + "' - " + exception.getMessage(),
-					exception);
+			throw new RuntimeException("Error while reading search Bundle with identifier '" + searchBundleIdentifier
+					+ "' from HRP '" + target.getOrganizationIdentifierValue() + "' in Task with id '" + task.getId()
+					+ "' - " + exception.getMessage(), exception);
 		}
 	}
 
@@ -106,13 +105,13 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 				Map.of("identifier", Collections.singletonList(searchBundleIdentifier)));
 	}
 
-	private Bundle extractSearchBundle(Bundle bundle, String searchBundleIdentifier, String taskId)
+	private Bundle extractSearchBundle(Bundle bundle, String searchBundleIdentifier, String hrpIdentifier,
+			String taskId)
 	{
 		if (bundle.getTotal() != 1 && !(bundle.getEntryFirstRep().getResource() instanceof Bundle))
-			throw new IllegalStateException(
-					"Expected a bundle from the HRP with one entry being a search Bundle with identifier '"
-							+ searchBundleIdentifier + "' but found " + bundle.getTotal() + " for Task with id '"
-							+ taskId + "'");
+			throw new IllegalStateException("Expected a bundle from the HRP '" + hrpIdentifier
+					+ "' with one entry being a search Bundle with identifier '" + searchBundleIdentifier
+					+ "' but found " + bundle.getTotal() + " in Task with id '" + taskId + "'");
 
 		return (Bundle) bundle.getEntryFirstRep().getResource();
 	}

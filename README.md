@@ -2,6 +2,10 @@
 
 In this repository you will find the process to send reports of current FHIR store implementation progress of DICs to a HRP.
 
+## Documentation
+
+The documentation of the process including the description, the deployment and configuration guides as well as instructions on how to start a process instance can be found in the [wiki](https://github.com/medizininformatik-initiative/mii-process-report/wiki).
+
 ## Development
 Branching follows the git-flow model, for the latest development version see branch [develop](https://github.com/medizininformatik-initiative/mii-process-report/tree/develop).
 

@@ -18,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import de.medizininformatik_initiative.process.report.ConstantsReport;
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
+import dev.dsf.bpe.v1.variables.Target;
 import dev.dsf.bpe.v1.variables.Variables;
 
 public class CheckSearchBundle extends AbstractServiceDelegate
@@ -48,9 +49,11 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 	protected void doExecute(DelegateExecution execution, Variables variables)
 	{
 		Task task = variables.getStartTask();
+		Target target = variables.getTarget();
 		Bundle bundle = variables.getResource(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE);
 
-		logger.info("Checking downloaded search Bundle as part of Task with id '{}'", task.getId());
+		logger.info("Checking downloaded search Bundle from HRP '{}' as part of Task with id '{}'",
+				target.getOrganizationIdentifierValue(), task.getId());
 
 		try
 		{
@@ -61,15 +64,17 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 			testRequestUrls(searches);
 
 			logger.info(
-					"Search Bundle downloaded as part of Task with id '{}' contains only valid requests of type GET and valid search params {}",
-					task.getId(), VALID_SEARCH_PARAMS);
+					"Search Bundle downloaded from HRP '{}' as part of Task with id '{}' contains only valid requests of type GET and valid search params {}",
+					target.getOrganizationIdentifierValue(), task.getId(), VALID_SEARCH_PARAMS);
 		}
 		catch (Exception exception)
 		{
-			logger.warn("Error while checking search Bundle referenced in Task with id '{}' - {}", task.getId(),
-					exception.getMessage());
-			throw new RuntimeException("Error while checking search Bundle referenced in Task with id '" + task.getId()
-					+ "' - " + exception.getMessage(), exception);
+			logger.warn("Error while checking search Bundle from HRP '{}' in Task with id '{}' - {}",
+					target.getOrganizationIdentifierValue(), task.getId(), exception.getMessage());
+			throw new RuntimeException(
+					"Error while checking search Bundle from HRP '" + target.getOrganizationIdentifierValue()
+							+ "' in Task with id '" + task.getId() + "' - " + exception.getMessage(),
+					exception);
 		}
 	}
 

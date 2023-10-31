@@ -15,7 +15,6 @@ import dev.dsf.bpe.v1.variables.Variables;
 
 public class SelectTargetDic extends AbstractServiceDelegate
 {
-
 	public SelectTargetDic(ProcessPluginApi api)
 	{
 		super(api);

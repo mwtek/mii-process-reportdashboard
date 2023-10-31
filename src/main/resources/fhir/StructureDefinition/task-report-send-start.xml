@@ -28,7 +28,7 @@
     <element id="Task.input">
       <path value="Task.input" />
       <min value="1" />
-      <max value="2" />
+      <max value="3" />
     </element>
     <element id="Task.input:message-name">
       <path value="Task.input" />
@@ -47,6 +47,49 @@
       <path value="Task.input" />
       <sliceName value="correlation-key" />
       <max value="0" />
+    </element>
+    <element id="Task.input:hrp-identifier">
+      <path value="Task.input"/>
+      <sliceName value="hrp-identifier"/>
+      <min value="0"/>
+      <max value="1"/>
+    </element>
+    <element id="Task.input:hrp-identifier.type">
+      <path value="Task.input.type"/>
+      <binding>
+        <strength value="required"/>
+        <valueSet value="http://medizininformatik-initiative.de/fhir/ValueSet/report|#{version}"/>
+      </binding>
+    </element>
+    <element id="Task.input:hrp-identifier.type.coding">
+      <path value="Task.input.type.coding"/>
+      <min value="1"/>
+      <max value="1"/>
+    </element>
+    <element id="Task.input:hrp-identifier.type.coding.system">
+      <path value="Task.input.type.coding.system"/>
+      <min value="1"/>
+      <fixedUri value="http://medizininformatik-initiative.de/fhir/CodeSystem/report"/>
+    </element>
+    <element id="Task.input:hrp-identifier.type.coding.code">
+      <path value="Task.input.type.coding.code"/>
+      <min value="1"/>
+      <fixedCode value="hrp-identifier"/>
+    </element>
+    <element id="Task.input:hrp-identifier.value[x]">
+      <path value="Task.input.value[x]"/>
+      <type>
+        <code value="Reference"/>
+        <targetProfile value="http://dsf.dev/fhir/StructureDefinition/organization"/>
+      </type>
+    </element>
+    <element id="Task.input:hrp-identifier.value[x].reference">
+      <path value="Task.input.value[x].reference"/>
+      <max value="0"/>
+    </element>
+    <element id="Task.input:hrp-identifier.value[x].identifier">
+      <path value="Task.input.value[x].identifier"/>
+      <min value="1"/>
     </element>
     <element id="Task.output:response-status">
       <path value="Task.output"/>

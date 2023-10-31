@@ -49,8 +49,8 @@ public class DownloadReport extends AbstractServiceDelegate implements Initializ
 		variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE,
 				reportReference.getValue());
 
-		logger.info("Downloading report with id '{}' referenced in Task with id '{}'", reportReference.getValue(),
-				task.getId());
+		logger.info("Downloading report with id '{}' from organization '{}' referenced in Task with id '{}'",
+				reportReference.getValue(), task.getRequester().getIdentifier().getValue(), task.getId());
 
 		try
 		{
@@ -67,8 +67,10 @@ public class DownloadReport extends AbstractServiceDelegate implements Initializ
 			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR_MESSAGE,
 					"Download report failed");
 
-			logger.warn("Downloading report with id '{}' referenced in Task with id '{}' failed - {}",
-					reportReference.getValue(), task.getId(), exception.getMessage());
+			logger.warn(
+					"Downloading report with id '{}' from organization '{}' referenced in Task with id '{}' failed - {}",
+					reportReference.getValue(), task.getRequester().getIdentifier().getValue(), task.getId(),
+					exception.getMessage());
 			throw new BpmnError(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR,
 					"Download report - " + exception.getMessage());
 		}

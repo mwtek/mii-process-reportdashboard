@@ -12,7 +12,7 @@ import dev.dsf.bpe.v1.ProcessPluginDefinition;
 public class ReportProcessPluginDefinition implements ProcessPluginDefinition
 {
 	public static final String VERSION = "1.0.0.0";
-	public static final LocalDate RELEASE_DATE = LocalDate.of(2023, 9, 13);
+	public static final LocalDate RELEASE_DATE = LocalDate.of(2023, 10, 31);
 
 	@Override
 	public String getName()
@@ -55,6 +55,8 @@ public class ReportProcessPluginDefinition implements ProcessPluginDefinition
 
 		var eReportStatusError = "fhir/StructureDefinition/extension-report-status-error.xml";
 
+		var nReportIdent = "fhir/NamingSystem/cds-report-identifier.xml";
+
 		var sAutostartStart = "fhir/StructureDefinition/task-report-autostart-start.xml";
 		var sAutostartStop = "fhir/StructureDefinition/task-report-autostart-stop.xml";
 		var sReceive = "fhir/StructureDefinition/task-report-receive.xml";
@@ -75,10 +77,10 @@ public class ReportProcessPluginDefinition implements ProcessPluginDefinition
 				Arrays.asList(
 						aAutostart, cReport, sAutostartStart, sAutostartStop, tAutostartStart, tAutostartStop, vReport),
 				ConstantsReport.PROCESS_NAME_FULL_REPORT_RECEIVE,
-				Arrays.asList(aReceive, cReport, cReportStatus, eReportStatusError, sSearchBundle,
+				Arrays.asList(aReceive, cReport, cReportStatus, eReportStatusError, nReportIdent, sSearchBundle,
 						sSearchBundleResponse, sSend, vReport, vReportStatusReceive),
 				ConstantsReport.PROCESS_NAME_FULL_REPORT_SEND,
-				Arrays.asList(aSend, cReport, cReportStatus, eReportStatusError, sReceive, sSearchBundle,
+				Arrays.asList(aSend, cReport, cReportStatus, eReportStatusError, nReportIdent, sReceive, sSearchBundle,
 						sSearchBundleResponse, sSendStart, tSendStart, vReport, vReportStatusSend));
 	}
 }

@@ -32,8 +32,8 @@ public class SetTimer extends AbstractServiceDelegate
 		Task task = variables.getStartTask();
 
 		String timerInterval = getTimerInterval(variables);
-		logger.info("Executing report send process in timer interval '{}' referenced in Task with id '{}'",
-				timerInterval, task.getId());
+		logger.info("Executing report send process in timer interval '{}' for Task with id '{}'", timerInterval,
+				task.getId());
 		variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_TIMER_INTERVAL, timerInterval);
 
 		Optional<TimeType> firstExecutionTime = getFirstExecution(variables);
@@ -43,7 +43,7 @@ public class SetTimer extends AbstractServiceDelegate
 			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_FIRST_EXECUTION, firstExecutionDateTime);
 			variables.setBoolean(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_FIRST_EXECUTION_DELAYED, true);
 
-			logger.info("First execution of report send process set to '{}' referenced in Task with id '{}'",
+			logger.info("First execution of report send process set to '{}' for Task with id '{}'",
 					firstExecutionDateTime, task.getId());
 
 		}
