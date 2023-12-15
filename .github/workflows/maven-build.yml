@@ -22,4 +22,4 @@ jobs:
     - name: Build with Maven
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn --batch-mode --fail-at-end --threads 1C -DforkCount=2 -Dgpg.skip clean verify
+      run: mvn --batch-mode --fail-at-end clean verify
