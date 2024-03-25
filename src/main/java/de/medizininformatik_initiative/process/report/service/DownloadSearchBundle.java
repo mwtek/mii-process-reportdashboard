@@ -53,7 +53,7 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 		Task task = variables.getStartTask();
 		Target target = variables.getTarget();
 		String searchBundleIdentifier = ConstantsReport.CODESYSTEM_REPORT + "|"
-				+ ConstantsReport.CODESYSTEM_REPORT_VALUE_SEARCH_BUNDLE;
+				+ ConstantsReport.CODESYSTEM_REPORT_VALUE_SEARCH_BUNDLE_V2;
 
 		logger.info("Downloading search Bundle '{}' from HRP '{}' for Task with id '{}'", searchBundleIdentifier,
 				target.getOrganizationIdentifierValue(), task.getId());

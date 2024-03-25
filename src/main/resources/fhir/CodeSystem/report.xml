@@ -28,8 +28,13 @@
 	</concept>
 	<concept>
 		<code value="search-bundle" />
-		<display value="Search Bundle" />
-		<definition value="Search Bundle on which the report is based" />
+		<display value="[deprecated] Search Bundle" />
+		<definition value="[deprecated] Search Bundle on which the report is based" />
+	</concept>
+	<concept>
+		<code value="search-bundle-v2" />
+		<display value="Search Bundle V2" />
+		<definition value="Search Bundle on which the report is based in version 2, allowing code.system searches" />
 	</concept>
 	<concept>
 		<code value="search-bundle-response-reference" />

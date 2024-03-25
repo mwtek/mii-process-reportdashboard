@@ -120,6 +120,24 @@ public class CheckSearchBundleServiceTest
 		testInvalid("/fhir/Bundle/search-bundle-invalid-date-value.xml", "not limited to a year");
 	}
 
+	@Test
+	public void testValidV2()
+	{
+		testValid("/fhir/Bundle/search-bundle-v2.xml");
+	}
+
+	@Test
+	public void testInvalidV2Code()
+	{
+		testInvalid("/fhir/Bundle/search-bundle-v2-invalid-code.xml", "not limited to system");
+	}
+
+	@Test
+	public void testInvalidV2CodeIngredient()
+	{
+		testInvalid("/fhir/Bundle/search-bundle-v2-invalid-code-ingredient.xml", "not limited to system");
+	}
+
 	private void testValid(String pathToBundle)
 	{
 		try (InputStream in = getClass().getResourceAsStream(pathToBundle))
