@@ -123,19 +123,19 @@ public class CheckSearchBundleServiceTest
 	@Test
 	public void testValidV2()
 	{
-		testValid("/fhir/Bundle/search-bundle-v2.xml");
+		testValid("/fhir/Bundle/search-bundle-v1.1.xml");
 	}
 
 	@Test
 	public void testInvalidV2Code()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-v2-invalid-code.xml", "not limited to system");
+		testInvalid("/fhir/Bundle/search-bundle-v1.1-invalid-code.xml", "not limited to system");
 	}
 
 	@Test
 	public void testInvalidV2CodeIngredient()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-v2-invalid-code-ingredient.xml", "not limited to system");
+		testInvalid("/fhir/Bundle/search-bundle-v1.1-invalid-code-ingredient.xml", "not limited to system");
 	}
 
 	private void testValid(String pathToBundle)
