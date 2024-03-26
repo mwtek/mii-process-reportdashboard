@@ -69,13 +69,11 @@ public class SendReport extends AbstractTaskMessageSend implements InitializingB
 		if (task != null)
 		{
 			String statusCode = ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_NOT_REACHABLE;
-			if (exception instanceof WebApplicationException webApplicationException)
+			if (exception instanceof WebApplicationException webApplicationException
+					&& webApplicationException.getResponse() != null
+					&& webApplicationException.getResponse().getStatus() == Response.Status.FORBIDDEN.getStatusCode())
 			{
-				if (webApplicationException.getResponse() != null && webApplicationException.getResponse()
-						.getStatus() == Response.Status.FORBIDDEN.getStatusCode())
-				{
-					statusCode = ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_NOT_ALLOWED;
-				}
+				statusCode = ConstantsReport.CODESYSTEM_REPORT_STATUS_VALUE_NOT_ALLOWED;
 			}
 
 			task.addOutput(statusGenerator.createReportStatusOutput(statusCode, "Send report failed"));
