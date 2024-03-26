@@ -30,12 +30,16 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 	private final ReportStatusGenerator statusGenerator;
 	private final DataLogger dataLogger;
 
-	public DownloadSearchBundle(ProcessPluginApi api, ReportStatusGenerator statusGenerator, DataLogger dataLogger)
+	private final String processVersion;
+
+	public DownloadSearchBundle(ProcessPluginApi api, ReportStatusGenerator statusGenerator, DataLogger dataLogger,
+			String processVersion)
 	{
 		super(api);
 
 		this.statusGenerator = statusGenerator;
 		this.dataLogger = dataLogger;
+		this.processVersion = processVersion;
 	}
 
 	@Override
@@ -45,6 +49,7 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 
 		Objects.requireNonNull(statusGenerator, "statusGenerator");
 		Objects.requireNonNull(dataLogger, "dataLogger");
+		Objects.requireNonNull(processVersion, "processVersion");
 	}
 
 	@Override
@@ -53,7 +58,7 @@ public class DownloadSearchBundle extends AbstractServiceDelegate implements Ini
 		Task task = variables.getStartTask();
 		Target target = variables.getTarget();
 		String searchBundleIdentifier = ConstantsReport.CODESYSTEM_REPORT + "|"
-				+ ConstantsReport.CODESYSTEM_REPORT_VALUE_SEARCH_BUNDLE;
+				+ ConstantsReport.CODESYSTEM_REPORT_VALUE_SEARCH_BUNDLE + processVersion;
 
 		logger.info("Downloading search Bundle '{}' from HRP '{}' for Task with id '{}'", searchBundleIdentifier,
 				target.getOrganizationIdentifierValue(), task.getId());

@@ -86,7 +86,8 @@ public class ReportConfig
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public DownloadSearchBundle downloadSearchBundle()
 	{
-		return new DownloadSearchBundle(api, reportStatusGenerator(), fhirClientConfig.dataLogger());
+		String processVersion = new ReportProcessPluginDefinition().getResourceVersion();
+		return new DownloadSearchBundle(api, reportStatusGenerator(), fhirClientConfig.dataLogger(), processVersion);
 	}
 
 	@Bean

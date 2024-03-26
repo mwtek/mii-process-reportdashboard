@@ -35,10 +35,12 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 
 	private static final List<String> DATE_SEARCH_PARAMS = List.of("date", "recorded-date", "onset-date", "effective",
 			"effective-time", "authored", "collected", "issued", "period", "location-period", "occurrence");
+	private static final List<String> CODE_SEARCH_PARAMS = List.of("code", "ingredient-code");
 	private static final List<String> OTHER_SEARCH_PARAMS = List.of("_profile", "type", SUMMARY_SEARCH_PARAM);
 
 	private static final List<String> VALID_SEARCH_PARAMS = Stream
-			.concat(DATE_SEARCH_PARAMS.stream(), OTHER_SEARCH_PARAMS.stream()).toList();
+			.of(DATE_SEARCH_PARAMS.stream(), CODE_SEARCH_PARAMS.stream(), OTHER_SEARCH_PARAMS.stream()).flatMap(s -> s)
+			.toList();
 
 	public CheckSearchBundle(ProcessPluginApi api)
 	{
@@ -114,6 +116,7 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 		testContainsSummaryCount(uriComponents);
 		testContainsValidSearchParams(uriComponents);
 		testContainsValidDateSearchParams(uriComponents);
+		testContainsValidCodeSearchParams(uriComponents);
 	}
 
 	private void testContainsSummaryCount(List<UriComponents> uriComponents)
@@ -167,6 +170,26 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 		if (erroneousDateValues.size() > 0)
 			throw new RuntimeException(
 					"Search Bundle contains date search params not limited to a year - [" + erroneousDateValues.stream()
+							.map(e -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(",")) + "]");
+	}
+
+	private void testContainsValidCodeSearchParams(List<UriComponents> uriComponents)
+	{
+		uriComponents.stream().filter(u -> !CAPABILITY_STATEMENT_PATH.equals(u.getPath()))
+				.map(u -> u.getQueryParams().toSingleValueMap()).forEach(this::testSearchParamCodeValues);
+	}
+
+	private void testSearchParamCodeValues(Map<String, String> queryParams)
+	{
+		List<Map.Entry<String, String>> codeParams = queryParams.entrySet().stream()
+				.filter(e -> CODE_SEARCH_PARAMS.contains(MODIFIERS.matcher(e.getKey()).replaceAll(""))).toList();
+
+		List<Map.Entry<String, String>> erroneousCodeValues = codeParams.stream()
+				.filter(e -> !e.getValue().endsWith("|")).toList();
+
+		if (erroneousCodeValues.size() > 0)
+			throw new RuntimeException(
+					"Search Bundle contains code search params not limited to system - [" + erroneousCodeValues.stream()
 							.map(e -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(",")) + "]");
 	}
 }
