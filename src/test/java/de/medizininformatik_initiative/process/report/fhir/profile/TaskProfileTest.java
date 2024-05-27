@@ -2,8 +2,8 @@ package de.medizininformatik_initiative.process.report.fhir.profile;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.hl7.fhir.r4.model.Reference;
@@ -36,13 +36,12 @@ public class TaskProfileTest
 	@ClassRule
 	public static final ValidationSupportRule validationRule = new ValidationSupportRule(def.getResourceVersion(),
 			def.getResourceReleaseDate(),
-			Arrays.asList("dsf-task-base-1.0.0.xml", "extension-report-status-error.xml", "search-bundle-report.xml",
+			List.of("dsf-task-base-1.0.0.xml", "extension-report-status-error.xml", "search-bundle-report.xml",
 					"search-bundle-response-report.xml", "task-report-autostart-start.xml",
 					"task-report-autostart-stop.xml", "task-report-receive.xml", "task-report-send.xml",
 					"task-report-send-start.xml"),
-			Arrays.asList("dsf-read-access-tag-1.0.0.xml", "dsf-bpmn-message-1.0.0.xml", "report.xml",
-					"report-status.xml"),
-			Arrays.asList("dsf-read-access-tag-1.0.0.xml", "dsf-bpmn-message-1.0.0.xml", "report.xml",
+			List.of("dsf-read-access-tag-1.0.0.xml", "dsf-bpmn-message-1.0.0.xml", "report.xml", "report-status.xml"),
+			List.of("dsf-read-access-tag-1.0.0.xml", "dsf-bpmn-message-1.0.0.xml", "report.xml",
 					"report-status-receive.xml", "report-status-send.xml"));
 
 	private final ResourceValidator resourceValidator = new ResourceValidatorImpl(validationRule.getFhirContext(),
