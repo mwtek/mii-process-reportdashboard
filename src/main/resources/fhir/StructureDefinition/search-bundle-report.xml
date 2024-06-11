@@ -33,7 +33,7 @@
 		<element id="Bundle.identifier.value">
 			<path value="Bundle.identifier.value" />
 			<min value="1" />
-			<fixedString value="search-bundle" />
+			<fixedString value="search-bundle-v#{version}" />
 		</element>
 		<element id="Bundle.type">
 			<path value="Bundle.type" />

@@ -27,9 +27,9 @@
 		<definition value="Report status of local organization" />
 	</concept>
 	<concept>
-		<code value="search-bundle" />
-		<display value="Search Bundle" />
-		<definition value="Search Bundle on which the report is based" />
+		<code value="search-bundle-v#{version}" />
+		<display value="Search Bundle v#{version}" />
+		<definition value="Search Bundle on which the report is based in version #{version}" />
 	</concept>
 	<concept>
 		<code value="search-bundle-response-reference" />

@@ -1,7 +1,6 @@
 package de.medizininformatik_initiative.process.report;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +10,8 @@ import dev.dsf.bpe.v1.ProcessPluginDefinition;
 
 public class ReportProcessPluginDefinition implements ProcessPluginDefinition
 {
-	public static final String VERSION = "1.0.0.0";
-	public static final LocalDate RELEASE_DATE = LocalDate.of(2023, 10, 31);
+	public static final String VERSION = "1.1.0.0";
+	public static final LocalDate RELEASE_DATE = LocalDate.of(2024, 06, 11);
 
 	@Override
 	public String getName()
@@ -74,13 +73,12 @@ public class ReportProcessPluginDefinition implements ProcessPluginDefinition
 		var vReportStatusSend = "fhir/ValueSet/report-status-send.xml";
 
 		return Map.of(ConstantsReport.PROCESS_NAME_FULL_REPORT_AUTOSTART,
-				Arrays.asList(
-						aAutostart, cReport, sAutostartStart, sAutostartStop, tAutostartStart, tAutostartStop, vReport),
+				List.of(aAutostart, cReport, sAutostartStart, sAutostartStop, tAutostartStart, tAutostartStop, vReport),
 				ConstantsReport.PROCESS_NAME_FULL_REPORT_RECEIVE,
-				Arrays.asList(aReceive, cReport, cReportStatus, eReportStatusError, nReportIdent, sSearchBundle,
+				List.of(aReceive, cReport, cReportStatus, eReportStatusError, nReportIdent, sSearchBundle,
 						sSearchBundleResponse, sSend, vReport, vReportStatusReceive),
 				ConstantsReport.PROCESS_NAME_FULL_REPORT_SEND,
-				Arrays.asList(aSend, cReport, cReportStatus, eReportStatusError, nReportIdent, sReceive, sSearchBundle,
+				List.of(aSend, cReport, cReportStatus, eReportStatusError, nReportIdent, sReceive, sSearchBundle,
 						sSearchBundleResponse, sSendStart, tSendStart, vReport, vReportStatusSend));
 	}
 }

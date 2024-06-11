@@ -20,7 +20,7 @@
 	</meta>
 	<type value="batch-response"></type>
 	<identifier>
-		<system value="http://dsf.dev/sid/organization-identifier"></system>
+		<system value="http://medizininformatik-initiative.de/sid/cds-report-identifier"></system>
 		<value value="Test_DIC1"></value>
 	</identifier>
 	<entry>
