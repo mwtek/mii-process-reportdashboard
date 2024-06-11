@@ -1,7 +1,7 @@
 <Bundle xmlns='http://hl7.org/fhir'>
 	<meta>
 		<versionId value='1'/>
-		<lastUpdated value='2024-02-16T10:26:16.866844+01:00'/>
+		<lastUpdated value='2024-06-10T18:58:07.122401+02:00'/>
 		<profile value='http://medizininformatik-initiative.de/fhir/Bundle/search-bundle-report|1.1'/>
 		<tag>
 			<system value='http://dsf.dev/fhir/CodeSystem/read-access-tag'/>
