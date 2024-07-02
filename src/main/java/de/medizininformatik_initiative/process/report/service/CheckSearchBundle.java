@@ -89,11 +89,10 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 
 	private void testRequestMethod(List<Bundle.BundleEntryComponent> searches)
 	{
+		long searchesCount = searches.size();
 		long httpGetCount = searches.stream().filter(Bundle.BundleEntryComponent::hasRequest)
 				.map(Bundle.BundleEntryComponent::getRequest).filter(Bundle.BundleEntryRequestComponent::hasMethod)
 				.map(Bundle.BundleEntryRequestComponent::getMethod).filter(Bundle.HTTPVerb.GET::equals).count();
-
-		int searchesCount = searches.size();
 
 		if (searchesCount != httpGetCount)
 			throw new RuntimeException("Search Bundle contains HTTP method other then GET");
@@ -101,12 +100,11 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 
 	private void testRequestUrls(List<Bundle.BundleEntryComponent> searches)
 	{
+		int searchesCount = searches.size();
 		List<Bundle.BundleEntryRequestComponent> requests = searches.stream()
 				.filter(Bundle.BundleEntryComponent::hasRequest).map(Bundle.BundleEntryComponent::getRequest)
 				.filter(Bundle.BundleEntryRequestComponent::hasUrl).toList();
-
 		int requestCount = requests.size();
-		int searchesCount = searches.size();
 
 		if (searchesCount != requestCount)
 			throw new RuntimeException("Search Bundle contains request without url");
@@ -151,10 +149,10 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 	private void testContainsValidSearchParams(List<UriComponents> uriComponents)
 	{
 		uriComponents.stream().filter(u -> !CAPABILITY_STATEMENT_PATH.equals(u.getPath()))
-				.map(u -> u.getQueryParams().toSingleValueMap()).forEach(this::testSearchParamNames);
+				.map(UriComponents::getQueryParams).forEach(this::testSearchParamNames);
 	}
 
-	private void testSearchParamNames(Map<String, String> queryParams)
+	private void testSearchParamNames(MultiValueMap<String, String> queryParams)
 	{
 		if (queryParams.keySet().stream().map(s -> MODIFIERS.matcher(s).replaceAll(""))
 				.anyMatch(s -> !VALID_SEARCH_PARAMS.contains(s)))
@@ -165,13 +163,14 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 	private void testContainsValidDateSearchParams(List<UriComponents> uriComponents)
 	{
 		uriComponents.stream().filter(u -> !CAPABILITY_STATEMENT_PATH.equals(u.getPath()))
-				.map(u -> u.getQueryParams().toSingleValueMap()).forEach(this::testSearchParamDateValues);
+				.map(UriComponents::getQueryParams).forEach(this::testSearchParamDateValues);
 	}
 
-	private void testSearchParamDateValues(Map<String, String> queryParams)
+	private void testSearchParamDateValues(MultiValueMap<String, String> queryParams)
 	{
 		List<Map.Entry<String, String>> dateParams = queryParams.entrySet().stream()
-				.filter(e -> DATE_SEARCH_PARAMS.contains(MODIFIERS.matcher(e.getKey()).replaceAll(""))).toList();
+				.filter(e -> DATE_SEARCH_PARAMS.contains(MODIFIERS.matcher(e.getKey()).replaceAll("")))
+				.flatMap(e -> e.getValue().stream().map(v -> Map.entry(e.getKey(), v))).toList();
 
 		List<Map.Entry<String, String>> erroneousDateFilters = dateParams.stream()
 				.filter(e -> !e.getValue().startsWith(DATE_EQUALITY_FILTER)).toList();
@@ -193,13 +192,14 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 	private void testContainsValidCodeSearchParams(List<UriComponents> uriComponents)
 	{
 		uriComponents.stream().filter(u -> !CAPABILITY_STATEMENT_PATH.equals(u.getPath()))
-				.map(u -> u.getQueryParams().toSingleValueMap()).forEach(this::testSearchParamCodeValues);
+				.map(UriComponents::getQueryParams).forEach(this::testSearchParamCodeValues);
 	}
 
-	private void testSearchParamCodeValues(Map<String, String> queryParams)
+	private void testSearchParamCodeValues(MultiValueMap<String, String> queryParams)
 	{
 		List<Map.Entry<String, String>> codeParams = queryParams.entrySet().stream()
-				.filter(e -> CODE_SEARCH_PARAMS.contains(MODIFIERS.matcher(e.getKey()).replaceAll(""))).toList();
+				.filter(e -> CODE_SEARCH_PARAMS.contains(MODIFIERS.matcher(e.getKey()).replaceAll("")))
+				.flatMap(e -> e.getValue().stream().map(v -> Map.entry(e.getKey(), v))).toList();
 
 		List<Map.Entry<String, String>> erroneousCodeValues = codeParams.stream()
 				.filter(e -> !e.getValue().endsWith("|")).toList();

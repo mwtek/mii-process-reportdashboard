@@ -16,7 +16,7 @@
 	<entry>
 		<request>
 			<method value="GET"/>
-			<url value="Consent?_profile=http://fhir.de/ConsentManagement/StructureDefinition/Consent&amp;date=eq2020-10-10&amp;_summary=count"/>
+			<url value="Consent?_profile=http://fhir.de/ConsentManagement/StructureDefinition/Consent&amp;date=eq2020&amp;date=eq2020-10-10&amp;_summary=count"/>
 		</request>
 	</entry>
 	<entry>

@@ -133,19 +133,31 @@ public class CheckSearchBundleServiceTest
 	}
 
 	@Test
-	public void testValidV2()
+	public void testInvalidDoubleDateValue()
+	{
+		testInvalid("/fhir/Bundle/search-bundle-invalid-double-date-value.xml", "not limited to a year");
+	}
+
+	@Test
+	public void testValidV1_1()
 	{
 		testValid("/fhir/Bundle/search-bundle-v1.1.xml");
 	}
 
 	@Test
-	public void testInvalidV2Code()
+	public void testInvalidV1_1SingleCode()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-v1.1-invalid-code.xml", "not limited to system");
+		testInvalid("/fhir/Bundle/search-bundle-v1.1-invalid-single-code.xml", "not limited to system");
 	}
 
 	@Test
-	public void testInvalidV2CodeIngredient()
+	public void testInvalidV1_1DoubleCode()
+	{
+		testInvalid("/fhir/Bundle/search-bundle-v1.1-invalid-double-code.xml", "not limited to system");
+	}
+
+	@Test
+	public void testInvalidV1_1CodeIngredient()
 	{
 		testInvalid("/fhir/Bundle/search-bundle-v1.1-invalid-code-ingredient.xml", "not limited to system");
 	}
