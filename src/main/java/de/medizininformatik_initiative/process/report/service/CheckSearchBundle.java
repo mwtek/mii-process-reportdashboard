@@ -12,6 +12,7 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -113,22 +114,38 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 		List<UriComponents> uriComponents = requests.stream()
 				.map(r -> UriComponentsBuilder.fromUriString(r.getUrl()).build()).collect(Collectors.toList());
 
-		testContainsSummaryCount(uriComponents);
+		testSummaryCount(uriComponents);
 		testContainsValidSearchParams(uriComponents);
 		testContainsValidDateSearchParams(uriComponents);
 		testContainsValidCodeSearchParams(uriComponents);
 	}
 
-	private void testContainsSummaryCount(List<UriComponents> uriComponents)
+	private void testSummaryCount(List<UriComponents> uriComponents)
 	{
 		uriComponents.stream().filter(u -> !CAPABILITY_STATEMENT_PATH.equals(u.getPath()))
-				.map(u -> u.getQueryParams().toSingleValueMap()).forEach(this::testSummaryCount);
+				.map(UriComponents::getQueryParams).forEach(this::testSummaryCount);
 	}
 
-	private void testSummaryCount(Map<String, String> queryParams)
+	private void testSummaryCount(MultiValueMap<String, String> queryParams)
 	{
-		if (!SUMMARY_SEARCH_PARAM_VALUE_COUNT.equals(queryParams.get(SUMMARY_SEARCH_PARAM)))
-			throw new RuntimeException("Search Bundle contains request url without _summary=count");
+		List<String> summaryParams = queryParams.get(SUMMARY_SEARCH_PARAM);
+
+		if (summaryParams == null || summaryParams.isEmpty())
+		{
+			throw new RuntimeException("Search Bundle contains request url without _summary parameter");
+		}
+
+		if (summaryParams.size() > 1)
+		{
+			throw new RuntimeException("Search Bundle contains request url with more than one _summary parameter");
+		}
+
+		if (!SUMMARY_SEARCH_PARAM_VALUE_COUNT.equals(summaryParams.get(0)))
+		{
+			throw new RuntimeException(
+					"Search Bundle contains request url with unexpected _summary parameter value (expected: count, actual: "
+							+ summaryParams.get(0) + ")");
+		}
 	}
 
 	private void testContainsValidSearchParams(List<UriComponents> uriComponents)

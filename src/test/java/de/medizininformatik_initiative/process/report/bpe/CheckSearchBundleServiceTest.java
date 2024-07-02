@@ -99,7 +99,19 @@ public class CheckSearchBundleServiceTest
 	@Test
 	public void testInvalidNoSummary()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-invalid-no-summary.xml", "_summary=count");
+		testInvalid("/fhir/Bundle/search-bundle-invalid-no-summary.xml", "without _summary parameter");
+	}
+
+	@Test
+	public void testInvalidDoubleSummary()
+	{
+		testInvalid("/fhir/Bundle/search-bundle-invalid-double-summary.xml", "more than one _summary parameter");
+	}
+
+	@Test
+	public void testInvalidUnexpectedSummary()
+	{
+		testInvalid("/fhir/Bundle/search-bundle-invalid-unexpected-summary.xml", "unexpected _summary parameter");
 	}
 
 	@Test
