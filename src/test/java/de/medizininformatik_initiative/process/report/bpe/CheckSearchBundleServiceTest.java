@@ -99,19 +99,19 @@ public class CheckSearchBundleServiceTest
 	@Test
 	public void testInvalidNoSummary()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-invalid-no-summary.xml", "without _summary parameter");
+		testInvalid("/fhir/Bundle/search-bundle-invalid-summary-not-exists.xml", "without _summary parameter");
 	}
 
 	@Test
 	public void testInvalidDoubleSummary()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-invalid-double-summary.xml", "more than one _summary parameter");
+		testInvalid("/fhir/Bundle/search-bundle-invalid-summary-double.xml", "more than one _summary parameter");
 	}
 
 	@Test
 	public void testInvalidUnexpectedSummary()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-invalid-unexpected-summary.xml", "unexpected _summary parameter");
+		testInvalid("/fhir/Bundle/search-bundle-invalid-summary-not-allowed.xml", "unexpected _summary parameter");
 	}
 
 	@Test
@@ -129,13 +129,13 @@ public class CheckSearchBundleServiceTest
 	@Test
 	public void testInvalidDateValue()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-invalid-date-value.xml", "not limited to a year");
+		testInvalid("/fhir/Bundle/search-bundle-invalid-date-value-single.xml", "not limited to a year");
 	}
 
 	@Test
 	public void testInvalidDoubleDateValue()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-invalid-double-date-value.xml", "not limited to a year");
+		testInvalid("/fhir/Bundle/search-bundle-invalid-date-value-double.xml", "not limited to a year");
 	}
 
 	@Test
@@ -147,13 +147,13 @@ public class CheckSearchBundleServiceTest
 	@Test
 	public void testInvalidV1_1SingleCode()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-v1.1-invalid-single-code.xml", "not limited to system");
+		testInvalid("/fhir/Bundle/search-bundle-v1.1-invalid-code-single.xml", "not limited to system");
 	}
 
 	@Test
 	public void testInvalidV1_1DoubleCode()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-v1.1-invalid-double-code.xml", "not limited to system");
+		testInvalid("/fhir/Bundle/search-bundle-v1.1-invalid-code-double.xml", "not limited to system");
 	}
 
 	@Test
