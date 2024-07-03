@@ -115,14 +115,14 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 		List<UriComponents> uriComponents = requests.stream()
 				.map(r -> UriComponentsBuilder.fromUriString(r.getUrl()).build()).toList();
 
-		testPathIds(uriComponents);
-		testSummaryCount(uriComponents);
+		testContainsNoPathIds(uriComponents);
+		testContainsValidSummaryCount(uriComponents);
 		testContainsValidSearchParams(uriComponents);
 		testContainsValidDateSearchParams(uriComponents);
 		testContainsValidTokenSearchParams(uriComponents);
 	}
 
-	private void testPathIds(List<UriComponents> uriComponents)
+	private void testContainsNoPathIds(List<UriComponents> uriComponents)
 	{
 		// Resource type is only present if URI path contains a resource id
 		List<IdType> pathsWithId = uriComponents.stream().map(UriComponents::getPath).filter(Objects::nonNull)
@@ -135,7 +135,7 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 		}
 	}
 
-	private void testSummaryCount(List<UriComponents> uriComponents)
+	private void testContainsValidSummaryCount(List<UriComponents> uriComponents)
 	{
 		uriComponents.stream().filter(u -> !CAPABILITY_STATEMENT_PATH.equals(u.getPath()))
 				.map(UriComponents::getQueryParams).forEach(this::testSummaryCount);
