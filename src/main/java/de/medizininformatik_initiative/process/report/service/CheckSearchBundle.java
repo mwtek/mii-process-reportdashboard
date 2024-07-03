@@ -218,6 +218,7 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 				.filter(e -> TOKEN_SEARCH_PARAMS.contains(MODIFIERS.matcher(e.getKey()).replaceAll("")))
 				.flatMap(e -> e.getValue().stream().map(v -> Map.entry(e.getKey(), v))).toList();
 
+		// Exemption for Encounter.type token params
 		List<Map.Entry<String, String>> erroneousCodeValues = codeParams.stream()
 				.filter(e -> !e.getValue().endsWith("|"))
 				.filter(e -> !isEncounterType(uriComponents.getPath(), e.getKey())).toList();
