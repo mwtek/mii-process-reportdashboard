@@ -124,7 +124,7 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 
 	private void testContainsNoPathIds(List<UriComponents> uriComponents)
 	{
-		// Resource type is only present if URI path contains a resource id
+		// Resource type is only present in IdType if URI path contains a resource id
 		List<IdType> pathsWithId = uriComponents.stream().map(UriComponents::getPath).filter(Objects::nonNull)
 				.map(IdType::new).filter(i -> i.getResourceType() != null).toList();
 
