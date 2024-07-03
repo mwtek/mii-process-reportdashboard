@@ -97,6 +97,12 @@ public class CheckSearchBundleServiceTest
 	}
 
 	@Test
+	public void testInvalidResourceId()
+	{
+		testInvalid("/fhir/Bundle/search-bundle-invalid-resource-id.xml", "request url with resource id");
+	}
+
+	@Test
 	public void testInvalidNoSummary()
 	{
 		testInvalid("/fhir/Bundle/search-bundle-invalid-summary-not-exists.xml", "without _summary parameter");
@@ -106,6 +112,18 @@ public class CheckSearchBundleServiceTest
 	public void testInvalidDoubleSummary()
 	{
 		testInvalid("/fhir/Bundle/search-bundle-invalid-summary-double.xml", "more than one _summary parameter");
+	}
+
+	@Test
+	public void testInvalidSummaryUrlEncoded()
+	{
+		testInvalid("/fhir/Bundle/search-bundle-invalid-summary-url-encoded.xml", "invalid search params");
+	}
+
+	@Test
+	public void testInvalidSummaryUrlEncodedFull()
+	{
+		testInvalid("/fhir/Bundle/search-bundle-invalid-summary-url-encoded-full.xml", "invalid search params");
 	}
 
 	@Test
@@ -142,6 +160,12 @@ public class CheckSearchBundleServiceTest
 	public void testValidV1_1()
 	{
 		testValid("/fhir/Bundle/search-bundle-v1.1.xml");
+	}
+
+	@Test
+	public void testValidV1_1EncounterType()
+	{
+		testValid("/fhir/Bundle/search-bundle-v1.1-valid-encounter-type.xml");
 	}
 
 	@Test

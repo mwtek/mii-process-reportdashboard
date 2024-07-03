@@ -9,6 +9,8 @@ import java.util.stream.Stream;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.IdType;
+import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,14 +35,15 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 	private static final String CAPABILITY_STATEMENT_PATH = "metadata";
 	private static final String SUMMARY_SEARCH_PARAM = "_summary";
 	private static final String SUMMARY_SEARCH_PARAM_VALUE_COUNT = "count";
+	private static final String TYPE_SEARCH_PARAM = "type";
 
 	private static final List<String> DATE_SEARCH_PARAMS = List.of("date", "recorded-date", "onset-date", "effective",
 			"effective-time", "authored", "collected", "issued", "period", "location-period", "occurrence");
-	private static final List<String> CODE_SEARCH_PARAMS = List.of("code", "ingredient-code");
-	private static final List<String> OTHER_SEARCH_PARAMS = List.of("_profile", "type", SUMMARY_SEARCH_PARAM);
+	private static final List<String> TOKEN_SEARCH_PARAMS = List.of("code", "ingredient-code", TYPE_SEARCH_PARAM);
+	private static final List<String> OTHER_SEARCH_PARAMS = List.of("_profile", SUMMARY_SEARCH_PARAM);
 
 	private static final List<String> VALID_SEARCH_PARAMS = Stream
-			.of(DATE_SEARCH_PARAMS.stream(), CODE_SEARCH_PARAMS.stream(), OTHER_SEARCH_PARAMS.stream()).flatMap(s -> s)
+			.of(DATE_SEARCH_PARAMS.stream(), TOKEN_SEARCH_PARAMS.stream(), OTHER_SEARCH_PARAMS.stream()).flatMap(s -> s)
 			.toList();
 
 	public CheckSearchBundle(ProcessPluginApi api)
@@ -110,12 +113,26 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 			throw new RuntimeException("Search Bundle contains request without url");
 
 		List<UriComponents> uriComponents = requests.stream()
-				.map(r -> UriComponentsBuilder.fromUriString(r.getUrl()).build()).collect(Collectors.toList());
+				.map(r -> UriComponentsBuilder.fromUriString(r.getUrl()).build()).toList();
 
+		testPathIds(uriComponents);
 		testSummaryCount(uriComponents);
 		testContainsValidSearchParams(uriComponents);
 		testContainsValidDateSearchParams(uriComponents);
-		testContainsValidCodeSearchParams(uriComponents);
+		testContainsValidTokenSearchParams(uriComponents);
+	}
+
+	private void testPathIds(List<UriComponents> uriComponents)
+	{
+		// Resource type is only present if URI path contains a resource id
+		List<IdType> pathsWithId = uriComponents.stream().map(UriComponents::getPath).filter(Objects::nonNull)
+				.map(IdType::new).filter(i -> i.getResourceType() != null).toList();
+
+		if (!pathsWithId.isEmpty())
+		{
+			throw new RuntimeException("Search Bundle contains request url with resource id - ["
+					+ pathsWithId.stream().map(IdType::getValue).collect(Collectors.joining(",")) + "]");
+		}
 	}
 
 	private void testSummaryCount(List<UriComponents> uriComponents)
@@ -189,24 +206,30 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 							.map(e -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(",")) + "]");
 	}
 
-	private void testContainsValidCodeSearchParams(List<UriComponents> uriComponents)
+	private void testContainsValidTokenSearchParams(List<UriComponents> uriComponents)
 	{
 		uriComponents.stream().filter(u -> !CAPABILITY_STATEMENT_PATH.equals(u.getPath()))
-				.map(UriComponents::getQueryParams).forEach(this::testSearchParamCodeValues);
+				.forEach(this::testSearchParamTokenValues);
 	}
 
-	private void testSearchParamCodeValues(MultiValueMap<String, String> queryParams)
+	private void testSearchParamTokenValues(UriComponents uriComponents)
 	{
-		List<Map.Entry<String, String>> codeParams = queryParams.entrySet().stream()
-				.filter(e -> CODE_SEARCH_PARAMS.contains(MODIFIERS.matcher(e.getKey()).replaceAll("")))
+		List<Map.Entry<String, String>> codeParams = uriComponents.getQueryParams().entrySet().stream()
+				.filter(e -> TOKEN_SEARCH_PARAMS.contains(MODIFIERS.matcher(e.getKey()).replaceAll("")))
 				.flatMap(e -> e.getValue().stream().map(v -> Map.entry(e.getKey(), v))).toList();
 
 		List<Map.Entry<String, String>> erroneousCodeValues = codeParams.stream()
-				.filter(e -> !e.getValue().endsWith("|")).toList();
+				.filter(e -> !e.getValue().endsWith("|"))
+				.filter(e -> !isEncounterType(uriComponents.getPath(), e.getKey())).toList();
 
 		if (erroneousCodeValues.size() > 0)
 			throw new RuntimeException(
 					"Search Bundle contains code search params not limited to system - [" + erroneousCodeValues.stream()
 							.map(e -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(",")) + "]");
+	}
+
+	private boolean isEncounterType(String path, String paramName)
+	{
+		return TYPE_SEARCH_PARAM.equals(paramName) && ResourceType.Encounter.name().equals(path);
 	}
 }
