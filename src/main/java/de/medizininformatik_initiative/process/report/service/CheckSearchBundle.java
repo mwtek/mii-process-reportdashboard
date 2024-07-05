@@ -19,7 +19,6 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import de.medizininformatik_initiative.process.report.ConstantsReport;
-
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.variables.Target;
@@ -43,8 +42,9 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 	private static final List<String> TOKEN_SEARCH_PARAMS = List.of("code", "ingredient-code", "type");
 	private static final List<String> OTHER_SEARCH_PARAMS = List.of("_profile", "_summary");
 
-	private static final List<String> VALID_SEARCH_PARAMS = Stream.of(DATE_SEARCH_PARAMS.stream(),
-			TOKEN_SEARCH_PARAMS.stream(), OTHER_SEARCH_PARAMS.stream()).flatMap(s -> s).toList();
+	private static final List<String> VALID_SEARCH_PARAMS = Stream
+			.of(DATE_SEARCH_PARAMS.stream(), TOKEN_SEARCH_PARAMS.stream(), OTHER_SEARCH_PARAMS.stream()).flatMap(s -> s)
+			.toList();
 
 	public CheckSearchBundle(ProcessPluginApi api)
 	{
@@ -79,7 +79,8 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 					target.getOrganizationIdentifierValue(), task.getId(), exception.getMessage());
 			throw new RuntimeException(
 					"Error while checking search Bundle from HRP '" + target.getOrganizationIdentifierValue()
-							+ "' in Task with id '" + task.getId() + "' - " + exception.getMessage(), exception);
+							+ "' in Task with id '" + task.getId() + "' - " + exception.getMessage(),
+					exception);
 		}
 	}
 
@@ -198,9 +199,9 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 				.filter(e -> !e.getValue().startsWith(DATE_EQUALITY_FILTER)).toList();
 
 		if (erroneousDateFilters.size() > 0)
-			throw new RuntimeException("Search Bundle contains date search params not starting with 'eq' - ["
-					+ erroneousDateFilters.stream().map(e -> e.getKey() + ":" + e.getValue())
-					.collect(Collectors.joining(",")) + "]");
+			throw new RuntimeException(
+					"Search Bundle contains date search params not starting with 'eq' - [" + erroneousDateFilters
+							.stream().map(e -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(",")) + "]");
 
 		List<Map.Entry<String, String>> erroneousDateValues = dateParams.stream()
 				.filter(e -> !YEAR_ONLY.matcher(e.getValue().replace(DATE_EQUALITY_FILTER, "")).matches()).toList();
