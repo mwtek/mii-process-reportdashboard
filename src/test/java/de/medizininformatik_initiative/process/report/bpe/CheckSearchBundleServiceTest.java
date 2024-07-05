@@ -103,6 +103,12 @@ public class CheckSearchBundleServiceTest
 	}
 
 	@Test
+	public void testInvalidResourceIdDouble()
+	{
+		testInvalid("/fhir/Bundle/search-bundle-invalid-resource-id-double.xml", "request url with resource id");
+	}
+
+	@Test
 	public void testInvalidNoSummary()
 	{
 		testInvalid("/fhir/Bundle/search-bundle-invalid-summary-not-exists.xml", "without _summary parameter");

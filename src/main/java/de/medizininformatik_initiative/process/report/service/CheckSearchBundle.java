@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.IdType;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
@@ -19,6 +19,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import de.medizininformatik_initiative.process.report.ConstantsReport;
+
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.variables.Target;
@@ -39,12 +40,11 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 
 	private static final List<String> DATE_SEARCH_PARAMS = List.of("date", "recorded-date", "onset-date", "effective",
 			"effective-time", "authored", "collected", "issued", "period", "location-period", "occurrence");
-	private static final List<String> TOKEN_SEARCH_PARAMS = List.of("code", "ingredient-code", TYPE_SEARCH_PARAM);
-	private static final List<String> OTHER_SEARCH_PARAMS = List.of("_profile", SUMMARY_SEARCH_PARAM);
+	private static final List<String> TOKEN_SEARCH_PARAMS = List.of("code", "ingredient-code", "type");
+	private static final List<String> OTHER_SEARCH_PARAMS = List.of("_profile", "_summary");
 
-	private static final List<String> VALID_SEARCH_PARAMS = Stream
-			.of(DATE_SEARCH_PARAMS.stream(), TOKEN_SEARCH_PARAMS.stream(), OTHER_SEARCH_PARAMS.stream()).flatMap(s -> s)
-			.toList();
+	private static final List<String> VALID_SEARCH_PARAMS = Stream.of(DATE_SEARCH_PARAMS.stream(),
+			TOKEN_SEARCH_PARAMS.stream(), OTHER_SEARCH_PARAMS.stream()).flatMap(s -> s).toList();
 
 	public CheckSearchBundle(ProcessPluginApi api)
 	{
@@ -79,8 +79,7 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 					target.getOrganizationIdentifierValue(), task.getId(), exception.getMessage());
 			throw new RuntimeException(
 					"Error while checking search Bundle from HRP '" + target.getOrganizationIdentifierValue()
-							+ "' in Task with id '" + task.getId() + "' - " + exception.getMessage(),
-					exception);
+							+ "' in Task with id '" + task.getId() + "' - " + exception.getMessage(), exception);
 		}
 	}
 
@@ -115,23 +114,29 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 		List<UriComponents> uriComponents = requests.stream()
 				.map(r -> UriComponentsBuilder.fromUriString(r.getUrl()).build()).toList();
 
-		testContainsNoPathIds(uriComponents);
+		testContainsOnlyResourcePath(uriComponents);
 		testContainsValidSummaryCount(uriComponents);
 		testContainsValidSearchParams(uriComponents);
 		testContainsValidDateSearchParams(uriComponents);
 		testContainsValidTokenSearchParams(uriComponents);
 	}
 
-	private void testContainsNoPathIds(List<UriComponents> uriComponents)
+	private void testContainsOnlyResourcePath(List<UriComponents> uriComponents)
 	{
-		// Resource type is only present in IdType if URI path contains a resource id
-		List<IdType> pathsWithId = uriComponents.stream().map(UriComponents::getPath).filter(Objects::nonNull)
-				.map(IdType::new).filter(i -> i.getResourceType() != null).toList();
+		uriComponents.stream().filter(u -> !CAPABILITY_STATEMENT_PATH.equals(u.getPath())).forEach(this::testPath);
+	}
 
-		if (!pathsWithId.isEmpty())
+	private void testPath(UriComponents uriComponents)
+	{
+		try
 		{
-			throw new RuntimeException("Search Bundle contains request url with resource id - ["
-					+ pathsWithId.stream().map(IdType::getValue).collect(Collectors.joining(",")) + "]");
+			// Converting to ResourceType enum without exception shows that path contains only resource without id
+			ResourceType.fromCode(uriComponents.getPath());
+		}
+		catch (FHIRException exception)
+		{
+			throw new RuntimeException(
+					"Search Bundle contains request url with resource id - [" + uriComponents.getPath() + "]");
 		}
 	}
 
@@ -193,9 +198,9 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 				.filter(e -> !e.getValue().startsWith(DATE_EQUALITY_FILTER)).toList();
 
 		if (erroneousDateFilters.size() > 0)
-			throw new RuntimeException(
-					"Search Bundle contains date search params not starting with 'eq' - [" + erroneousDateFilters
-							.stream().map(e -> e.getKey() + ":" + e.getValue()).collect(Collectors.joining(",")) + "]");
+			throw new RuntimeException("Search Bundle contains date search params not starting with 'eq' - ["
+					+ erroneousDateFilters.stream().map(e -> e.getKey() + ":" + e.getValue())
+					.collect(Collectors.joining(",")) + "]");
 
 		List<Map.Entry<String, String>> erroneousDateValues = dateParams.stream()
 				.filter(e -> !YEAR_ONLY.matcher(e.getValue().replace(DATE_EQUALITY_FILTER, "")).matches()).toList();
