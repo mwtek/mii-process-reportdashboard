@@ -20,7 +20,6 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import de.medizininformatik_initiative.process.report.ConstantsReport;
-
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.variables.Target;
@@ -39,7 +38,8 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 	private static final String SUMMARY_SEARCH_PARAM_VALUE_COUNT = "count";
 	private static final String TYPE_SEARCH_PARAM = "type";
 
-	private static final Set<String> ALL_RESOURCE_TYPES = EnumSet.allOf(ResourceType.class).stream().map(ResourceType::name).collect(Collectors.toSet());
+	private static final Set<String> ALL_RESOURCE_TYPES = EnumSet.allOf(ResourceType.class).stream()
+			.map(ResourceType::name).collect(Collectors.toSet());
 
 	private static final List<String> DATE_SEARCH_PARAMS = List.of("date", "recorded-date", "onset-date", "effective",
 			"effective-time", "authored", "collected", "issued", "period", "location-period", "occurrence");
