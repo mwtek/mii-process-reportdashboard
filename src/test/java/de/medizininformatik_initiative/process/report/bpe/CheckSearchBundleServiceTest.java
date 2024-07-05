@@ -99,13 +99,13 @@ public class CheckSearchBundleServiceTest
 	@Test
 	public void testInvalidResourceId()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-invalid-resource-id.xml", "request url with resource id");
+		testInvalid("/fhir/Bundle/search-bundle-invalid-resource-id.xml", "request url with forbidden path");
 	}
 
 	@Test
 	public void testInvalidResourceIdDouble()
 	{
-		testInvalid("/fhir/Bundle/search-bundle-invalid-resource-id-double.xml", "request url with resource id");
+		testInvalid("/fhir/Bundle/search-bundle-invalid-resource-id-double.xml", "request url with forbidden path");
 	}
 
 	@Test

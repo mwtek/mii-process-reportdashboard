@@ -1,14 +1,15 @@
 package de.medizininformatik_initiative.process.report.service;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.Task;
@@ -19,6 +20,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import de.medizininformatik_initiative.process.report.ConstantsReport;
+
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.variables.Target;
@@ -37,11 +39,12 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 	private static final String SUMMARY_SEARCH_PARAM_VALUE_COUNT = "count";
 	private static final String TYPE_SEARCH_PARAM = "type";
 
+	private static final Set<String> ALL_RESOURCE_TYPES = EnumSet.allOf(ResourceType.class).stream().map(ResourceType::name).collect(Collectors.toSet());
+
 	private static final List<String> DATE_SEARCH_PARAMS = List.of("date", "recorded-date", "onset-date", "effective",
 			"effective-time", "authored", "collected", "issued", "period", "location-period", "occurrence");
 	private static final List<String> TOKEN_SEARCH_PARAMS = List.of("code", "ingredient-code", "type");
 	private static final List<String> OTHER_SEARCH_PARAMS = List.of("_profile", "_summary");
-
 	private static final List<String> VALID_SEARCH_PARAMS = Stream
 			.of(DATE_SEARCH_PARAMS.stream(), TOKEN_SEARCH_PARAMS.stream(), OTHER_SEARCH_PARAMS.stream()).flatMap(s -> s)
 			.toList();
@@ -129,15 +132,10 @@ public class CheckSearchBundle extends AbstractServiceDelegate
 
 	private void testPath(UriComponents uriComponents)
 	{
-		try
-		{
-			// Converting to ResourceType enum without exception shows that path contains only resource without id
-			ResourceType.fromCode(uriComponents.getPath());
-		}
-		catch (FHIRException exception)
+		if (!ALL_RESOURCE_TYPES.contains(uriComponents.getPath()))
 		{
 			throw new RuntimeException(
-					"Search Bundle contains request url with resource id - [" + uriComponents.getPath() + "]");
+					"Search Bundle contains request url with forbidden path - [" + uriComponents.getPath() + "]");
 		}
 	}
 
