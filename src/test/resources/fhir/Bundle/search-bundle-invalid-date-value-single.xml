@@ -22,12 +22,6 @@
 	<entry>
 		<request>
 			<method value="GET"/>
-			<url value="Consent?_profile=http://fhir.de/ConsentManagement/StructureDefinition/Consent&amp;date=eq2020-10-10T10:00:00.000Z&amp;_summary=count"/>
-		</request>
-	</entry>
-	<entry>
-		<request>
-			<method value="GET"/>
 			<url value="Condition?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
 		</request>
 	</entry>
