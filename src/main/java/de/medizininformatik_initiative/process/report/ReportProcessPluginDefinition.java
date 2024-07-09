@@ -10,8 +10,8 @@ import dev.dsf.bpe.v1.ProcessPluginDefinition;
 
 public class ReportProcessPluginDefinition implements ProcessPluginDefinition
 {
-	public static final String VERSION = "1.1.0.0";
-	public static final LocalDate RELEASE_DATE = LocalDate.of(2024, 06, 11);
+	public static final String VERSION = "1.1.0.1";
+	public static final LocalDate RELEASE_DATE = LocalDate.of(2024, 7, 9);
 
 	@Override
 	public String getName()

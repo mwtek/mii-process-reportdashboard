@@ -16,7 +16,13 @@
 	<entry>
 		<request>
 			<method value='GET'/>
-			<url value='Condition?code=http://fhir.de/CodeSystem/bfarm/icd-10-gm|R51&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count'/>
+			<url value='Condition?code=http://fhir.de/CodeSystem/bfarm/icd-10-gm|&amp;code=http://fhir.de/CodeSystem/bfarm/icd-10-gm|R51&amp;_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count'/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value="GET"/>
+			<url value="Condition?_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose&amp;_summary=count"/>
 		</request>
 	</entry>
 </Bundle>

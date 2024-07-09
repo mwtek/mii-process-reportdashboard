@@ -1,0 +1,34 @@
+<Bundle xmlns='http://hl7.org/fhir'>
+	<meta>
+		<versionId value='1'/>
+		<lastUpdated value='2024-06-21T13:26:59.772030+02:00'/>
+		<profile value='http://medizininformatik-initiative.de/fhir/Bundle/search-bundle-report|1.1'/>
+		<tag>
+			<system value='http://dsf.dev/fhir/CodeSystem/read-access-tag'/>
+			<code value='ALL'/>
+		</tag>
+	</meta>
+	<identifier>
+		<system value='http://medizininformatik-initiative.de/fhir/CodeSystem/report'/>
+		<value value='search-bundle-v1.1'/>
+	</identifier>
+	<type value='batch'/>
+	<entry>
+		<request>
+			<method value='GET'/>
+			<url value='Encounter?_profile:below=https://www.medizininformatik-initiative.de/fhir/core/modul-fall/StructureDefinition/KontaktGesundheitseinrichtung&amp;type=http://fhir.de/CodeSystem/Kontaktebene|einrichtungskontakt&amp;_summary=count'/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value='GET'/>
+			<url value='Encounter?_profile:below=https://www.medizininformatik-initiative.de/fhir/core/modul-fall/StructureDefinition/KontaktGesundheitseinrichtung&amp;type=http://fhir.de/CodeSystem/Kontaktebene|abteilungskontakt&amp;_summary=count'/>
+		</request>
+	</entry>
+	<entry>
+		<request>
+			<method value='GET'/>
+			<url value='Encounter?_profile:below=https://www.medizininformatik-initiative.de/fhir/core/modul-fall/StructureDefinition/KontaktGesundheitseinrichtung&amp;type=http://fhir.de/CodeSystem/Kontaktebene|versorgungsstellenkontakt&amp;_summary=count'/>
+		</request>
+	</entry>
+</Bundle>
