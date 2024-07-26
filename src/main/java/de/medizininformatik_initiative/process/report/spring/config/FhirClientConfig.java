@@ -161,7 +161,8 @@ public class FhirClientConfig
 		Path certificatePath = checkExists(fhirStoreCertificate);
 		Path privateKeyPath = checkExists(fhirStorePrivateKey);
 
-		String proxyUrl = fhirStoreProxyUrl, proxyUsername = fhirStoreProxyUsername, proxyPassword = fhirStorePassword;
+		String proxyUrl = fhirStoreProxyUrl, proxyUsername = fhirStoreProxyUsername,
+				proxyPassword = fhirStoreProxyPassword;
 		if (proxyUrl == null && api.getProxyConfig().isEnabled()
 				&& !api.getProxyConfig().isNoProxyUrl(fhirStoreBaseUrl))
 		{
