@@ -9,14 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import ca.uhn.fhir.context.FhirContext;
-
 import de.medizininformatik_initiative.processes.common.fhir.client.FhirClientFactory;
 import de.medizininformatik_initiative.processes.common.fhir.client.logging.DataLogger;
 import de.medizininformatik_initiative.processes.common.fhir.client.token.OAuth2TokenClient;
 import de.medizininformatik_initiative.processes.common.fhir.client.token.OAuth2TokenProvider;
 import de.medizininformatik_initiative.processes.common.fhir.client.token.TokenClient;
 import de.medizininformatik_initiative.processes.common.fhir.client.token.TokenProvider;
-
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.documentation.ProcessDocumentation;
 
@@ -29,151 +27,128 @@ public class FhirClientConfig
 	@Autowired
 	private ProcessPluginApi api;
 
-	@ProcessDocumentation(required = true, processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "The base address of the FHIR server to read/store FHIR resources",
-			example = "http://foo.bar/fhir")
+	@ProcessDocumentation(required = true, processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "The base address of the FHIR server to read/store FHIR resources", example = "http://foo.bar/fhir")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.base.url:#{null}}")
 	private String fhirStoreBaseUrl;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "PEM encoded file with one or more trusted root certificate to validate the FHIR server certificate when connecting via https",
-			recommendation = "Use docker secret file to configure", example = "/run/secrets/hospital_ca.pem")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "PEM encoded file with one or more trusted root certificate to validate the FHIR server certificate when connecting via https", recommendation = "Use docker secret file to configure", example = "/run/secrets/hospital_ca.pem")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.trust.certificates:#{null}}")
 	private String fhirStoreTrustStore;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "PEM encoded file with client-certificate, if FHIR server requires mutual TLS authentication",
-			recommendation = "Use docker secret file to configure",
-			example = "/run/secrets/fhir_server_client_certificate.pem")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "PEM encoded file with client-certificate, if FHIR server requires mutual TLS authentication", recommendation = "Use docker secret file to configure", example = "/run/secrets/fhir_server_client_certificate.pem")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.certificate:#{null}}")
 	private String fhirStoreCertificate;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Private key corresponding to the FHIR server client-certificate as PEM encoded file. Use *${env_variable}_PASSWORD* or *${env_variable}_PASSWORD_FILE* if private key is encrypted",
-			recommendation = "Use docker secret file to configure",
-			example = "/run/secrets/fhir_server_private_key.pem")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Private key corresponding to the FHIR server client-certificate as PEM encoded file. Use *${env_variable}_PASSWORD* or *${env_variable}_PASSWORD_FILE* if private key is encrypted", recommendation = "Use docker secret file to configure", example = "/run/secrets/fhir_server_private_key.pem")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.private.key:#{null}}")
 	private String fhirStorePrivateKey;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Password to decrypt the FHIR server client-certificate encrypted private key",
-			recommendation = "Use docker secret file to configure by using *${env_variable}_FILE*",
-			example = "/run/secrets/fhir_server_private_key.pem.password")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Password to decrypt the FHIR server client-certificate encrypted private key", recommendation = "Use docker secret file to configure by using *${env_variable}_FILE*", example = "/run/secrets/fhir_server_private_key.pem.password")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.private.key.password:#{null}}")
 	private char[] fhirStorePrivateKeyPassword;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Basic authentication username, set if the server containing the FHIR data requests authentication using basic auth")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Basic authentication username, set if the server containing the FHIR data requests authentication using basic auth")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.basicauth.username:#{null}}")
 	private String fhirStoreUsername;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Basic authentication password, set if the server containing the FHIR data requests authentication using basic auth",
-			recommendation = "Use docker secret file to configure by using *${env_variable}_FILE*",
-			example = "/run/secrets/fhir_server_basicauth.password")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Basic authentication password, set if the server containing the FHIR data requests authentication using basic auth", recommendation = "Use docker secret file to configure by using *${env_variable}_FILE*", example = "/run/secrets/fhir_server_basicauth.password")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.basicauth.password:#{null}}")
 	private String fhirStorePassword;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Bearer token for authentication, set if the server containing the FHIR data requests authentication using a bearer token, cannot be set using docker secrets")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Bearer token for authentication, set if the server containing the FHIR data requests authentication using a bearer token, cannot be set using docker secrets")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.bearer.token:#{null}}")
 	private String fhirStoreBearerToken;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "The timeout in milliseconds until a connection is established between the client and the FHIR server",
-			recommendation = "Change default value only if timeout exceptions occur")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "The timeout in milliseconds until a connection is established between the client and the FHIR server", recommendation = "Change default value only if timeout exceptions occur")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.timeout.connect:20000}")
 	private int fhirStoreConnectTimeout;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "The timeout in milliseconds used when requesting a connection from the connection manager between the client and the FHIR server",
-			recommendation = "Change default value only if timeout exceptions occur")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "The timeout in milliseconds used when requesting a connection from the connection manager between the client and the FHIR server", recommendation = "Change default value only if timeout exceptions occur")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.timeout.connection.request:20000}")
 	private int fhirStoreConnectionRequestTimeout;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Maximum period of inactivity in milliseconds between two consecutive data packets of the client and the FHIR server",
-			recommendation = "Change default value only if timeout exceptions occur")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Maximum period of inactivity in milliseconds between two consecutive data packets of the client and the FHIR server", recommendation = "Change default value only if timeout exceptions occur")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.timeout.socket:60000}")
 	private int fhirStoreSocketTimeout;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "The client will log additional debug output",
-			recommendation = "Change default value only if exceptions occur")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "The client will log additional debug output", recommendation = "Change default value only if exceptions occur")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.client.verbose:false}")
 	private boolean fhirStoreHapiClientVerbose;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Proxy location, set if the server containing the FHIR data can only be reached through a proxy",
-			example = "http://proxy.foo:8080")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Proxy location, set if the server containing the FHIR data can only be reached through a proxy", example = "http://proxy.foo:8080")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.proxy.url:#{null}}")
 	private String fhirStoreProxyUrl;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Proxy username, set if the server containing the FHIR data can only be reached through a proxy which requests authentication")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Proxy username, set if the server containing the FHIR data can only be reached through a proxy which requests authentication")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.proxy.username:#{null}}")
 	private String fhirStoreProxyUsername;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Proxy password, set if the server containing the FHIR data can only be reached through a proxy which requests authentication",
-			recommendation = "Use docker secret file to configure by using *${env_variable}_FILE*")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Proxy password, set if the server containing the FHIR data can only be reached through a proxy which requests authentication", recommendation = "Use docker secret file to configure by using *${env_variable}_FILE*")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.proxy.password:#{null}}")
 	private String fhirStoreProxyPassword;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "The url of the oidc provider to request access tokens (token endpoint)",
-			example = "http://foo.baz/realms/fhir-realm/protocol/openid-connect/token")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "The url of the oidc provider to request access tokens (token endpoint)", example = "http://foo.baz/realms/fhir-realm/protocol/openid-connect/token")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.oauth2.issuer.url:#{null}}")
 	private String fhirStoreOAuth2IssuerUrl;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Identifier of the client (username) used for authentication when accessing the oidc provider token endpoint")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Identifier of the client (username) used for authentication when accessing the oidc provider token endpoint")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.oauth2.client.id:#{null}}")
 	private String fhirStoreOAuth2ClientId;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Secret of the client (password) used for authentication when accessing the oidc provider token endpoint",
-			recommendation = "Use docker secret file to configure by using *${env_variable}_FILE*")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Secret of the client (password) used for authentication when accessing the oidc provider token endpoint", recommendation = "Use docker secret file to configure by using *${env_variable}_FILE*")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.oauth2.client.password:#{null}}")
 	private String fhirStoreOAuth2ClientSecret;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "The timeout in milliseconds until a connection is established between the client and the oidc provider",
-			recommendation = "Change default value only if timeout exceptions occur")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "The timeout in milliseconds until a connection is established between the client and the oidc provider", recommendation = "Change default value only if timeout exceptions occur")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.oauth2.timeout.connect:20000}")
 	private int fhirStoreOAuth2ConnectTimeout;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Maximum period of inactivity in milliseconds between two consecutive data packets of the client and the oidc provider",
-			recommendation = "Change default value only if timeout exceptions occur")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Maximum period of inactivity in milliseconds between two consecutive data packets of the client and the oidc provider", recommendation = "Change default value only if timeout exceptions occur")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.oauth2.timeout.socket:60000}")
 	private int fhirStoreOAuth2SocketTimeout;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "PEM encoded file with one or more trusted root certificate to validate the oidc provider server certificate when connecting via https",
-			recommendation = "Use docker secret file to configure", example = "/run/secrets/hospital_ca.pem")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "PEM encoded file with one or more trusted root certificate to validate the oidc provider server certificate when connecting via https", recommendation = "Use docker secret file to configure", example = "/run/secrets/hospital_ca.pem")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.oauth2.trust.certificates:#{null}}")
 	private String fhirStoreOAuth2TrustStore;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Proxy location, set if the oidc provider can only be reached through a proxy",
-			example = "http://proxy.foo:8080")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Proxy location, set if the oidc provider can only be reached through a proxy", example = "http://proxy.foo:8080")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.oauth2.proxy.url:#{null}}")
 	private String fhirStoreOAuth2ProxyUrl;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Proxy username, set if the oidc provider can only be reached through a proxy which requests authentication")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Proxy username, set if the oidc provider can only be reached through a proxy which requests authentication")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.oauth2.proxy.username:#{null}}")
 	private String fhirStoreOAuth2ProxyUsername;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "Proxy password, set if the oidc provider can only be reached through a proxy which requests authentication",
-			recommendation = "Use docker secret file to configure by using *${env_variable}_FILE*")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "Proxy password, set if the oidc provider can only be reached through a proxy which requests authentication", recommendation = "Use docker secret file to configure by using *${env_variable}_FILE*")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.server.oauth2.proxy.password:#{null}}")
 	private String fhirStoreOAuth2ProxyPassword;
 
-	@ProcessDocumentation(processNames = { "medizininformatik-initiativede_reportSend" },
-			description = "To enable debug logging of FHIR resources set to `true`")
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_reportSend" }, description = "To enable debug logging of FHIR resources set to `true`")
 	@Value("${de.medizininformatik.initiative.report.dic.fhir.dataLoggingEnabled:false}")
 	private boolean fhirDataLoggingEnabled;
 
@@ -187,13 +162,13 @@ public class FhirClientConfig
 		Path privateKeyPath = checkExists(fhirStorePrivateKey);
 
 		String proxyUrl = fhirStoreProxyUrl, proxyUsername = fhirStoreProxyUsername, proxyPassword = fhirStorePassword;
-		if (proxyUrl == null && api.getProxyConfig().isEnabled() && !api.getProxyConfig()
-				.isNoProxyUrl(fhirStoreBaseUrl))
+		if (proxyUrl == null && api.getProxyConfig().isEnabled()
+				&& !api.getProxyConfig().isNoProxyUrl(fhirStoreBaseUrl))
 		{
 			proxyUrl = api.getProxyConfig().getUrl();
 			proxyUsername = api.getProxyConfig().getUsername();
-			proxyPassword =
-					api.getProxyConfig().getPassword() == null ? null : new String(api.getProxyConfig().getPassword());
+			proxyPassword = api.getProxyConfig().getPassword() == null ? null
+					: new String(api.getProxyConfig().getPassword());
 		}
 
 		return new FhirClientFactory(trustStorePath, certificatePath, privateKeyPath, fhirStorePrivateKeyPassword,
@@ -211,14 +186,15 @@ public class FhirClientConfig
 	{
 		Path trustStoreOAuth2Path = checkExists(fhirStoreOAuth2TrustStore);
 
-		String proxyUrl = fhirStoreOAuth2ProxyUrl, proxyUsername = fhirStoreOAuth2ProxyUsername, proxyPassword = fhirStoreOAuth2ProxyPassword;
-		if (proxyUrl == null && api.getProxyConfig().isEnabled() && !api.getProxyConfig()
-				.isNoProxyUrl(fhirStoreOAuth2IssuerUrl))
+		String proxyUrl = fhirStoreOAuth2ProxyUrl, proxyUsername = fhirStoreOAuth2ProxyUsername,
+				proxyPassword = fhirStoreOAuth2ProxyPassword;
+		if (proxyUrl == null && api.getProxyConfig().isEnabled()
+				&& !api.getProxyConfig().isNoProxyUrl(fhirStoreOAuth2IssuerUrl))
 		{
 			proxyUrl = api.getProxyConfig().getUrl();
 			proxyUsername = api.getProxyConfig().getUsername();
-			proxyPassword =
-					api.getProxyConfig().getPassword() == null ? null : new String(api.getProxyConfig().getPassword());
+			proxyPassword = api.getProxyConfig().getPassword() == null ? null
+					: new String(api.getProxyConfig().getPassword());
 		}
 
 		return new OAuth2TokenClient(fhirStoreOAuth2IssuerUrl, fhirStoreOAuth2ClientId, fhirStoreOAuth2ClientSecret,
