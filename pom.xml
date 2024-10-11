@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.medizininformatik-initiative</groupId>
-	<artifactId>mii-process-dashboardreport</artifactId>
+	<artifactId>mii-process-reportdashboard</artifactId>
 	<version>0.0.0.0</version>
 
 	<properties>
@@ -17,14 +17,14 @@
 		<testSetup.location>../mii-processes-test-setup</testSetup.location>
 	</properties>
 
-	<name>mii-process-dashboardreport</name>
+	<name>mii-process-reportdashboard</name>
 	<description>Process to send reports of current FHIR store implementation progress of DIC to a HRP</description>
-	<url>https://github.com/medizininformatik-initiative/mii-process-dashboardreport</url>
+	<url>https://github.com/medizininformatik-initiative/mii-process-reportdashboard</url>
 
 	<scm>
-		<connection>scm:git:git://github.com/medizininformatik-initiative/mii-process-dashboardreport.git</connection>
-		<developerConnection>scm:git:git@github.com/medizininformatik-initiative/mii-process-dashboardreport.git</developerConnection>
-		<url>https://github.com/medizininformatik-initiative/mii-process-dashboardreport</url>
+		<connection>scm:git:git://github.com/medizininformatik-initiative/mii-process-reportdashboard.git</connection>
+		<developerConnection>scm:git:git@github.com/medizininformatik-initiative/mii-process-reportdashboard.git</developerConnection>
+		<url>https://github.com/medizininformatik-initiative/mii-process-reportdashboard</url>
 	</scm>
 
 	<licenses>
@@ -239,7 +239,7 @@
 		<repository>
 			<id>github</id>
 			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/medizininformatik-initiative/mii-process-dashboardreport</url>
+			<url>https://maven.pkg.github.com/medizininformatik-initiative/mii-process-reportdashboard</url>
 		</repository>
 		<site>
 			<id>${project.artifactId}-site</id>
