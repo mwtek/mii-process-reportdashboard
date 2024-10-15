@@ -33,7 +33,7 @@ public class CreateJson extends AbstractServiceDelegate
 		logger.info("Inside the CreateJSON class");
 
 		// URL from the curl command
-		String url = "http://localhost:9091/createJson";
+		String url = "http://ukb3314.klinik.bn:9091/createJson";
 
 		// Credentials from the curl command
 		String username = "ukb";
