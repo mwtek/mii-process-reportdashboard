@@ -13,7 +13,7 @@ import de.medizininformatik_initiative.process.report.message.SendReceipt;
 import de.medizininformatik_initiative.process.report.message.SendReport;
 import de.medizininformatik_initiative.process.report.message.StartSendReport;
 import de.medizininformatik_initiative.process.report.service.CheckSearchBundle;
-import de.medizininformatik_initiative.process.report.service.CreateReport;
+import de.medizininformatik_initiative.process.report.service.CreateDashboardReport;
 import de.medizininformatik_initiative.process.report.service.DownloadReport;
 import de.medizininformatik_initiative.process.report.service.DownloadSearchBundle;
 import de.medizininformatik_initiative.process.report.service.HandleError;
@@ -99,10 +99,10 @@ public class ReportConfig
 
 	@Bean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public CreateReport createReport()
+	public CreateDashboardReport createReport()
 	{
 		String resourceVersion = new ReportProcessPluginDefinition().getResourceVersion();
-		return new CreateReport(api, resourceVersion, fhirClientConfig.fhirClientFactory(),
+		return new CreateDashboardReport(api, resourceVersion, fhirClientConfig.fhirClientFactory(),
 				fhirClientConfig.dataLogger());
 	}
 

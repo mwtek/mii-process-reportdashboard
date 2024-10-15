@@ -31,9 +31,9 @@ import dev.dsf.bpe.v1.variables.Target;
 import dev.dsf.bpe.v1.variables.Variables;
 import dev.dsf.fhir.client.PreferReturnMinimal;
 
-public class CreateReport extends AbstractServiceDelegate implements InitializingBean
+public class CreateDashboardReport extends AbstractServiceDelegate implements InitializingBean
 {
-	private static final Logger logger = LoggerFactory.getLogger(CreateReport.class);
+	private static final Logger logger = LoggerFactory.getLogger(CreateDashboardReport.class);
 
 	private static final String RESPONSE_OK = "200";
 
@@ -41,8 +41,8 @@ public class CreateReport extends AbstractServiceDelegate implements Initializin
 	private final FhirClientFactory fhirClientFactory;
 	private final DataLogger dataLogger;
 
-	public CreateReport(ProcessPluginApi api, String resourceVersion, FhirClientFactory fhirClientFactory,
-			DataLogger dataLogger)
+	public CreateDashboardReport(ProcessPluginApi api, String resourceVersion, FhirClientFactory fhirClientFactory,
+                                 DataLogger dataLogger)
 	{
 		super(api);
 
