@@ -7,7 +7,6 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Task;
 import org.hl7.fhir.r4.model.Type;
-import org.springframework.beans.factory.InitializingBean;
 
 import de.medizininformatik_initiative.process.report.ConstantsReport;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
@@ -15,7 +14,7 @@ import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractTaskMessageSend;
 import dev.dsf.bpe.v1.variables.Variables;
 
-public class SendReceipt extends AbstractTaskMessageSend implements InitializingBean
+public class SendReceipt extends AbstractTaskMessageSend
 {
 	private final ReportStatusGenerator statusGenerator;
 

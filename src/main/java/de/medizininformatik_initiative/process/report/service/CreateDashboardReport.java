@@ -18,7 +18,6 @@ import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 import de.medizininformatik_initiative.process.report.ConstantsReport;
@@ -31,7 +30,7 @@ import dev.dsf.bpe.v1.variables.Target;
 import dev.dsf.bpe.v1.variables.Variables;
 import dev.dsf.fhir.client.PreferReturnMinimal;
 
-public class CreateDashboardReport extends AbstractServiceDelegate implements InitializingBean
+public class CreateDashboardReport extends AbstractServiceDelegate
 {
 	private static final Logger logger = LoggerFactory.getLogger(CreateDashboardReport.class);
 

@@ -9,7 +9,6 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 
 import de.medizininformatik_initiative.process.report.ConstantsReport;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
@@ -23,7 +22,7 @@ import dev.dsf.fhir.client.BasicFhirWebserviceClient;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
-public class DownloadSearchBundle extends AbstractServiceDelegate implements InitializingBean
+public class DownloadSearchBundle extends AbstractServiceDelegate
 {
 	private static final Logger logger = LoggerFactory.getLogger(DownloadSearchBundle.class);
 

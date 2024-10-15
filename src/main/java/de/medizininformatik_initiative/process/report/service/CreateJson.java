@@ -33,7 +33,7 @@ public class CreateJson extends AbstractServiceDelegate
 		logger.info("Inside the CreateJSON class");
 
 		// URL from the curl command
-		String url = "http://ukb3314.klinik.bn:9091/createJson";
+		String url = "http://10.14.33.54.klinik.bn:9091/createJson";
 
 		// Credentials from the curl command
 		String username = "ukb";
@@ -58,8 +58,5 @@ public class CreateJson extends AbstractServiceDelegate
 
 		// Print the response body
 		System.out.println("Response Body: " + response.getBody());
-
-		// Print the HTTP status code
-		System.out.println("Response Status Code: " + response.getStatusCodeValue());
 	}
 }
