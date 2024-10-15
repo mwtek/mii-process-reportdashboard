@@ -1,6 +1,5 @@
 package de.medizininformatik_initiative.process.report.spring.config;
 
-import de.medizininformatik_initiative.process.report.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -13,6 +12,7 @@ import de.medizininformatik_initiative.process.report.ReportProcessPluginDeploym
 import de.medizininformatik_initiative.process.report.message.SendReceipt;
 import de.medizininformatik_initiative.process.report.message.SendReport;
 import de.medizininformatik_initiative.process.report.message.StartSendReport;
+import de.medizininformatik_initiative.process.report.service.*;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.ProcessPluginDeploymentStateListener;
