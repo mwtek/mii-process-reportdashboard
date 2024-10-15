@@ -10,19 +10,14 @@
       <bpmn:outgoing>Flow_1dxyux8</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_0j23r7r" name="create JSON&#10;by DDP" camunda:class="de.medizininformatik_initiative.process.report.service.CreateJson">
-      <bpmn:extensionElements>
-        <camunda:executionListener class="" event="start" />
-        <camunda:properties>
-          <camunda:property />
-        </camunda:properties>
-      </bpmn:extensionElements>
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_1dxyux8</bpmn:incoming>
       <bpmn:outgoing>Flow_1hyre0y</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="Event_1tdu10y">
-      <bpmn:incoming>Flow_1b1h3a4</bpmn:incoming>
       <bpmn:incoming>Flow_1u5zm8r</bpmn:incoming>
       <bpmn:incoming>Flow_1pnkt0k</bpmn:incoming>
+      <bpmn:incoming>Flow_0n4mimb</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:serviceTask id="Activity_0wmkbta" name="store receipt" camunda:class="de.medizininformatik_initiative.process.report.service.StoreReceipt">
       <bpmn:incoming>Flow_0in8auc</bpmn:incoming>
@@ -86,16 +81,9 @@
       <bpmn:outgoing>Flow_1vsl5wi</bpmn:outgoing>
       <bpmn:outgoing>Flow_1dyryqo</bpmn:outgoing>
     </bpmn:eventBasedGateway>
-    <bpmn:boundaryEvent id="Event_06gpei3" attachedToRef="Activity_0j23r7r">
-      <bpmn:outgoing>Flow_1b1h3a4</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TimerEventDefinition_18g4cv8">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT60M</bpmn:timeDuration>
-      </bpmn:timerEventDefinition>
-    </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_0nva1ie" sourceRef="Event_17xemsr" targetRef="Activity_1s2dwjo" />
     <bpmn:sequenceFlow id="Flow_1dxyux8" sourceRef="Activity_1s2dwjo" targetRef="Activity_0j23r7r" />
     <bpmn:sequenceFlow id="Flow_1hyre0y" sourceRef="Activity_0j23r7r" targetRef="Gateway_1tc4y88" />
-    <bpmn:sequenceFlow id="Flow_1b1h3a4" sourceRef="Event_06gpei3" targetRef="Event_1tdu10y" />
     <bpmn:sequenceFlow id="Flow_1u5zm8r" sourceRef="Activity_0wmkbta" targetRef="Event_1tdu10y" />
     <bpmn:sequenceFlow id="Flow_1pnkt0k" name="no" sourceRef="Gateway_12pm2p6" targetRef="Event_1tdu10y" />
     <bpmn:sequenceFlow id="Flow_0in8auc" sourceRef="Gateway_1v5cvfy" targetRef="Activity_0wmkbta" />
@@ -109,10 +97,13 @@
     <bpmn:sequenceFlow id="Flow_0qxeais" sourceRef="Activity_17kcwnu" targetRef="Gateway_12pm2p6" />
     <bpmn:sequenceFlow id="Flow_0mv3sre" name="no" sourceRef="Gateway_1tc4y88" targetRef="Activity_0y7wn9m" />
     <bpmn:sequenceFlow id="Flow_1rpxris" name="yes" sourceRef="Gateway_12pm2p6" targetRef="Activity_0y7wn9m" />
-    <bpmn:textAnnotation id="TextAnnotation_07lfh1r">
-      <bpmn:text>interupting timer cancels creation task</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:association id="Association_0gr4fzw" sourceRef="Event_06gpei3" targetRef="TextAnnotation_07lfh1r" />
+    <bpmn:boundaryEvent id="Event_0ix01fe" name="interupting timer cancels creation task" attachedToRef="Activity_0j23r7r">
+      <bpmn:outgoing>Flow_0n4mimb</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1dv9hbz">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT120M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_0n4mimb" sourceRef="Event_0ix01fe" targetRef="Event_1tdu10y" />
   </bpmn:process>
   <bpmn:message id="Message_10o3b8y" name="pong" />
   <bpmn:message id="Message_1pklz6t" name="reportSendStart" />
@@ -181,11 +172,11 @@
       <bpmndi:BPMNShape id="Gateway_102w3a1_di" bpmnElement="Gateway_102w3a1">
         <dc:Bounds x="515" y="475" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_07lfh1r_di" bpmnElement="TextAnnotation_07lfh1r">
-        <dc:Bounds x="660" y="80" width="230" height="30" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_06gpei3_di" bpmnElement="Event_06gpei3">
-        <dc:Bounds x="592" y="142" width="36" height="36" />
+      <bpmndi:BPMNShape id="Event_0ww6kqc_di" bpmnElement="Event_0ix01fe">
+        <dc:Bounds x="592" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="571" y="175" width="81" height="40" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0nva1ie_di" bpmnElement="Flow_0nva1ie">
         <di:waypoint x="218" y="150" />
@@ -198,11 +189,6 @@
       <bpmndi:BPMNEdge id="Flow_1hyre0y_di" bpmnElement="Flow_1hyre0y">
         <di:waypoint x="560" y="190" />
         <di:waypoint x="560" y="245" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1b1h3a4_di" bpmnElement="Flow_1b1h3a4">
-        <di:waypoint x="628" y="160" />
-        <di:waypoint x="1010" y="160" />
-        <di:waypoint x="1010" y="252" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1u5zm8r_di" bpmnElement="Flow_1u5zm8r">
         <di:waypoint x="930" y="500" />
@@ -278,10 +264,10 @@
           <dc:Bounds x="892" y="313" width="17" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0gr4fzw_di" bpmnElement="Association_0gr4fzw">
-        <di:waypoint x="617" y="144" />
-        <di:waypoint x="640" y="88" />
-        <di:waypoint x="660" y="88" />
+      <bpmndi:BPMNEdge id="Flow_0n4mimb_di" bpmnElement="Flow_0n4mimb">
+        <di:waypoint x="628" y="150" />
+        <di:waypoint x="1010" y="150" />
+        <di:waypoint x="1010" y="252" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
