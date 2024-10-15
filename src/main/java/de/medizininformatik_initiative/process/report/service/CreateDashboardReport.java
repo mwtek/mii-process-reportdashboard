@@ -42,7 +42,7 @@ public class CreateDashboardReport extends AbstractServiceDelegate implements In
 	private final DataLogger dataLogger;
 
 	public CreateDashboardReport(ProcessPluginApi api, String resourceVersion, FhirClientFactory fhirClientFactory,
-                                 DataLogger dataLogger)
+			DataLogger dataLogger)
 	{
 		super(api);
 
