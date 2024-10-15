@@ -1,5 +1,6 @@
 package de.medizininformatik_initiative.process.report.spring.config;
 
+import de.medizininformatik_initiative.process.report.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -12,16 +13,6 @@ import de.medizininformatik_initiative.process.report.ReportProcessPluginDeploym
 import de.medizininformatik_initiative.process.report.message.SendReceipt;
 import de.medizininformatik_initiative.process.report.message.SendReport;
 import de.medizininformatik_initiative.process.report.message.StartSendReport;
-import de.medizininformatik_initiative.process.report.service.CheckSearchBundle;
-import de.medizininformatik_initiative.process.report.service.CreateDashboardReport;
-import de.medizininformatik_initiative.process.report.service.DownloadReport;
-import de.medizininformatik_initiative.process.report.service.DownloadSearchBundle;
-import de.medizininformatik_initiative.process.report.service.HandleError;
-import de.medizininformatik_initiative.process.report.service.InsertReport;
-import de.medizininformatik_initiative.process.report.service.SelectTargetDic;
-import de.medizininformatik_initiative.process.report.service.SelectTargetHrp;
-import de.medizininformatik_initiative.process.report.service.SetTimer;
-import de.medizininformatik_initiative.process.report.service.StoreReceipt;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.ProcessPluginDeploymentStateListener;
@@ -99,7 +90,7 @@ public class ReportConfig
 
 	@Bean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public CreateDashboardReport createReport()
+	public CreateDashboardReport createDashboardReport()
 	{
 		String resourceVersion = new ReportProcessPluginDefinition().getResourceVersion();
 		return new CreateDashboardReport(api, resourceVersion, fhirClientConfig.fhirClientFactory(),
@@ -141,6 +132,13 @@ public class ReportConfig
 	public HandleError handleError()
 	{
 		return new HandleError(api);
+	}
+
+	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	public CreateJson createJson()
+	{
+		return new CreateJson(api);
 	}
 
 	@Bean
