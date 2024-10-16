@@ -20,13 +20,15 @@ import dev.dsf.bpe.v1.variables.Variables;
 
 public class CreateJson extends AbstractServiceDelegate
 {
-
 	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.url:#{null}}")
 	private String DDP_URL;
 	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.user:#{null}}")
 	private String DDP_USERNAME;
 	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.password:#{null}}")
 	private String DDP_PASSWORD;
+
+	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.approval:#{null}}")
+	private boolean DDP_APPROVAL;
 
 	private static final Logger logger = LoggerFactory.getLogger(CreateJson.class);
 
