@@ -63,6 +63,8 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 	@Override
 	protected void doExecute(DelegateExecution execution, Variables variables)
 	{
+		System.out.println("Trace: " + "CreateDashboardReport");
+
 		Task task = variables.getStartTask();
 		Bundle searchBundle = variables.getResource(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE);
 		Target target = variables.getTarget();
