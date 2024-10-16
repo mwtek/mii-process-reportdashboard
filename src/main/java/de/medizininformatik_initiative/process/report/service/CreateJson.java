@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import de.medizininformatik_initiative.process.report.ConstantsReport;
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.variables.Variables;
@@ -71,5 +72,7 @@ public class CreateJson extends AbstractServiceDelegate
 
 		// Print the response body
 		System.out.println("Response Body: " + response.getBody());
+
+		variables.setBoolean(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_APPROVAL, DDP_APPROVAL);
 	}
 }
