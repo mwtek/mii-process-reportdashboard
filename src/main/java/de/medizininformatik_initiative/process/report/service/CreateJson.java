@@ -29,7 +29,7 @@ public class CreateJson extends AbstractServiceDelegate
 	private String DDP_PASSWORD;
 
 	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.approval:#{null}}")
-	private boolean DDP_APPROVAL;
+	private String DDP_APPROVAL;
 
 	private static final Logger logger = LoggerFactory.getLogger(CreateJson.class);
 
@@ -73,6 +73,9 @@ public class CreateJson extends AbstractServiceDelegate
 		// Print the response body
 		System.out.println("Response Body: " + response.getBody());
 
-		variables.setBoolean(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_APPROVAL, DDP_APPROVAL);
+		if (DDP_APPROVAL.equals("false") || DDP_APPROVAL.equals("0"))
+		variables.setBoolean(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_APPROVAL, false);
+		else
+		variables.setBoolean(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_APPROVAL, true);
 	}
 }
