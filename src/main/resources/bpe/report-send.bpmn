@@ -82,10 +82,10 @@
       <bpmn:outgoing>Flow_1cz4l28</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_144srj2" name="no" sourceRef="Gateway_1tc4y88" targetRef="createDashboardReport">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${DDP_APPROVAL}==false</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${reportApproval}==false</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1cz4l28" name="yes" sourceRef="Gateway_1tc4y88" targetRef="EndEvent_1rdxonv">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${DDP_APPROVAL}==true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${reportApproval}==true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmn:message id="Message_10o3b8y" name="pong" />
