@@ -83,13 +83,6 @@ public class ReportConfig
 
 	@Bean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public CheckSearchBundle checkSearchBundle()
-	{
-		return new CheckSearchBundle(api);
-	}
-
-	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public CreateDashboardReport createDashboardReport()
 	{
 		String resourceVersion = new ReportProcessPluginDefinition().getResourceVersion();
