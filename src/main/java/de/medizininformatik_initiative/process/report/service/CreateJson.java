@@ -74,8 +74,8 @@ public class CreateJson extends AbstractServiceDelegate
 		System.out.println("Response Body: " + response.getBody());
 
 		if (DDP_APPROVAL.equals("false") || DDP_APPROVAL.equals("0"))
-		variables.setBoolean(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_APPROVAL, false);
+			variables.setBoolean(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_APPROVAL, false);
 		else
-		variables.setBoolean(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_APPROVAL, true);
+			variables.setBoolean(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_APPROVAL, true);
 	}
 }
