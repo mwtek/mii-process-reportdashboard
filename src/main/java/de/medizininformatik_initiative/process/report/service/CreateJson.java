@@ -20,7 +20,6 @@ import dev.dsf.bpe.v1.variables.Variables;
 
 public class CreateJson extends AbstractServiceDelegate
 {
-
 	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.url:#{null}}")
 	private String DDP_URL;
 	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.user:#{null}}")
