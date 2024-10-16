@@ -41,16 +41,11 @@ public class CreateJson extends AbstractServiceDelegate
 	@Override
 	protected void doExecute(DelegateExecution delegateExecution, Variables variables) throws BpmnError, Exception
 	{
-		logger.info("Inside the CreateJSON class");
-
 		// URL from the curl command
-		// String url = "http://10.14.33.54:9091/createJson";
 		String url = DDP_URL;
 
 		// Credentials from the curl command
-		// String username = "ukb";
 		String username = DDP_USERNAME;
-		// String password = "mHaesy6x4mTwtgEC";
 		String password = DDP_PASSWORD;
 
 		// Create an instance of RestTemplate
@@ -72,10 +67,17 @@ public class CreateJson extends AbstractServiceDelegate
 
 		// Print the response body
 		System.out.println("Response Body: " + response.getBody());
+		// Save response
+		variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_JSON, response.getBody());
 
+		// Set approval variable for next step
 		if (DDP_APPROVAL.equals("false") || DDP_APPROVAL.equals("0"))
+		{
 			variables.setBoolean(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_APPROVAL, false);
+		}
 		else
+		{
 			variables.setBoolean(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_APPROVAL, true);
+		}
 	}
 }
