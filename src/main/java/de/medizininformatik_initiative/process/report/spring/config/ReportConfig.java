@@ -28,8 +28,8 @@ public class ReportConfig
 	private FhirClientConfig fhirClientConfig;
 
 	@ProcessDocumentation(processNames = {
-			"medizininformatik-initiativede_reportSend" }, description = "The identifier of the HRP which should receive the report", recommendation = "Only configure if more than one HRP exists in your network", example = "forschen-fuer-gesundheit.de")
-	@Value("${de.medizininformatik.initiative.report.dic.hrp.identifier:#{null}}")
+			"medizininformatik-initiativede_reportSend" }, description = "The identifier of the HRP which should receive the report", recommendation = "Only configure if more than one HRP exists in your network", example = "netzwerk-universitaetsmedizin.de")
+	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.dic.hrp.identifier:#{null}}")
 	private String hrpIdentifier;
 
 	// all Processes
