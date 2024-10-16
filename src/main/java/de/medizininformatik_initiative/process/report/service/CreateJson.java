@@ -7,6 +7,7 @@ import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,13 @@ import dev.dsf.bpe.v1.variables.Variables;
 
 public class CreateJson extends AbstractServiceDelegate
 {
+
+	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.url:#{null}}")
+	private String DDP_URL;
+	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.user:#{null}}")
+	private String DDP_USERNAME;
+	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.password:#{null}}")
+	private String DDP_PASSWORD;
 
 	private static final Logger logger = LoggerFactory.getLogger(CreateJson.class);
 
@@ -33,11 +41,14 @@ public class CreateJson extends AbstractServiceDelegate
 		logger.info("Inside the CreateJSON class");
 
 		// URL from the curl command
-		String url = "http://10.14.33.54:9091/createJson";
+		// String url = "http://10.14.33.54:9091/createJson";
+		String url = DDP_URL;
 
 		// Credentials from the curl command
-		String username = "ukb";
-		String password = "mHaesy6x4mTwtgEC";
+		// String username = "ukb";
+		String username = DDP_USERNAME;
+		// String password = "mHaesy6x4mTwtgEC";
+		String password = DDP_PASSWORD;
 
 		// Create an instance of RestTemplate
 		RestTemplate restTemplate = new RestTemplate();
