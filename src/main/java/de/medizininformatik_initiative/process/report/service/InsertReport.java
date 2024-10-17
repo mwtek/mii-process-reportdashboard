@@ -13,6 +13,7 @@ import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import de.medizininformatik_initiative.process.report.ConstantsReport;
 import de.medizininformatik_initiative.process.report.util.ReportStatusGenerator;
@@ -24,6 +25,13 @@ import dev.dsf.fhir.client.PreferReturnMinimal;
 
 public class InsertReport extends AbstractServiceDelegate
 {
+	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.backend.url:#{null}}")
+	private String DASHBOARD_BACKEND_URL;
+	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.backend.user:#{null}}")
+	private String DASHBOARD_BACKEND_USER;
+	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.backend.password:#{null}}")
+	private String DASHBOARD_BACKEND_PASSWORD;
+
 	private static final Logger logger = LoggerFactory.getLogger(InsertReport.class);
 
 	private final ReportStatusGenerator statusGenerator;

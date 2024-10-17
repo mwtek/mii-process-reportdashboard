@@ -63,11 +63,14 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 	@Override
 	protected void doExecute(DelegateExecution execution, Variables variables)
 	{
-		System.out.println("Trace: " + "CreateDashboardReport");
+		System.out.println("CreateDashboardReport.doExecute()");
 
 		Task task = variables.getStartTask();
 		Bundle searchBundle = variables.getResource(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE);
 		Target target = variables.getTarget();
+
+		String ddpJson = variables.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_JSON);
+		System.out.println("Trace: "+ ddpJson);
 
 		try
 		{
