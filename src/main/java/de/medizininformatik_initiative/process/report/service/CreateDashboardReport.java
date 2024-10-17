@@ -70,7 +70,7 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 		Target target = variables.getTarget();
 
 		String ddpJson = variables.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_JSON);
-		System.out.println("Trace: "+ ddpJson);
+		System.out.println("Trace: " + ddpJson);
 
 		try
 		{
