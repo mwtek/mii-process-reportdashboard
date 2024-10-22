@@ -37,10 +37,10 @@ public class SelectTargetHrp extends AbstractServiceDelegate
 	@Override
 	protected void doExecute(DelegateExecution execution, Variables variables)
 	{
+		System.out.println("SelectTargetHrp.doExecute()");
 		Task startTask = variables.getStartTask();
 
-		Identifier parentIdentifier = NamingSystems.OrganizationIdentifier.withValue(
-				ConstantsBase.NAMINGSYSTEM_DSF_ORGANIZATION_IDENTIFIER_MEDICAL_INFORMATICS_INITIATIVE_CONSORTIUM);
+		Identifier parentIdentifier = NamingSystems.OrganizationIdentifier.withValue("netzwerk-universitaetsmedizin.de");
 		Coding hrpRole = new Coding().setSystem(ConstantsBase.CODESYSTEM_DSF_ORGANIZATION_ROLE)
 				.setCode(ConstantsBase.CODESYSTEM_DSF_ORGANIZATION_ROLE_VALUE_HRP);
 
