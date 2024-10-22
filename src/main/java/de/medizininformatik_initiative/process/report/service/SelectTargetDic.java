@@ -38,8 +38,9 @@ public class SelectTargetDic extends AbstractServiceDelegate
 
 	private Endpoint getDicEndpoint(Identifier dicIdentifier)
 	{
-		Identifier parentIdentifier = NamingSystems.OrganizationIdentifier.withValue(
-				ConstantsBase.NAMINGSYSTEM_DSF_ORGANIZATION_IDENTIFIER_MEDICAL_INFORMATICS_INITIATIVE_CONSORTIUM);
+		System.out.println("SelectTargetDic.getDicEndpoint()");
+		Identifier parentIdentifier = NamingSystems.OrganizationIdentifier
+				.withValue("netzwerk-universitaetsmedizin.de");
 		Coding role = new Coding().setSystem(ConstantsBase.CODESYSTEM_DSF_ORGANIZATION_ROLE)
 				.setCode(ConstantsBase.CODESYSTEM_DSF_ORGANIZATION_ROLE_VALUE_DIC);
 		return api.getEndpointProvider().getEndpoint(parentIdentifier, dicIdentifier, role)
