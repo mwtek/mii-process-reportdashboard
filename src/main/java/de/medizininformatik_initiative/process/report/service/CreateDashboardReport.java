@@ -12,6 +12,7 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CapabilityStatement;
 import org.hl7.fhir.r4.model.IdType;
 import org.hl7.fhir.r4.model.Identifier;
+import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
@@ -29,6 +30,7 @@ import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.variables.Target;
 import dev.dsf.bpe.v1.variables.Variables;
 import dev.dsf.fhir.client.PreferReturnMinimal;
+import jakarta.ws.rs.core.Response;
 
 public class CreateDashboardReport extends AbstractServiceDelegate
 {
@@ -78,9 +80,14 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 		{
 			System.out.println("Target: " + target.getOrganizationIdentifierValue());
 			System.out.println("CreateDashboardReport.doExecute() - 1");
+
 			Bundle responseBundle = new Bundle();
-			responseBundle.setType(Bundle.BundleType.DOCUMENT);
+			responseBundle.setType(Bundle.BundleType.BATCHRESPONSE);
 			responseBundle.getMeta().setLastUpdated(new Date());
+
+			Bundle.BundleEntryComponent ddp = new Bundle.BundleEntryComponent();
+			ddp.getResource().addChild(ddpJson);
+			responseBundle.addEntry(ddp);
 
 			System.out.println("CreateDashboardReport.doExecute() - 2");
 			Bundle reportBundle = transformToReportBundle(searchBundle, responseBundle, target);
@@ -268,6 +275,7 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 
 	private String storeReportBundle(Bundle responseBundle, String hrpIdentifier, String taskId)
 	{
+		System.out.println("CreateDashboardReport.storeReportBundle()");
 		PreferReturnMinimal client = api.getFhirWebserviceClientProvider().getLocalWebserviceClient()
 				.withMinimalReturn()
 				.withRetry(ConstantsBase.DSF_CLIENT_RETRY_6_TIMES, ConstantsBase.DSF_CLIENT_RETRY_INTERVAL_5MIN);
