@@ -14,6 +14,7 @@ import org.hl7.fhir.r4.model.IdType;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.OperationOutcome;
+import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.Task;
@@ -27,6 +28,7 @@ import de.medizininformatik_initiative.processes.common.fhir.client.logging.Data
 import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
+import dev.dsf.bpe.v1.service.QuestionnaireResponseHelper;
 import dev.dsf.bpe.v1.variables.Target;
 import dev.dsf.bpe.v1.variables.Variables;
 import dev.dsf.fhir.client.PreferReturnMinimal;
@@ -85,9 +87,12 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 			responseBundle.setType(Bundle.BundleType.BATCHRESPONSE);
 			responseBundle.getMeta().setLastUpdated(new Date());
 
-			Bundle.BundleEntryComponent ddp = new Bundle.BundleEntryComponent();
-			ddp.getResource().addChild(ddpJson);
-			responseBundle.addEntry(ddp);
+			// Bundle.BundleEntryComponent ddp = new Bundle.BundleEntryComponent();
+			// ddp.getResource().addChild(ddpJson);
+			// QuestionnaireResponse qr = new QuestionnaireResponse();
+			// qr.addItem().addAnswer();
+
+			// responseBundle.addEntry(ddp);
 
 			System.out.println("CreateDashboardReport.doExecute() - 2");
 			Bundle reportBundle = transformToReportBundle(searchBundle, responseBundle, target);
