@@ -52,8 +52,6 @@ public class SelectTargetHrp extends AbstractServiceDelegate
 				.or(extractHrpIdentifierFromEnv(hrpIdentifierEnvVariable))
 				.orElse(searchHrpIdentifier(parentIdentifier, hrpRole, startTask));
 
-		System.out.println("SelectTargetHrp.doExecute(): parentSystem - " + parentIdentifier.getSystem());
-		System.out.println("SelectTargetHrp.doExecute(): parentValue - " + parentIdentifier.getValue());
 		Endpoint endpoint = getHrpEndpoint(parentIdentifier, hrpIdentifier, hrpRole);
 		String endpointIdentifier = extractEndpointIdentifier(endpoint);
 
@@ -126,6 +124,15 @@ public class SelectTargetHrp extends AbstractServiceDelegate
 
 	private Endpoint getHrpEndpoint(Identifier parentIdentifier, String organizationIdentifierValue, Coding role)
 	{
+		System.out.println("parentIdentifier-System: " + parentIdentifier.getSystem());
+		System.out.println("parentIdentifier-Value: " + parentIdentifier.getValue());
+
+		System.out.println("organizationIdentifierValue: " + organizationIdentifierValue);
+
+		System.out.println("role-System: "+role.getSystem());
+		System.out.println("role-Code: "+role.getCode());
+		System.out.println("role-Display: "+role.getDisplay());
+
 		Identifier organizationIdentifier = NamingSystems.OrganizationIdentifier.withValue(organizationIdentifierValue);
 		return api.getEndpointProvider().getEndpoint(parentIdentifier, organizationIdentifier, role)
 				.orElseThrow(() -> new RuntimeException("Could not find any endpoint of '" + role.getCode()
