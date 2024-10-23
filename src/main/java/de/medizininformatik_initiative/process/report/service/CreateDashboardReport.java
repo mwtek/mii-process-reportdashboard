@@ -78,10 +78,12 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 		{
 			System.out.println("Target: " + target.getOrganizationIdentifierValue());
 			System.out.println("CreateDashboardReport.doExecute() - 1");
-			// Bundle responseBundle = executeSearchBundle(searchBundle, target.getOrganizationIdentifierValue());
+			Bundle responseBundle = new Bundle();
+			responseBundle.setType(Bundle.BundleType.DOCUMENT);
+			responseBundle.getMeta().setLastUpdated(new Date());
 
 			System.out.println("CreateDashboardReport.doExecute() - 2");
-			Bundle reportBundle = transformToReportBundle(searchBundle, new Bundle(), target);
+			Bundle reportBundle = transformToReportBundle(searchBundle, responseBundle, target);
 			dataLogger.logResource("Report Bundle", reportBundle);
 
 			System.out.println("CreateDashboardReport.doExecute() - 3");
