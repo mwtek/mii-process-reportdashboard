@@ -52,6 +52,8 @@ public class SelectTargetHrp extends AbstractServiceDelegate
 				.or(extractHrpIdentifierFromEnv(hrpIdentifierEnvVariable))
 				.orElse(searchHrpIdentifier(parentIdentifier, hrpRole, startTask));
 
+		System.out.println("SelectTargetHrp.doExecute(): parentSystem - " + parentIdentifier.getSystem());
+		System.out.println("SelectTargetHrp.doExecute(): parentValue - " + parentIdentifier.getValue());
 		Endpoint endpoint = getHrpEndpoint(parentIdentifier, hrpIdentifier, hrpRole);
 		String endpointIdentifier = extractEndpointIdentifier(endpoint);
 
