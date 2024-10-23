@@ -129,9 +129,9 @@ public class SelectTargetHrp extends AbstractServiceDelegate
 
 		System.out.println("organizationIdentifierValue: " + organizationIdentifierValue);
 
-		System.out.println("role-System: "+role.getSystem());
-		System.out.println("role-Code: "+role.getCode());
-		System.out.println("role-Display: "+role.getDisplay());
+		System.out.println("role-System: " + role.getSystem());
+		System.out.println("role-Code: " + role.getCode());
+		System.out.println("role-Display: " + role.getDisplay());
 
 		Identifier organizationIdentifier = NamingSystems.OrganizationIdentifier.withValue(organizationIdentifierValue);
 		return api.getEndpointProvider().getEndpoint(parentIdentifier, organizationIdentifier, role)
