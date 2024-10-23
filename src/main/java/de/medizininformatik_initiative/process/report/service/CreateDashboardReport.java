@@ -66,23 +66,32 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 		System.out.println("CreateDashboardReport.doExecute()");
 
 		Task task = variables.getStartTask();
-		Bundle searchBundle = variables.getResource(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE);
 		Target target = variables.getTarget();
 
 		String ddpJson = variables.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_JSON);
 		System.out.println("Trace: " + ddpJson);
 
+		Bundle searchBundle = new Bundle();
+		// variables.getResource(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE);
+
 		try
 		{
+			System.out.println("Target: " + target.getOrganizationIdentifierValue());
+			System.out.println("CreateDashboardReport.doExecute() - 1");
 			Bundle responseBundle = executeSearchBundle(searchBundle, target.getOrganizationIdentifierValue());
 
+			System.out.println("CreateDashboardReport.doExecute() - 2");
 			Bundle reportBundle = transformToReportBundle(searchBundle, responseBundle, target);
 			dataLogger.logResource("Report Bundle", reportBundle);
 
+			System.out.println("CreateDashboardReport.doExecute() - 3");
 			checkReportBundle(searchBundle, reportBundle, target.getOrganizationIdentifierValue());
 
+			System.out.println("CreateDashboardReport.doExecute() - 4");
 			String reportReference = storeReportBundle(reportBundle, target.getOrganizationIdentifierValue(),
 					task.getId());
+
+			System.out.println("CreateDashboardReport.doExecute() - 5");
 			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE,
 					reportReference);
 		}
