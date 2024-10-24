@@ -5,7 +5,7 @@
 			<code value="ALL"/>
 		</tag>
 	</meta>
-	<name value="CdsReportIdentifier"/>
+	<name value="CdsDashboardReportIdentifier"/>
 	<!-- status managed by bpe -->
 	<status value="unknown" />
 	<kind value="identifier"/>
@@ -13,10 +13,10 @@
 	<date value="#{date}"/>
 	<publisher value="Medizininformatik-Initiative" />
 	<responsible value="Medizininformatik-Initiative"/>
-	<description value="MII CDS report identifier"/>
-	<usage value="Used within the MII for identification of generated CDS reports"/>
+	<description value="MII CDS Dashboard report identifier"/>
+	<usage value="Used within the MII for identification of generated CDS dashboard reports"/>
 	<uniqueId>
 		<type value="other"/>
-		<value value="http://medizininformatik-initiative.de/sid/cds-report-identifier"/>
+		<value value="http://medizininformatik-initiative.de/sid/cds-dashboard-report-identifier"/>
 	</uniqueId>
 </NamingSystem>

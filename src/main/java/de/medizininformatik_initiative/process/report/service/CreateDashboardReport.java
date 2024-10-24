@@ -122,8 +122,14 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 				.orElseThrow(() -> new RuntimeException("LocalOrganizationIdentifierValue empty"));
 		System.out.println("CreateDashboardReport.storeReportBundle() - 2");
 		System.out.println("localOrganizationIdentifier: " + localOrganizationIdentifier);
+
+		System.out.println("getLocalOrganizationIdentifier: "
+				+ api.getOrganizationProvider().getLocalOrganizationIdentifier().toString());
+		System.out.println("getLocalOrganization: " + api.getOrganizationProvider().getLocalOrganization().toString());
+
 		IdType bundleIdType = client.updateConditionaly(responseBundle, Map.of("identifier", Collections.singletonList(
 				ConstantsReport.NAMINGSYSTEM_CDS_DASHBOARD_REPORT_IDENTIFIER + "|" + localOrganizationIdentifier)));
+
 		System.out.println("CreateDashboardReport.storeReportBundle() - 3");
 		String absoluteId = new IdType(api.getEndpointProvider().getLocalEndpointAddress(), ResourceType.Bundle.name(),
 				bundleIdType.getIdPart(), bundleIdType.getVersionIdPart()).getValue();
