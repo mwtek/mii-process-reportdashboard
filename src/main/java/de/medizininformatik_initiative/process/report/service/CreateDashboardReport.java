@@ -24,6 +24,7 @@ import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 import de.medizininformatik_initiative.process.report.ConstantsReport;
 import de.medizininformatik_initiative.processes.common.fhir.client.FhirClientFactory;
@@ -70,17 +71,10 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 	@Override
 	protected void doExecute(DelegateExecution execution, Variables variables)
 	{
-		System.out.println("CreateDashboardReport.doExecute()");
-
 		Task task = variables.getStartTask();
 		Target target = variables.getTarget();
 
 		String ddpJson = variables.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_JSON);
-		System.out.println("Trace: " + ddpJson);
-
-		Bundle searchBundle = new Bundle();
-		// variables.getResource(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE);
-
 		try
 		{
 			System.out.println("Target: " + target.getOrganizationIdentifierValue());
@@ -89,41 +83,34 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 			Bundle responseBundle = new Bundle();
 			responseBundle.setType(Bundle.BundleType.BATCHRESPONSE);
 			responseBundle.getMeta().setLastUpdated(new Date());
-			System.out.println("responseBundle: " + responseBundle.toString());
 
-			Bundle.BundleEntryComponent ddp = new Bundle.BundleEntryComponent();
-			QuestionnaireResponseItemComponent qrc = new QuestionnaireResponseItemComponent();
+			Bundle.BundleEntryComponent bec = new Bundle.BundleEntryComponent();
+			QuestionnaireResponseItemComponent qric = new QuestionnaireResponseItemComponent();
 			QuestionnaireResponseItemAnswerComponent qriac = new QuestionnaireResponseItemAnswerComponent();
-			System.out.println("Step 1");
 			qriac.setValue(new StringType(ddpJson));
-			System.out.println("Step 2");
-			qrc.addAnswer(qriac);
-			System.out.println("Step 3");
+			qric.addAnswer(qriac);
 			QuestionnaireResponse qr = new QuestionnaireResponse();
-			System.out.println("Step 4");
-			qr.addItem(qrc);
-			System.out.println("Step 5");
-			ddp.setResource(qr);
-			System.out.println("Step 6");
-			// ddp.getResource().addChild(ddpJson);
+			qr.addItem(qric);
+			bec.setResource(qr);
+			responseBundle.addEntry(bec);
 
-
-			responseBundle.addEntry(ddp);
+			String resp = FhirContext.forR4().newJsonParser().setPrettyPrint(true)
+					.encodeResourceToString(responseBundle);
+			System.out.println(resp);
 
 			System.out.println("CreateDashboardReport.doExecute() - 2");
-			Bundle reportBundle = transformToReportBundle(searchBundle, responseBundle, target);
+			Bundle reportBundle = transformToReportBundle(new Bundle(), responseBundle, target);
 			dataLogger.logResource("Report Bundle", reportBundle);
 
 			System.out.println("CreateDashboardReport.doExecute() - 3");
-			// checkReportBundle(searchBundle, reportBundle, target.getOrganizationIdentifierValue());
-
-			System.out.println("CreateDashboardReport.doExecute() - 4");
 			String reportReference = storeReportBundle(reportBundle, target.getOrganizationIdentifierValue(),
 					task.getId());
 
-			System.out.println("CreateDashboardReport.doExecute() - 5");
+			System.out.println("CreateDashboardReport.doExecute() - 4");
 			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE,
 					reportReference);
+
+			System.out.println("CreateDashboardReport.doExecute(): Finish");
 		}
 		catch (Exception exception)
 		{
