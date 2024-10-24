@@ -117,11 +117,13 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 				.withMinimalReturn()
 				.withRetry(ConstantsBase.DSF_CLIENT_RETRY_6_TIMES, ConstantsBase.DSF_CLIENT_RETRY_INTERVAL_5MIN);
 
+		System.out.println("CreateDashboardReport.storeReportBundle() - 1");
 		String localOrganizationIdentifier = api.getOrganizationProvider().getLocalOrganizationIdentifierValue()
 				.orElseThrow(() -> new RuntimeException("LocalOrganizationIdentifierValue empty"));
+		System.out.println("CreateDashboardReport.storeReportBundle() - 2");
 		IdType bundleIdType = client.updateConditionaly(responseBundle, Map.of("identifier", Collections.singletonList(
 				ConstantsReport.NAMINGSYSTEM_CDS_REPORT_IDENTIFIER + "|" + localOrganizationIdentifier)));
-
+		System.out.println("CreateDashboardReport.storeReportBundle() - 3");
 		String absoluteId = new IdType(api.getEndpointProvider().getLocalEndpointAddress(), ResourceType.Bundle.name(),
 				bundleIdType.getIdPart(), bundleIdType.getVersionIdPart()).getValue();
 
