@@ -154,7 +154,7 @@ public class InsertReport extends AbstractServiceDelegate
 
 	private Identifier getReportIdentifier(Task task)
 	{
-		return new Identifier().setSystem(ConstantsReport.NAMINGSYSTEM_CDS_REPORT_IDENTIFIER)
+		return new Identifier().setSystem(ConstantsReport.NAMINGSYSTEM_CDS_DASHBOARD_REPORT_IDENTIFIER)
 				.setValue(task.getRequester().getIdentifier().getValue());
 	}
 
