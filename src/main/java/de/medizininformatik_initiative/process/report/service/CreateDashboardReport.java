@@ -15,8 +15,11 @@ import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
+import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent;
+import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
+import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,13 +89,26 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 			Bundle responseBundle = new Bundle();
 			responseBundle.setType(Bundle.BundleType.BATCHRESPONSE);
 			responseBundle.getMeta().setLastUpdated(new Date());
+			System.out.println("responseBundle: " + responseBundle.toString());
 
-			// Bundle.BundleEntryComponent ddp = new Bundle.BundleEntryComponent();
+			Bundle.BundleEntryComponent ddp = new Bundle.BundleEntryComponent();
+			QuestionnaireResponseItemComponent qrc = new QuestionnaireResponseItemComponent();
+			QuestionnaireResponseItemAnswerComponent qriac = new QuestionnaireResponseItemAnswerComponent();
+			System.out.println("Step 1");
+			qriac.setValue(new StringType(ddpJson));
+			System.out.println("Step 2");
+			qrc.addAnswer(qriac);
+			System.out.println("Step 3");
+			QuestionnaireResponse qr = new QuestionnaireResponse();
+			System.out.println("Step 4");
+			qr.addItem(qrc);
+			System.out.println("Step 5");
+			ddp.setResource(qr);
+			System.out.println("Step 6");
 			// ddp.getResource().addChild(ddpJson);
-			// QuestionnaireResponse qr = new QuestionnaireResponse();
-			// qr.addItem().addAnswer();
 
-			// responseBundle.addEntry(ddp);
+
+			responseBundle.addEntry(ddp);
 
 			System.out.println("CreateDashboardReport.doExecute() - 2");
 			Bundle reportBundle = transformToReportBundle(searchBundle, responseBundle, target);
