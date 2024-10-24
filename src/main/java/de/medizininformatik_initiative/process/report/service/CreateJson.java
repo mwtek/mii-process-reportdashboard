@@ -5,8 +5,8 @@ import java.util.Base64;
 
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -31,7 +31,7 @@ public class CreateJson extends AbstractServiceDelegate
 	@Value("${de.netzwerk.universitaetsmedizin.dashboard.report.ddp.approval:#{null}}")
 	private String DDP_APPROVAL;
 
-	private static final Logger logger = LoggerFactory.getLogger(CreateJson.class);
+	// private static final Logger logger = LoggerFactory.getLogger(CreateJson.class);
 
 	public CreateJson(ProcessPluginApi api)
 	{

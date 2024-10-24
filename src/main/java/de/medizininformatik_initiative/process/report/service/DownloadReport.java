@@ -42,6 +42,7 @@ public class DownloadReport extends AbstractServiceDelegate
 	@Override
 	protected void doExecute(DelegateExecution execution, Variables variables)
 	{
+		System.out.println("DownloadReport.doExecute()");
 		Task task = variables.getStartTask();
 		IdType reportReference = getReportReference(task);
 

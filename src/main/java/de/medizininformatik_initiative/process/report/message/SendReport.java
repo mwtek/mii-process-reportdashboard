@@ -40,6 +40,7 @@ public class SendReport extends AbstractTaskMessageSend
 	protected Stream<Task.ParameterComponent> getAdditionalInputParameters(DelegateExecution execution,
 			Variables variables)
 	{
+		System.out.println("SendReport.getAdditionalInputParameters()");
 		String bundleId = variables
 				.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE);
 
@@ -54,6 +55,7 @@ public class SendReport extends AbstractTaskMessageSend
 	@Override
 	protected IdType doSend(FhirWebserviceClient client, Task task)
 	{
+		System.out.println("SendReport.doSend()");
 		return client.withMinimalReturn()
 				.withRetry(ConstantsBase.DSF_CLIENT_RETRY_6_TIMES, ConstantsBase.DSF_CLIENT_RETRY_INTERVAL_5MIN)
 				.create(task);
@@ -63,6 +65,7 @@ public class SendReport extends AbstractTaskMessageSend
 	protected void handleIntermediateThrowEventError(DelegateExecution execution, Variables variables,
 			Exception exception, String errorMessage)
 	{
+		System.out.println("SendReport.handleIntermediateThrowEventError()");
 		Task task = variables.getStartTask();
 
 		if (task != null)
