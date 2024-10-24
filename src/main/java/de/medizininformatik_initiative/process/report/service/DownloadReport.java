@@ -46,7 +46,7 @@ public class DownloadReport extends AbstractServiceDelegate
 		Task task = variables.getStartTask();
 		IdType reportReference = getReportReference(task);
 
-		variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE,
+		variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_JSON_RESPONSE_REFERENCE,
 				reportReference.getValue());
 
 		logger.info("Downloading report with id '{}' from organization '{}' referenced in Task with id '{}'",

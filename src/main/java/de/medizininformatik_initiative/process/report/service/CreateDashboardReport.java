@@ -2,16 +2,12 @@ package de.medizininformatik_initiative.process.report.service;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.CapabilityStatement;
 import org.hl7.fhir.r4.model.IdType;
-import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent;
 import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent;
@@ -90,16 +86,12 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 					.encodeResourceToString(responseBundle);
 			System.out.println(resp);
 
-			System.out.println("CreateDashboardReport.doExecute() - 2");
-			Bundle reportBundle = transformToReportBundle(new Bundle(), responseBundle, target);
-			dataLogger.logResource("Report Bundle", reportBundle);
-
 			System.out.println("CreateDashboardReport.doExecute() - 3");
-			String reportReference = storeReportBundle(reportBundle, target.getOrganizationIdentifierValue(),
+			String reportReference = storeReportBundle(responseBundle, target.getOrganizationIdentifierValue(),
 					task.getId());
 
 			System.out.println("CreateDashboardReport.doExecute() - 4");
-			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE,
+			variables.setString(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_JSON_RESPONSE_REFERENCE,
 					reportReference);
 
 			System.out.println("CreateDashboardReport.doExecute(): Finish");
@@ -111,107 +103,6 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 			throw new RuntimeException("Could not create report for HRP '" + target.getOrganizationIdentifierValue()
 					+ "' in Task with id '" + task.getId() + "' - " + exception.getMessage(), exception);
 		}
-	}
-
-	private Bundle transformToReportBundle(Bundle searchBundle, Bundle responseBundle, Target target)
-	{
-		Bundle report = new Bundle();
-		report.setMeta(responseBundle.getMeta());
-		report.getMeta().addProfile(ConstantsReport.PROFILE_REPORT_SEARCH_BUNDLE_RESPONSE + "|" + resourceVersion);
-		report.getMeta().setLastUpdated(new Date());
-		report.setType(responseBundle.getType());
-
-		report.setIdentifier(new Identifier().setSystem(ConstantsReport.NAMINGSYSTEM_CDS_REPORT_IDENTIFIER)
-				.setValue(api.getOrganizationProvider().getLocalOrganizationIdentifierValue()
-						.orElseThrow(() -> new RuntimeException("LocalOrganizationIdentifierValue empty"))));
-
-		api.getReadAccessHelper().addLocal(report);
-		api.getReadAccessHelper().addOrganization(report, target.getOrganizationIdentifierValue());
-
-		for (int i = 0; i < searchBundle.getEntry().size(); i++)
-		{
-			Bundle.BundleEntryComponent responseEntry = responseBundle.getEntry().get(i);
-			Bundle.BundleEntryComponent reportEntry = new Bundle.BundleEntryComponent();
-
-			if (responseEntry.getResource() instanceof Bundle || !responseEntry.hasResource())
-			{
-				toEntryComponentBundleResource(responseEntry, reportEntry,
-						searchBundle.getEntry().get(i).getRequest().getUrl());
-			}
-
-			if (responseEntry.getResource() instanceof CapabilityStatement)
-			{
-				toEntryComponentCapabilityStatementResource(responseEntry, reportEntry);
-			}
-
-			reportEntry.setResponse(responseEntry.getResponse());
-			report.addEntry(reportEntry);
-		}
-
-		return report;
-	}
-
-	private void toEntryComponentBundleResource(Bundle.BundleEntryComponent responseEntry,
-			Bundle.BundleEntryComponent reportEntry, String url)
-	{
-		Bundle reportEntryBundle = new Bundle();
-		reportEntryBundle.getMeta().setLastUpdated(new Date());
-		reportEntryBundle.addLink().setRelation("self").setUrl(url);
-		reportEntryBundle.setType(Bundle.BundleType.SEARCHSET);
-		reportEntryBundle.setTotal(0);
-
-		if (responseEntry.getResource() instanceof Bundle responseEntryBundle)
-		{
-			reportEntryBundle.setTotal(responseEntryBundle.getTotal());
-			reportEntryBundle.getMeta().setLastUpdated(responseEntryBundle.getMeta().getLastUpdated());
-		}
-
-		reportEntry.setResource(reportEntryBundle);
-	}
-
-	private void toEntryComponentCapabilityStatementResource(Bundle.BundleEntryComponent responseEntry,
-			Bundle.BundleEntryComponent reportEntry)
-	{
-		CapabilityStatement responseEntryCapabilityStatement = (CapabilityStatement) responseEntry.getResource();
-		CapabilityStatement reportEntryCapabilityStatement = new CapabilityStatement();
-
-		reportEntryCapabilityStatement.setKind(CapabilityStatement.CapabilityStatementKind.CAPABILITY);
-		reportEntryCapabilityStatement.setStatus(responseEntryCapabilityStatement.getStatus());
-		reportEntryCapabilityStatement.setDate(responseEntryCapabilityStatement.getDate());
-		reportEntryCapabilityStatement.setName("Server");
-
-		reportEntryCapabilityStatement.getSoftware().setName(responseEntryCapabilityStatement.getSoftware().getName());
-		reportEntryCapabilityStatement.getSoftware()
-				.setVersion(responseEntryCapabilityStatement.getSoftware().getVersion());
-
-		reportEntryCapabilityStatement.setFhirVersion(responseEntryCapabilityStatement.getFhirVersion());
-
-		reportEntryCapabilityStatement.setFormat(responseEntryCapabilityStatement.getFormat().stream()
-				.filter(f -> "application/fhir+xml".equals(f.getCode()) || "application/fhir+json".equals(f.getCode()))
-				.collect(Collectors.toList()));
-
-		for (CapabilityStatement.CapabilityStatementRestComponent oldRestComponent : responseEntryCapabilityStatement
-				.getRest())
-		{
-			List<CapabilityStatement.CapabilityStatementRestResourceComponent> resources = oldRestComponent
-					.getResource().stream().map(r -> new CapabilityStatement.CapabilityStatementRestResourceComponent()
-							.setType(r.getType()).setSearchParam(removeDocumentation(r.getSearchParam())))
-					.toList();
-
-			CapabilityStatement.CapabilityStatementRestComponent newRestComponent = new CapabilityStatement.CapabilityStatementRestComponent()
-					.setResource(resources).setMode(oldRestComponent.getMode())
-					.setSearchParam(removeDocumentation(oldRestComponent.getSearchParam()));
-
-			reportEntryCapabilityStatement.addRest(newRestComponent);
-		}
-
-		reportEntry.setResource(reportEntryCapabilityStatement);
-	}
-
-	private List<CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent> removeDocumentation(
-			List<CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent> searchParams)
-	{
-		return searchParams.stream().map(s -> s.setDocumentation(null)).toList();
 	}
 
 	private String storeReportBundle(Bundle responseBundle, String hrpIdentifier, String taskId)

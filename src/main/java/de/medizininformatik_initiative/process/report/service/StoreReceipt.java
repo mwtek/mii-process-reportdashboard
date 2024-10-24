@@ -39,7 +39,7 @@ public class StoreReceipt extends AbstractServiceDelegate
 	protected void doExecute(DelegateExecution execution, Variables variables)
 	{
 		String reportLocation = variables
-				.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE);
+				.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_JSON_RESPONSE_REFERENCE);
 
 		Task startTask = variables.getStartTask();
 		Task currentTask = variables.getLatestTask();

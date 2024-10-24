@@ -42,7 +42,7 @@ public class SendReport extends AbstractTaskMessageSend
 	{
 		System.out.println("SendReport.getAdditionalInputParameters()");
 		String bundleId = variables
-				.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_SEARCH_BUNDLE_RESPONSE_REFERENCE);
+				.getString(ConstantsReport.BPMN_EXECUTION_VARIABLE_DASHBOARD_REPORT_DDP_JSON_RESPONSE_REFERENCE);
 
 		Task.ParameterComponent parameterComponent = new Task.ParameterComponent();
 		parameterComponent.getType().addCoding().setSystem(ConstantsReport.CODESYSTEM_REPORT)
