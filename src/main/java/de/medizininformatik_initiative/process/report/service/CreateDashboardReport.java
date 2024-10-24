@@ -108,6 +108,11 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 	private String storeReportBundle(Bundle responseBundle, String hrpIdentifier, String taskId)
 	{
 		System.out.println("CreateDashboardReport.storeReportBundle()");
+		System.out.println("CreateDashboardReport.storeReportBundle(): HRP '" + hrpIdentifier + "' and Task with id '"
+				+ taskId + "'");
+		System.out
+				.println("Base URL: " + api.getFhirWebserviceClientProvider().getLocalWebserviceClient().getBaseUrl());
+
 		PreferReturnMinimal client = api.getFhirWebserviceClientProvider().getLocalWebserviceClient()
 				.withMinimalReturn()
 				.withRetry(ConstantsBase.DSF_CLIENT_RETRY_6_TIMES, ConstantsBase.DSF_CLIENT_RETRY_INTERVAL_5MIN);
