@@ -12,12 +12,9 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CapabilityStatement;
 import org.hl7.fhir.r4.model.IdType;
 import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent;
 import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent;
-import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.model.Task;
@@ -25,24 +22,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 import de.medizininformatik_initiative.process.report.ConstantsReport;
 import de.medizininformatik_initiative.processes.common.fhir.client.FhirClientFactory;
 import de.medizininformatik_initiative.processes.common.fhir.client.logging.DataLogger;
 import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
 import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
-import dev.dsf.bpe.v1.service.QuestionnaireResponseHelper;
 import dev.dsf.bpe.v1.variables.Target;
 import dev.dsf.bpe.v1.variables.Variables;
 import dev.dsf.fhir.client.PreferReturnMinimal;
-import jakarta.ws.rs.core.Response;
 
 public class CreateDashboardReport extends AbstractServiceDelegate
 {
 	private static final Logger logger = LoggerFactory.getLogger(CreateDashboardReport.class);
-
-	private static final String RESPONSE_OK = "200";
 
 	private final String resourceVersion;
 	private final FhirClientFactory fhirClientFactory;
@@ -119,52 +111,6 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 			throw new RuntimeException("Could not create report for HRP '" + target.getOrganizationIdentifierValue()
 					+ "' in Task with id '" + task.getId() + "' - " + exception.getMessage(), exception);
 		}
-	}
-
-	private Bundle executeSearchBundle(Bundle searchBundle, String hrpIdentifier)
-	{
-		logger.info(
-				"Executing search Bundle from HRP '{}' against FHIR store with base url '{}' - this could take a while...",
-				hrpIdentifier, fhirClientFactory.getFhirClient().getFhirBaseUrl());
-
-		Bundle responseBundle = new Bundle();
-		responseBundle.setType(Bundle.BundleType.BATCHRESPONSE);
-
-		searchBundle.getEntry().stream().filter(Bundle.BundleEntryComponent::hasRequest)
-				.map(Bundle.BundleEntryComponent::getRequest)
-				.filter(r -> r.hasUrl() && r.hasMethod() && Bundle.HTTPVerb.GET.equals(r.getMethod()))
-				.map(Bundle.BundleEntryRequestComponent::getUrl).map(this::executeRequest)
-				.forEach(responseBundle::addEntry);
-
-		return responseBundle;
-	}
-
-	private Bundle.BundleEntryComponent executeRequest(String url)
-	{
-		Bundle.BundleEntryComponent entry = new Bundle.BundleEntryComponent();
-
-		try
-		{
-			logger.debug("Executing report search request '{}'", url);
-
-			Resource result = fhirClientFactory.getFhirClient().search(url);
-			entry.setResource(result);
-			entry.setResponse(new Bundle.BundleEntryResponseComponent().setStatus(RESPONSE_OK));
-		}
-		catch (BaseServerResponseException exception)
-		{
-			logger.warn("Could not execute report search request '{}' - {}", url, exception.getMessage());
-
-			OperationOutcome outcome = new OperationOutcome();
-			outcome.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR)
-					.setCode(OperationOutcome.IssueType.EXCEPTION).setDiagnostics(exception.getMessage());
-			Bundle.BundleEntryResponseComponent response = new Bundle.BundleEntryResponseComponent()
-					.setStatus(String.valueOf(exception.getStatusCode())).setOutcome(outcome);
-
-			entry.setResponse(response);
-		}
-
-		return entry;
 	}
 
 	private Bundle transformToReportBundle(Bundle searchBundle, Bundle responseBundle, Target target)
@@ -266,19 +212,6 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 			List<CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent> searchParams)
 	{
 		return searchParams.stream().map(s -> s.setDocumentation(null)).toList();
-	}
-
-	private void checkReportBundle(Bundle searchBundle, Bundle reportBundle, String hrpIdentifier)
-	{
-		int requests = searchBundle.getEntry().size();
-
-		List<String> errorCodes = reportBundle.getEntry().stream().filter(e -> e.hasResponse())
-				.map(e -> e.getResponse()).filter(r -> r.hasStatus()).map(r -> r.getStatus())
-				.filter(s -> !s.contains(RESPONSE_OK)).toList();
-
-		if (errorCodes.size() >= requests)
-			throw new RuntimeException(
-					"Report Bundle for HRP '" + hrpIdentifier + "' only contains error status codes");
 	}
 
 	private String storeReportBundle(Bundle responseBundle, String hrpIdentifier, String taskId)
