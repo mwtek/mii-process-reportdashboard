@@ -298,6 +298,8 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 
 		logger.info("Stored report Bundle with id '{}' for HRP '{}' and Task with id '{}'", absoluteId, hrpIdentifier,
 				taskId);
+		System.out.format("Stored report Bundle with id '{}' for HRP '{}' and Task with id '{}'", absoluteId,
+				hrpIdentifier, taskId);
 
 		return absoluteId;
 	}
