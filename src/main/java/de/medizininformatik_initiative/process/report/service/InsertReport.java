@@ -1,5 +1,8 @@
 package de.medizininformatik_initiative.process.report.service;
 
+import ca.uhn.fhir.context.FhirContext;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -9,6 +12,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.IdType;
 import org.hl7.fhir.r4.model.Identifier;
+import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
@@ -22,6 +26,12 @@ import dev.dsf.bpe.v1.ProcessPluginApi;
 import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.variables.Variables;
 import dev.dsf.fhir.client.PreferReturnMinimal;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 public class InsertReport extends AbstractServiceDelegate
 {
@@ -80,6 +90,8 @@ public class InsertReport extends AbstractServiceDelegate
 
 			logger.info("Stored report with id '{}' from organization '{}' for Task with id '{}'", absoluteReportId,
 					sendingOrganization, task.getId());
+
+			sendDataToDashboard(report);
 			sendMail(sendingOrganization, absoluteReportId);
 		}
 		catch (Exception exception)
@@ -97,6 +109,47 @@ public class InsertReport extends AbstractServiceDelegate
 			throw new BpmnError(ConstantsReport.BPMN_EXECUTION_VARIABLE_REPORT_RECEIVE_ERROR,
 					"Insert report - " + exception.getMessage());
 		}
+	}
+
+	protected ResponseEntity<String> sendDataToDashboard(Bundle report)
+	{
+
+		// Convert report to a pretty-printed JSON string
+		String reportString = FhirContext.forR4().newJsonParser().setPrettyPrint(true).encodeResourceToString(report);
+		System.out.println("reportString:" + reportString);
+
+		// Extract the valueString from the QuestionnaireResponse
+		QuestionnaireResponse qr = (QuestionnaireResponse) report.getEntry().get(0).getResource();
+		String valueString = qr.getItem().get(0).getAnswer().get(0).getValueStringType().getValue();
+		System.out.println("valueString: " + valueString);
+
+		// Create an instance of RestTemplate
+		RestTemplate restTemplate = new RestTemplate();
+
+		// Set up the headers, including the Authorization header for basic auth
+		HttpHeaders headers = new HttpHeaders();
+		String auth = this.DASHBOARD_BACKEND_USER + ":" + this.DASHBOARD_BACKEND_PASSWORD;
+		String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes(StandardCharsets.UTF_8));
+		String authHeader = "Basic " + encodedAuth;
+		headers.set("Authorization", authHeader);
+		headers.setContentType(MediaType.APPLICATION_JSON); // Set content type as JSON
+
+		// Create a JSON request body with valueString
+		String requestBody = "{ \"value\": \"" + valueString + "\" }";
+		System.out.println("Request Body: " + requestBody);
+
+		// Create an HttpEntity with the headers and request body
+		HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+
+		// Send the request using exchange to include headers and request body, and get the response
+		ResponseEntity<String> response = restTemplate.exchange(this.DASHBOARD_BACKEND_URL, HttpMethod.PUT, entity,
+				String.class);
+
+		// Print the response body
+		System.out.println("Response Body: " + response.getBody());
+
+		return response;
+
 	}
 
 	private Identifier getReportIdentifier(Task task)
