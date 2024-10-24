@@ -8,6 +8,7 @@ import java.util.Objects;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.IdType;
+import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent;
 import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent;
@@ -82,6 +83,10 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 			bec.setResource(qr);
 			responseBundle.addEntry(bec);
 
+			// target.getOrganizationIdentifierValue()
+			responseBundle.setIdentifier(new Identifier()
+					.setSystem(ConstantsReport.NAMINGSYSTEM_CDS_DASHBOARD_REPORT_IDENTIFIER).setValue("ukbonn.de"));
+
 			String resp = FhirContext.forR4().newJsonParser().setPrettyPrint(true)
 					.encodeResourceToString(responseBundle);
 			System.out.println(resp);
@@ -122,10 +127,6 @@ public class CreateDashboardReport extends AbstractServiceDelegate
 				.orElseThrow(() -> new RuntimeException("LocalOrganizationIdentifierValue empty"));
 		System.out.println("CreateDashboardReport.storeReportBundle() - 2");
 		System.out.println("localOrganizationIdentifier: " + localOrganizationIdentifier);
-
-		System.out.println("getLocalOrganizationIdentifier: "
-				+ api.getOrganizationProvider().getLocalOrganizationIdentifier().toString());
-		System.out.println("getLocalOrganization: " + api.getOrganizationProvider().getLocalOrganization().toString());
 
 		IdType bundleIdType = client.updateConditionaly(responseBundle, Map.of("identifier", Collections.singletonList(
 				ConstantsReport.NAMINGSYSTEM_CDS_DASHBOARD_REPORT_IDENTIFIER + "|" + localOrganizationIdentifier)));
